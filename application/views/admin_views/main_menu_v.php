@@ -38,8 +38,23 @@ if ($active_menu == 'milluser') {
 if ($active_menu == 'vehicle') {
     echo 'active';
 }
-?>"><a href="<?php echo base_url('admin/vehicle'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle</span></a></li>
+?>"><a href="<?php echo base_url('admin/vehicle'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle</span></a>
 
+</li>
+
+<li class="<?php
+if ($active_menu == 'vehicle Type') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/vahicle_type'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle Type</span></a>
+
+</li>
+
+<li class="<?php
+if ($active_menu == 'content') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/content'); ?>"><i class="fa fa-file-text-o "></i> <span> Content</span></a></li>
 
 
 

@@ -10,6 +10,7 @@ class Vehicle extends CI_Controller {
         }
         
         $this->load->model('admin_models/Vehicle_model', 'vehicle_mdl'); 
+        $this->load->model('Vehicle_type_model'); 
         
         // $memberObj = $this->session->userdata;
        // echo '<pre>' ; print_r($memberObj);die;
@@ -34,8 +35,8 @@ class Vehicle extends CI_Controller {
         $data['active_menu'] = 'vehicle';
         $data['active_sub_menu'] = 'vehicle';
         $data['active_sub_sub_menu'] = '';
-        $data['vehicle_dropdown'] = $this->vehicle_mdl->get_vehicle_dropdown();
-        //echo '<pre>' ;print_r($data['vehicle_dropdown']) ;die;
+        $data['dropdownData'] = $this->vehicle_mdl->get_dropdown();
+        //echo '<pre>' ;print_r($data['driver_dropdown']) ;die;
         
         $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
         $data['main_content'] = $this->load->view('admin_views/vehicles/add_vehicle_v', $data, TRUE);
@@ -95,10 +96,67 @@ class Vehicle extends CI_Controller {
            // $data['Image'] = $this->input->post('Image', TRUE); 
            
             $data['v_owner_id'] = $this->session->userdata('admin_id'); 
+            $data['v_add_by'] = $this->session->userdata('admin_id'); 
             //$data['date_added'] = date('Y-m-d H:i:s');  
             
                //echo '<pre>' ;print_r($data) ;die;
             $insert_id = $this->vehicle_mdl->add_vehicle_data($data); 
+            
+            
+            //=============profile upload===============//
+            $valid_extensions = array('jpeg','jpg','png','gif');
+                if ($_FILES['rcfile']['error'] == 0) {
+                    $img = $_FILES['rcfile']['name'];
+                    $tmp = $_FILES['rcfile']['tmp_name'];
+                    $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
+                     if (in_array($ext, $valid_extensions)) {
+                        $Name=$data['v_vehicle_name'];
+                        $name_replace_with_underscore = str_replace(' ', '_', $Name);
+                        $vehicleRcImage=$insert_id.'_rc_'.$name_replace_with_underscore.'.'.$ext;
+                        if($img){
+                            $path = "./assets/backend/img/vehicle/rcpic/" . strtolower($vehicleRcImage);
+                        } else {
+                            $path ='';
+                        }
+                        if (move_uploaded_file($tmp, $path)){
+                            $_POST['rcfile'] = $path;
+                        }
+                    }
+                    if (file_exists($path)){
+                    $dataUpdate['v_vehicle_rc']=$vehicleRcImage;
+                    $this->vehicle_mdl->update_vehicle($insert_id, $dataUpdate); 
+                } 
+                }
+                if ($_FILES['vimagefile']['error'] == 0) {
+                    $imgv = $_FILES['vimagefile']['name'];
+                    $tmpv = $_FILES['vimagefile']['tmp_name'];
+                    $extv = strtolower(pathinfo($imgv, PATHINFO_EXTENSION));
+                     if (in_array($extv, $valid_extensions)) {
+                        $Name=$data['v_vehicle_name'];
+                        $name_replace_with_underscore = str_replace(' ', '_', $Name);
+                        $vehicleImage=$insert_id.'_vimage_'.$name_replace_with_underscore.'.'.$extv;
+                        if($imgv){
+                            $pathv = "./assets/backend/img/vehicle/vehicleImage/" . strtolower($vehicleImage);
+                        } else {
+                            $pathv ='';
+                        }
+                        if (move_uploaded_file($tmpv, $pathv)){
+                            $_POST['vimagefile'] = $pathv;
+                        }
+                    }
+                     if (file_exists($pathv)){
+                    $dataUpdate['v_vehicle_Image']=$vehicleImage;
+                    $this->vehicle_mdl->update_vehicle($insert_id, $dataUpdate); 
+                }
+                }
+                
+               
+                
+               
+               // echo '<pre>' ;print_r($pathv);die;
+            //=============profile upload end===============//
+            
+            
             if (!empty($insert_id)) { 
                 $sdata['success'] = 'Add successfully . '; 
                 $this->session->set_userdata($sdata); 
@@ -159,6 +217,7 @@ class Vehicle extends CI_Controller {
             $data['active_menu'] = 'vehicle'; 
             $data['active_sub_menu'] = 'vehicle'; 
             $data['active_sub_sub_menu'] = ''; 
+            $data['dropdownData'] = $this->vehicle_mdl->get_dropdown();
             $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
             $data['main_content'] = $this->load->view('admin_views/vehicles/edit_vehicle_v', $data, TRUE);
             $this->load->view('admin_views/admin_master_v', $data); 
@@ -218,7 +277,59 @@ class Vehicle extends CI_Controller {
                 $data['v_status'] = 1; 
                 $data['v_add_by'] = $this->session->userdata('admin_id');
                 $data['v_date'] = date('Y-m-d H:i:s');  
+                
+                
                 $result = $this->vehicle_mdl->update_vehicle($vehicle_id, $data); 
+                
+                
+                //=============profile upload===============//
+                $valid_extensions = array('jpeg','jpg','png','gif');
+                if ($_FILES['rcfile']['error'] == 0) {
+                    $img = $_FILES['rcfile']['name'];
+                    $tmp = $_FILES['rcfile']['tmp_name'];
+                    $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
+                     if (in_array($ext, $valid_extensions)) {
+                        $Name=$data['v_vehicle_name'];
+                        $name_replace_with_underscore = str_replace(' ', '_', $Name);
+                        $vehicleRcImage=$vehicle_id.'_rc_'.$name_replace_with_underscore.'.'.$ext;
+                        if($img){
+                            $path = "./assets/backend/img/vehicle/rcpic/" . strtolower($vehicleRcImage);
+                        } else {
+                            $path ='';
+                        }
+                        if (move_uploaded_file($tmp, $path)){
+                            $_POST['rcfile'] = $path;
+                        }
+                    }
+                    if (file_exists($path)){
+                    $dataUpdate['v_vehicle_rc']=$vehicleRcImage;
+                    $this->vehicle_mdl->update_vehicle($vehicle_id, $dataUpdate); 
+                    } 
+                }
+                if ($_FILES['vimagefile']['error'] == 0) {
+                    $imgv = $_FILES['vimagefile']['name'];
+                    $tmpv = $_FILES['vimagefile']['tmp_name'];
+                    $extv = strtolower(pathinfo($imgv, PATHINFO_EXTENSION));
+                     if (in_array($extv, $valid_extensions)) {
+                        $Name=$data['v_vehicle_name'];
+                        $name_replace_with_underscore = str_replace(' ', '_', $Name);
+                        $vehicleImage=$vehicle_id.'_vimage_'.$name_replace_with_underscore.'.'.$extv;
+                        if($imgv){
+                            $pathv = "./assets/backend/img/vehicle/vehicleImage/" . strtolower($vehicleImage);
+                        } else {
+                            $pathv ='';
+                        }
+                        if (move_uploaded_file($tmpv, $pathv)){
+                            $_POST['vimagefile'] = $pathv;
+                        }
+                    }
+                     if (file_exists($pathv)){
+                    $dataUpdate['v_vehicle_Image']=$vehicleImage;
+                    $this->vehicle_mdl->update_vehicle($vehicle_id, $dataUpdate); 
+                }
+                }
+                
+                
                 if (!empty($result)) { 
                     $sdata['success'] = 'Update successfully .'; 
                     $this->session->set_userdata($sdata); 
@@ -259,8 +370,10 @@ class Vehicle extends CI_Controller {
     
     public function view_vehicle($vehicle_id) { 
         $data = array(); 
-        $data['user_data'] = $this->vehicle_mdl->get_vehicle_by_vehicle_id($vehicle_id);  
-        if (!empty($data['user_data'])) { 
+        
+        $data['vehicle_data'] = $this->vehicle_mdl->get_vehicle_by_vehicle_id($vehicle_id);
+//        echo '<pre>' ;print_r($data['vehicle_data']) ;die;
+        if (!empty($data['vehicle_data'])) { 
             $data['title'] = 'View Vehicle'; 
             $data['active_menu'] = 'vehicle'; 
             $data['active_sub_menu'] = 'vehicle'; 
@@ -275,6 +388,82 @@ class Vehicle extends CI_Controller {
         } 
     } 
     
+    public function vahicle_type(){
+        $data = array();
+        $data['title'] = 'Manage Vehicle Type';
+        $data['active_menu'] = 'vehicle type';
+        $data['active_sub_menu'] = 'vehicle type';
+        $data['active_sub_sub_menu'] = ''; 
+        $data['vehicle_info'] = $this->Vehicle_type_model->get_vehicle_type_info();
+        $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
+        $data['main_content'] = $this->load->view('admin_views/vehicles/manage_vehicle_type_v', $data, TRUE);
+        $this->load->view('admin_views/admin_master_v', $data);
+    } 
+    public function add_vahicle_type(){
+        
+    }
+    public function edit_vahicle_type(){
+        
+    }
+    
+    public function remove_vehicle_type($vehicle_type_id) { 
+        $vehicle_info = $this->Vehicle_type_model->get_vehicle_type_by_id($vehicle_type_id); 
+        if (!empty($vehicle_info)) { 
+            $result = $this->Vehicle_type_model->remove_vehicle_by_id($vehicle_type_id); 
+            if (!empty($result)) { 
+                $sdata['success'] = 'Remove successfully .'; 
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } else { 
+                $sdata['exception'] = 'Operation failed !'; 
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } 
+        } else { 
+            $sdata['exception'] = 'Content not found !'; 
+            $this->session->set_userdata($sdata); 
+            redirect('admin/vehicle/vahicle_type', 'refresh'); 
+        } 
+    } 
+    
+     public function active_vehicle_typr($vehicle_type_id) { 
+        $vehicle_info = $this->Vehicle_type_model->get_vehicle_type_by_id($vehicle_type_id); 
+        if (!empty($vehicle_info)) { 
+            $result = $this->Vehicle_type_model->active_vehicle_by_id($vehicle_type_id); 
+            if (!empty($result)) { 
+                $sdata['success'] = 'Active successfully .'; 
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } else { 
+                $sdata['exception'] = 'Operation failed !';
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } 
+        } else { 
+            $sdata['exception'] = 'Content not found !';
+            $this->session->set_userdata($sdata); 
+            redirect('admin/vehicle/vahicle_type', 'refresh'); 
+        } 
+    }
+     public function inactive_vehicle_type($vehicle_type_id) { 
+        $vehicle_info = $this->Vehicle_type_model->get_vehicle_type_by_id($vehicle_type_id);
+        if (!empty($vehicle_info)) {
+            $result = $this->Vehicle_type_model->inactive_vehicle_by_id($vehicle_type_id);
+            if (!empty($result)) {
+                $sdata['success'] = 'Inactive successfully .';
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } else { 
+                $sdata['exception'] = 'Operation failed !'; 
+                $this->session->set_userdata($sdata); 
+                redirect('admin/vehicle/vahicle_type', 'refresh'); 
+            } 
+        } else { 
+            $sdata['exception'] = 'Content not found !'; 
+            $this->session->set_userdata($sdata); 
+            redirect('admin/vehicle/vahicle_type', 'refresh'); 
+        } 
+    }  
     
     
 }
