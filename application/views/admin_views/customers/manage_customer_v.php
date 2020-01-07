@@ -29,7 +29,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--                    <a href="<?php // echo base_url('admin/customer/add_customer'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add Customers </a>-->
                 </div>
                 <div class="col-md-12" style="margin-top: 25px;">
-                    <table id="example2" class="table table-bordered table-striped">
+                    <div class="widget-content nopadding">
+                    <table id="example2" class="table table-bordered data-table">
                         <thead>
                             <tr>
                                 <th>SL#</th>
@@ -50,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php $memberObj = $this->session->userdata; ?>
                             <tr>
                                     <td><?php echo $sl++; ?></td>
-                                    <td><img src="<?php echo base_url() ?>/assets/backend/img/customer/<?php echo $user_data['Image'] ?>" style="width: 20px;height: 20px;"></td>
+                                    <td><img src="<?php echo base_url() ?>/assets/backend/img/customer/profile/<?php echo $user_data['Image'] ?>" style="width: 20px;height: 20px;"></td>
                                     <td><?php echo $user_data['Name']; ?></td>
                                     <td><?php echo $user_data['Mobile']; ?></td>
                                     <td><?php echo $user_data['Email']; ?></td>
@@ -89,6 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </tbody>
                     </table>
                     <!-- /.table -->
+                </div>
                 </div>
             </div>
         </div>

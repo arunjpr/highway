@@ -17,10 +17,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     margin-bottom: -7px;
 }
-.gradient-1:hover{ box-shadow: 0 8px 16px 0 rgba(0,0,0,2);}
-.gradient-2:hover{ box-shadow: 0 8px 16px 0 rgba(0,0,0,2);}
-.gradient-3:hover{ box-shadow: 0 8px 16px 0 rgba(0,0,0,2);}
-.gradient-4:hover{ box-shadow: 0 8px 16px 0 rgba(0,0,0,2);}
 </style>
 
 <!-- Content Header (Page header) -->
@@ -58,19 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
                             </div>
-                            
-                           <a href="">
-                           <div class="card gradient-1"> 
-                            <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
-                                 <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
-                                </div>
-                               
-                            </div>
-                            </div>
-                            </a>
                         </div>
-                        
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
@@ -81,16 +65,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
                             </div>
-                            <a href="">
-                           <div class="card gradient-2"> 
-                            <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
-                                 <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
-                                </div>
-                               
-                            </div>
-                            </div>
-                            </a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
@@ -102,16 +76,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
-                            <a href="">
-                           <div class="card gradient-3"> 
-                            <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
-                                 <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
-                                </div>
-                               
-                            </div>
-                            </div>
-                            </a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
@@ -123,16 +87,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                             </div>
-                            <a href="">
-                           <div class="card gradient-4"> 
-                            <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
-                                 <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
-                                </div>
-                               
-                            </div>
-                            </div>
-                            </a>
                         </div>
                     </div>
                 </div>

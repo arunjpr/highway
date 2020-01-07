@@ -56,10 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    </div>
                     
-                    
-                    <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Gender">Gender Type</label>
@@ -84,9 +81,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Mobile'); ?></span>
                         </div>
                     </div>
-                    </div>
-                    
-                    <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Address">Address</label>
@@ -126,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
                 <!-- /.row -->
             </div>
-                </div>
+                
             <!-- /.box-body -->
             <div class="box-footer">
                 <a href="<?php echo base_url('admin/customer'); ?>" class="btn btn-danger" data-toggle="tooltip" title="Go back"><i class="fa fa-remove"></i> Cancel</a>

@@ -131,7 +131,7 @@ class Vehicle extends REST_Controller {
         } else {
             $this->set_response([
                 'status' => true,
-                "data" => array("vehicle_data" => $this->drive_model->getVehicleDropdownApi($user_id)),
+                "dataV" => array("vehicle_data"=>$this->drive_model->getVehicleDropdownApi($user_id)),
                     ], REST_Controller::HTTP_OK);
         }
     }

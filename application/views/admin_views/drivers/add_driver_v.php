@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         <!-- form start -->
-        <form role="form" name="add_form" action="<?php echo base_url('admin/driver/create_driver'); ?>" method="post"  class="form-validation" >
+        <form role="form" name="add_form" action="<?php echo base_url('admin/driver/create_driver'); ?>" method="post" enctype="multipart/form-data" class="form-validation" >
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
@@ -46,8 +46,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     <!-- /.col -->
-                   
                     
+                    
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Vehicle">Vehicle</label>
+                            <select name="vehicle_id" class="form-control required" id="vehicle_id">
+                                <option value="" selected="" disabled="">select</option>
+                                <?php
+                                foreach ($DropdownData as $row) {
+                                 echo '<option value ="'.$row->v_Id.'">'.$row->v_vehicle_name.'-'.$row->v_vehicle_number.'</option>';
+                                    
+                                }
+                                ?>
+                            </select>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_id'); ?></span>
+                        </div>
+                    </div>
+                   </div>
+                    
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Status">Active Status</label>
@@ -71,6 +90,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Gender'); ?></span>
                         </div>
                     </div>
+                    </div>
+                
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Mobile">Mobile</label>
@@ -93,20 +115,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label for="Dob">Dob</label>
-                        <div class="input-group date" data-provide="datepicker">
-                            <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                        <input class="form-control" type="text" id="Dob" name="Dob" >
-                        
-                        </div>
-                        <span class="help-block error-message"><?php echo form_error('Dob'); ?></span>
-                      </div>   
-                    </div>
-                    
+                    </div> 
+                    <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Email">Email</label>
@@ -128,32 +138,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('License_Number'); ?></span>
                         </div>
                     </div>
-                    
-                    
-<!--                     <div class="col-md-6">
+                  </div>  
+                    <div class="row">
+                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Image">Picture <span class="required">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="file" id="Image" size="20" name="Image" required="required" class="form-control required" >
-                           </div>
-                            <span class="help-block error-message"><?php echo form_error('Email'); ?></span>
+                                <?php echo form_upload(['name'=>'userfile','class'=>'form-control'])?>
+                            </div>
+                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
                         </div>
-                    </div>-->
+                    </div>
                     
-                      
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="DL">Dl Picture<span class="required">*</span></label>
+                            <div class="input-group">
+                                <?php echo form_upload(['name'=>'dlfile','class'=>'form-control'])?>
+                            </div>
+                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
+                        </div>
+                    </div>
                     
                    
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.box-body -->
             <div class="box-footer">
                 <a href="<?php echo base_url('admin/driver'); ?>" class="btn btn-danger" data-toggle="tooltip" title="Go back"><i class="fa fa-remove"></i> Cancel</a>
                 <button type="submit" value="upload" class="btn btn-success"><i class="fa fa-plus"></i> Add Info</button>
             </div>
         </form>
-        <!-- /.form -->
     </div>
 </section>
 <script type="text/javascript">

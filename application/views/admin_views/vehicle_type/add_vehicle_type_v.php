@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         <!-- form start -->
-        <form role="form" name="add_form" action="<?php echo base_url('admin/vehicle/create_vehicle'); ?>" method="post"  class="form-validation" enctype="multipart/form-data" >
+        <form role="form" name="add_form" action="<?php echo base_url('admin/vehicle/create_vehicle'); ?>" method="post"  class="form-validation" >
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
@@ -46,23 +46,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     <!-- /.col -->
+                   
+                    
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Driver">Driver</label>
                             <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
-                                <option value="" selected="" disabled="">select</option>
-                                <?php
-                                foreach ($dropdownData as $row) {
-                                 echo '<option value ="'.$row->Id.'">'.$row->Name.'</option>';
-                                    
-                                }
-                                ?>
+                                
+                                <option value="" selected="" disabled="">Select driver</option>
+                                <option value="1">as</option>
+                                <option value="0">ds</option>
                             </select>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
                         </div>
                     </div>
-                    </div>
-                    <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Color">Vehicle Color </label>
@@ -85,8 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    </div>
-                    <div class="row">
+                    
                     
                     <div class="col-md-6">
                         <div class="form-group">
@@ -108,41 +104,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_model_no'); ?></span>
                         </div>
                     </div>
-                    </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Image">RC Picture <span class="required">*</span></label>
-                            <div class="input-group">
-                                <?php echo form_upload(['name'=>'rcfile','class'=>'form-control'])?>
-                            </div>
-                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="VehicleImage">Vehicle Picture <span class="required">*</span></label>
-                            <div class="input-group">
-                                <?php echo form_upload(['name'=>'vimagefile','class'=>'form-control'])?>
-                            </div>
-                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
-                        </div>
-                    </div>
+                    
+                    
+
+                      
+                    
+                   
                 </div>
-                </div>
-                
-                
                 <!-- /.row -->
-           
+            </div>
             <!-- /.box-body -->
             <div class="box-footer">
                 <a href="<?php echo base_url('admin/vehicle'); ?>" class="btn btn-danger" data-toggle="tooltip" title="Go back"><i class="fa fa-remove"></i> Cancel</a>
                 <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i> Add Info</button>
             </div>
         </form>
-         </div>
         <!-- /.form -->
-    
+    </div>
 </section>
 <script type="text/javascript">
     document.forms['add_form'].elements['Status'].value = '<?php echo set_value('Status'); ?>';

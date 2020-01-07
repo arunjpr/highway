@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
 
         <!-- form start -->
-        <form role="form" name="edit_form" action="<?php echo base_url('admin/vehicle/update_vehicle/' . $user_data['v_Id'] . ''); ?>" method="post" class="form-validation" >
+        <form role="form" name="edit_form" action="<?php echo base_url('admin/vehicle/update_vehicle/' . $user_data['v_Id'] . ''); ?>" method="post" class="form-validation" enctype="multipart/form-data" >
            
             <div class="box-body">
                 <div class="row">
@@ -50,12 +50,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
                                 
                                 <option value="" selected="" disabled="">Select driver</option>
-                                <option value="1">as</option>
-                                <option value="0">ds</option>
+                                <?php
+                                foreach ($dropdownData as $row) {
+                                 echo '<option value ="'.$row->Id.'">'.$row->Name.'</option>';
+                                 }
+                                ?>
                             </select>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
                         </div>
                     </div>
+                    </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Color">Vehicle Color </label>
@@ -77,7 +82,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
                         </div>
                     </div>
-                    
+                </div>
+                <div class="row">
                     
                     
                     <div class="col-md-6">
@@ -101,12 +107,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_model_no'); ?></span>
                         </div>
                     </div>
-                    
-                  
                 </div>
+                
+               <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Image">RC Picture <span class="required">*</span></label>
+                            <div class="input-group">
+                                <?php echo form_upload(['name'=>'rcfile','class'=>'form-control'])?>
+                            </div>
+                            <div class="input-group">
+                                <img src="<?php echo base_url() ?>/assets/backend/img/vehicle/rcpic/<?php echo $user_data['v_vehicle_rc'] ?>" style="width: 100px;height: 100px;">
+                            </div>
+                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="VehicleImage">Vehicle Picture <span class="required">*</span></label>
+                            <div class="input-group">
+                                <?php echo form_upload(['name'=>'vimagefile','class'=>'form-control'])?>
+                            </div>
+                            <div class="input-group">
+                                <img src="<?php echo base_url() ?>/assets/backend/img/vehicle/vehicleImage/<?php echo $user_data['v_vehicle_Image'] ?>" style="width: 100px;height: 100px;">
+                            </div>
+                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- /.row -->
             </div>
-                </div>
+               
             <!-- /.box-body -->
             <div class="box-footer">
                 <a href="<?php echo base_url('admin/vehicle'); ?>" class="btn btn-danger" data-toggle="tooltip" title="Go back"><i class="fa fa-remove"></i> Cancel</a>
@@ -114,10 +146,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
             
         </form>
+         </div>
         <!-- /.form -->
-    </div>
+    
 </section>
 <script type="text/javascript">
     document.forms['edit_form'].elements['Status'].value = '<?php echo $user_data['Status']; ?>';
     document.forms['edit_form'].elements['Gender'].value = '<?php echo $user_data['Gender']; ?>';
+    document.forms['edit_form'].elements['v_vehicle_driver_id'].value = '<?php echo $user_data['v_vehicle_driver_id']; ?>';
 </script>

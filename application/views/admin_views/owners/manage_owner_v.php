@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php $memberObj = $this->session->userdata; ?>
                             <tr>
                                     <td><?php echo $sl++; ?></td>
-                                    <td><img src="<?php echo base_url() ?>/assets/backend/img/owner/<?php echo $user_data['Image'] ?>" style="width: 20px;height: 20px;"></td>
+                                    <td><img src="<?php echo base_url() ?>/assets/backend/img/owner/profile/<?php echo $user_data['Image'] ?>" style="width: 20px;height: 20px;"></td>
                                     <td><?php echo $user_data['Name']; ?></td>
                                     <td><?php echo $user_data['Mobile']; ?></td>
                                     <td><?php echo $user_data['Email']; ?></td>

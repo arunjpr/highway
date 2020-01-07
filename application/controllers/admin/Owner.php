@@ -71,11 +71,7 @@ class Owner extends CI_Controller {
                 'label' => 'Gender',
                 'rules' => 'trim|required'
             ),
-            array(
-                'field' => 'Dob',
-                'label' => 'Dob',
-                'rules' => 'trim|required|max_length[250]'
-            )
+           
 //            array(
 //                'upload_path' => $imgPath,
 //                'allowed_types' => 'gif|jpg|png',
@@ -87,7 +83,7 @@ class Owner extends CI_Controller {
        
         //echo '<pre>' ;print_r($config) ;die;
         $this->form_validation->set_rules($config);
-       // $this->load->library('upload', $config);
+        $this->load->library('upload', $config);
         if ($this->form_validation->run() == FALSE) {
             $this->add_owner();
         } else {
@@ -99,14 +95,43 @@ class Owner extends CI_Controller {
             $data['Email'] = $this->input->post('Email', TRUE); 
             $data['Status'] = $this->input->post('Status', TRUE); 
             $data['Gender'] = $this->input->post('Gender', TRUE); 
-            $data['Dob'] = $this->input->post('Dob', TRUE); 
-           // $data['Image'] = $this->input->post('Image', TRUE); 
+            $data['Image'] = ""; 
             $data['Role_Id'] = 5; 
             $data['add_by'] = $this->session->userdata('admin_id'); 
             //$data['date_added'] = date('Y-m-d H:i:s');  
             
             //echo '<pre>' ;print_r($data) ;die;
             $insert_id = $this->useradmin_mdl->add_owner_data($data); 
+            
+            //=============profile upload===============//
+            $valid_extensions = array('jpeg','jpg','png','gif');
+                if ($_FILES['userfile']['error'] == 0) {
+                    $img = $_FILES['userfile']['name'];
+                    $tmp = $_FILES['userfile']['tmp_name'];
+                    $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
+                     if (in_array($ext, $valid_extensions)) {
+                        $Name=$data['Name'];
+                        $name_replace_with_underscore = str_replace(' ', '_', $Name);
+                        $profilePic=$insert_id.'_'.$name_replace_with_underscore.'.'.$ext;
+                        if($img){
+                            $path = "./assets/backend/img/owner/profile/" . strtolower($profilePic);
+                        } else {
+                            $path ='';
+                        }
+                        if (move_uploaded_file($tmp, $path)){
+                            $_POST['userfile'] = $path;
+                        }
+                    }
+                    if (file_exists($path)) {
+                    $dataUpdate['Image']=$profilePic;
+                    $this->useradmin_mdl->update_owner($insert_id, $dataUpdate); 
+                    }
+                }
+                
+            //=============profile upload end===============//
+            
+            
+            
             if (!empty($insert_id)) { 
                 $sdata['success'] = 'Add successfully . '; 
                 $this->session->set_userdata($sdata); 

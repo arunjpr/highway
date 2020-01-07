@@ -12,7 +12,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Highway- <?php echo $title; ?></title>
     <!-- Tell the browser to be responsive to screen width -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url(); ?>assets/backend/img/favicon.png">
@@ -82,7 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         
                         
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
-                                <i style="color: #aeb4b7;" class="fa fa-bell"></i>
+                                <i class="mdi mdi-bell-outline"></i>
                                 <span class="badge badge-pill gradient-2">3</span>
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">

@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         <!-- form start -->
-        <form role="form" name="add_form" action="<?php echo base_url('admin/owner/create_owner'); ?>" method="post"  class="form-validation" >
+        <form role="form" name="add_form" action="<?php echo base_url('admin/owner/create_owner'); ?>" method="post"  class="form-validation" enctype="multipart/form-data" >
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
@@ -59,7 +59,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Status'); ?></span>
                         </div>
                     </div>
+                </div>
                     
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Gender">Gender Type</label>
@@ -81,7 +83,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Mobile'); ?></span>
                         </div>
                     </div>
+                </div>
                     
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Address">Address</label>
@@ -93,19 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label for="Dob">Dob</label>
-                        <div class="input-group date" data-provide="datepicker">
-                            <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                        <input class="form-control" type="text" id="Dob" name="Dob" >
-                        
-                        </div>
-                        <span class="help-block error-message"><?php echo form_error('Dob'); ?></span>
-                      </div>   
-                    </div>
+                   
                     
                     <div class="col-md-6">
                         <div class="form-group">
@@ -119,17 +111,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                     
                     
-<!--                     <div class="col-md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="Image">Picture <span class="required">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="file" id="Image" size="20" name="Image" required="required" class="form-control required" >
-                           </div>
-                            <span class="help-block error-message"><?php echo form_error('Email'); ?></span>
+                                <?php echo form_upload(['name'=>'userfile','class'=>'form-control'])?>
+                            </div>
+                            <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
                         </div>
-                    </div>-->
-                    
+                    </div>
                       
                     
                    

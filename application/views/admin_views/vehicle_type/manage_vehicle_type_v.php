@@ -26,18 +26,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12" >
-                    <a href="<?php echo base_url('admin/vehicle/add_vehicle'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add Vehicles </a>
+                    <a href="<?php echo base_url('admin/vehicle/add_vehicle_type'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add Vehicles </a>
                 </div>
                 <div class="col-md-12" style="margin-top: 25px;">
                     <table id="example2" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>SL#</th>
-                                <th>Picture</th>
-                                <th>Number</th>
-                                <th>Model Number</th>
-                                <th>Color</th>
-                                <th>Driver</th> 
+                                <th>Name</th>
                                 <th>Added By</th> 
                                 <th>Action</th>
                             </tr>
@@ -48,17 +44,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php $memberObj = $this->session->userdata; ?>
                             <tr>
                                     <td><?php echo $sl++; ?></td>
-                                    <td><img src="<?php echo base_url() ?>/assets/backend/img/vehicle/vehicleImage/<?php echo $user_data['v_vehicle_Image'] ?>" style="width: 20px;height: 20px;"></td>
-                                    <td><?php echo $user_data['v_vehicle_name']; ?></td>
-                                    <td><?php echo $user_data['v_vehicle_number']; ?></td>
-                                    <td><?php echo $user_data['v_vehicle_model_no']; ?></td>
-                                    <td><?php echo $user_data['v_vehicle_Color']; ?></td>
-                                    <td><?php echo $user_data['Name']; ?></td>
+                                    <td><?php echo $user_data['v_t_vehicle_name']; ?></td>
                                     <td><?php echo $memberObj['admin_name']; ?></td>
                                     
                                     <td>
                                         <?php
-                                        $status = $user_data['v_status'];
+                                        $status = $user_data['v_t_status'];
                                         if ($status == 1) {
                                             echo "<a href='" . base_url('admin/vehicle/unpublished_vehicle/' . $user_data['v_Id'] . '') . "' class='btn btn-block btn-success btn-xs' data-toggle='tooltip' title='Click to inactive'><i class='fa fa-arrow-down'></i> Active</a>";
                                         } else {
