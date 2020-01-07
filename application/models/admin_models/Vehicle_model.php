@@ -46,7 +46,7 @@ class Vehicle_model extends CI_Model {
     } 
     
     
-    public function get_vehicle_dropdown() { 
+    public function get_driver_dropdown() { 
         $this->db->select(array('Id','Name')) 
                 ->from('users')
                 ->where('Status', 1)
@@ -54,6 +54,16 @@ class Vehicle_model extends CI_Model {
                 ;
         $query_result = $this->db->get(); 
        // echo  $this->db->last_query();die;
+        $result = $query_result->result_array(); 
+        return $result; 
+    } 
+    
+    public function get_vehicle_dropdown() { 
+        $this->db->select(array('v_t_id','v_t_vehicle_name')) 
+                ->from('tbl_vehicle_type')
+                ->where('v_t_status', 1)
+                ;
+        $query_result = $this->db->get(); 
         $result = $query_result->result_array(); 
         return $result; 
     } 

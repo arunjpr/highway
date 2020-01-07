@@ -27,6 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         
        
+       
 
 
 
@@ -35,14 +36,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-6">
+                   <div class="col-md-6">
                         <div class="form-group">
-                            <label for="Name">Vehicle Name</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_name" value="<?php echo set_value('v_vehicle_name'); ?>" class="form-control required" id="v_vehicle_name" placeholder="Enter vehicle name">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_name'); ?></span>
+                            <label for="Vehicle">Vehicle</label>
+                            <select name="v_type_id" class="form-control required" id="v_type_id">
+                                <option value="" selected="" disabled="">select</option>
+                                <?php
+                                foreach ($vehicleData as $vdata) {
+                                  
+                                 echo '<option value ="'.$vdata['v_t_id'].'">'.$vdata['v_t_vehicle_name'].'</option>';
+                                    
+                                 
+                                }
+                                
+                                ?>
+                            </select>
+                            <span class="help-block error-message"><?php echo form_error('v_type_id'); ?></span>
                         </div>
                     </div>
                     <!-- /.col -->
@@ -53,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <option value="" selected="" disabled="">select</option>
                                 <?php
                                 foreach ($dropdownData as $row) {
-                                 echo '<option value ="'.$row->Id.'">'.$row->Name.'</option>';
+                                 echo '<option value ="'.$row['Id'].'">'.$row['Name'].'</option>';
                                     
                                 }
                                 ?>

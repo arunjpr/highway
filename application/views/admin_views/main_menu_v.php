@@ -46,7 +46,7 @@ if ($active_menu == 'vehicle') {
 if ($active_menu == 'vehicle Type') {
     echo 'active';
 }
-?>"><a href="<?php echo base_url('admin/vahicle_type'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle Type</span></a>
+?>"><a href="<?php echo base_url('admin/vehicleType'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle Type</span></a>
 
 </li>
 

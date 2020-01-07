@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Vehicles
-        <small>Manage Vehicles</small>
+        Vehicle Type
+        <small>Manage Vehicles Type</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <section class="content">
     <div class="box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Vehicles</h3>
+            <h3 class="box-title">Vehicles Type</h3>
 
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12" >
-                    <a href="<?php echo base_url('admin/vehicle/add_vehicle_type'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add Vehicles </a>
+                    <a href="<?php echo base_url('admin/vehicleType/add_vehicle_type'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add Vehicle Type </a>
                 </div>
                 <div class="col-md-12" style="margin-top: 25px;">
                     <table id="example2" class="table table-bordered table-striped">
@@ -51,16 +51,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <?php
                                         $status = $user_data['v_t_status'];
                                         if ($status == 1) {
-                                            echo "<a href='" . base_url('admin/vehicle/unpublished_vehicle/' . $user_data['v_Id'] . '') . "' class='btn btn-block btn-success btn-xs' data-toggle='tooltip' title='Click to inactive'><i class='fa fa-arrow-down'></i> Active</a>";
+                                            echo "<a href='" . base_url('admin/vehicleType/inactive_vehicle_type/' . $user_data['v_t_id'] . '') . "' class='btn btn-block btn-success btn-xs' data-toggle='tooltip' title='Click to inactive'><i class='fa fa-arrow-down'></i> Active</a>";
                                         } else {
-                                            echo "<a href='" . base_url('admin/vehicle/published_vehicle/' . $user_data['v_Id'] . '') . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
+                                            echo "<a href='" . base_url('admin/vehicleType/active_vehicle_type/' . $user_data['v_t_id'] . '') . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
                                         }
                                         ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo base_url('admin/vehicle/edit_vehicle/' . $user_data['v_Id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <a href="<?php echo base_url('admin/vehicle/view_vehicle/' . $user_data['v_Id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="View"><i class="fa fa-eye"></i></a>
-                                        <a href="<?php echo base_url('admin/vehicle/remove_vehicle/' . $user_data['v_Id'] . '') ?>" class="btn btn-danger btn-xs check_delete" data-toggle="tooltip" title="Delete"><i class="fa fa-remove"></i></a>
+                                        <a href="<?php echo base_url('admin/vehicleType/edit_vehicle_type/' . $user_data['v_t_id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
+                                        <a href="<?php echo base_url('admin/vehicleType/remove_vehicle_type/' . $user_data['v_t_id'] . '') ?>" class="btn btn-danger btn-xs check_delete" data-toggle="tooltip" title="Delete"><i class="fa fa-remove"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
