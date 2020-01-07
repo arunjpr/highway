@@ -53,8 +53,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-1">
                             <div class="card-body">
                                  <div class="d-inline-block">
-                                    <h2 class="text-white"><?php echo $upcoming; ?></h2>
-                                    <p class="text-white mb-0">Upcoming Trip</p>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">22<?php echo $upcoming; ?></h2>
+                                    <p style="font-weight: bold;" class="text-white mb-0">Upcoming Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
                             </div>
@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-1"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
                                 </div>
                                
                             </div>
@@ -76,8 +76,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <div class="d-inline-block">
-                                    <h2 class="text-white"><?php echo $ongoing; ?></h2>
-                                    <p class="text-white mb-0">Ongoing Trip</p>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">45<?php echo $ongoing; ?></h2>
+                                    <p style="font-weight: bold;" class="text-white mb-0">Ongoing Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
                             </div>
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-2"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
                                 </div>
                                
                             </div>
@@ -97,8 +97,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-3">
                             <div class="card-body">
                                 <div class="d-inline-block">
-                                    <h2 class="text-white"><?php echo $completed; ?></h2>
-                                    <p class="text-white mb-0">Completed Trip</p>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">23<?php echo $completed; ?></h2>
+                                    <p style="font-weight: bold;" class="text-white mb-0">Completed Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
@@ -106,7 +106,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-3"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
                                 </div>
                                
                             </div>
@@ -118,8 +118,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-4">
                             <div class="card-body">
                                  <div class="d-inline-block">
-                                    <h2 class="text-white"><?php echo $cancel; ?></h2>
-                                    <p class="text-white mb-0">Cancel Trip</p>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">8520</h2>
+                                    <p style="font-weight: bold;" class="text-white mb-0">Cancel Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                             </div>
@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-4"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 161px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
                                 </div>
                                
                             </div>
@@ -178,7 +178,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="media border-bottom-1 pt-3 pb-3">
                                         <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
                                         <div class="media-body">
-                                            <h5>Customer</h5>
+                                            <h5>Mill User</h5>
                                             <p class="mb-0">I shared this on my fb wall a few months back,</p>
                                         </div><span class="text-muted ">Dec 11 ,2019</span>
                                     </div>
@@ -192,24 +192,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="media border-bottom-1 pt-3 pb-3">
                                         <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
                                         <div class="media-body">
-                                            <h5>Milluser</h5>
+                                            <h5>Customer</h5>
                                             <p class="mb-0">I shared this on my fb wall a few months back,</p>
                                         </div><span class="text-muted ">Dec 11 ,2019</span>
                                     </div>
-                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        
+                                        <div class="media border-bottom-1 pt-3 pb-3">
                                         <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
                                         <div class="media-body">
                                             <h5>Owner</h5>
                                             <p class="mb-0">I shared this on my fb wall a few months back,</p>
                                         </div><span class="text-muted ">Dec 11 ,2019</span>
                                     </div>
-                                    <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
-                                        <div class="media-body">
-                                            <h5>ABC</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
-                                    </div>
+                                        
+                                      
+                                    
+                                    
                                    
                                    <br><br>
                                 </div><div class="slimScrollBar" style="background: transparent; width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 268.728px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>

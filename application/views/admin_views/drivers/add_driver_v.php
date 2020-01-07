@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <option value="" selected="" disabled="">select</option>
                                 <?php
                                 foreach ($DropdownData as $row) {
-                                 echo '<option value ="'.$row->v_Id.'">'.$row->v_vehicle_name.'-'.$row->v_vehicle_number.'</option>';
+                                 echo '<option value ="'.$row->v_t_id.'">'.$row->v_t_vehicle_name.'-'.$row->v_vehicle_number.'</option>';
                                     
                                 }
                                 ?>

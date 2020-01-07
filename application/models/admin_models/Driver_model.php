@@ -38,6 +38,20 @@ class Driver_model extends CI_Model {
         
         return $this->db->insert_id(); 
     } 
+    public function get_dropdownData() { 
+        $this->db->select(array('*')) 
+                ->from('tbl_vehicle_type')
+                ->join('vehicle', 'vehicle.v_Id=tbl_vehicle_type.v_t_id')
+                ->where('v_t_status', 1);
+        $query_result = $this->db->get(); 
+        $result = $query_result->result(); 
+        if($query_result->num_rows() > 0){
+            return $result;
+            } else {
+               return array();  
+            }
+            
+    }
 	
     public function get_driver_info() { 
         $this->db->select('*') 
