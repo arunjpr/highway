@@ -36,6 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <th>Title</th>
                                 <th>Added<br>By</th> 
                                 <th>Added<br>Date</th> 
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -49,12 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td><?php echo $memberObj['admin_name']; ?></td>
                                     <td><?php echo $user_data['c_date']; ?></td>
                                     <td>
-                                        <?php
+                                    <?php
                                         $status = $user_data['c_status'];
                                         if ($status == 1) {
-                                            echo "<a href='" . base_url('admin/content/unpublished_content/' . $user_data['c_id'] . '') . "' class='btn btn-block btn-success btn-xs' data-toggle='tooltip' title='Click to inactive'><i class='fa fa-arrow-down'></i> Active</a>";
+                                            echo "<a href='" . base_url('admin/content/unpublished_content/' . $user_data['c_id']) . "' class='btn btn-block btn-success btn-xs' data-toggle='tooltip' title='Click to inactive'><i class='fa fa-arrow-down'></i> Active</a>";
                                         } else {
-                                            echo "<a href='" . base_url('admin/content/published_content/' . $user_data['c_id'] . '') . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
+                                            echo "<a href='" . base_url('admin/content/published_content/' . $user_data['c_id']) . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
                                         }
                                         ?>
                                     </td>

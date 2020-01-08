@@ -34,11 +34,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <tr>
                                 <th>SL#</th>
                                 <th>Picture</th>
-                                <th>Number</th>
+                                <th>Name</th>
                                 <th>Model Number</th>
                                 <th>Color</th>
                                 <th>Driver</th> 
                                 <th>Added By</th> 
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -49,13 +50,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <tr>
                                     <td><?php echo $sl++; ?></td>
                                     <td><img src="<?php echo base_url() ?>/assets/backend/img/vehicle/vehicleImage/<?php echo $user_data['v_vehicle_Image'] ?>" style="width: 20px;height: 20px;"></td>
-                                    <td><?php echo $user_data['v_vehicle_name']; ?></td>
-                                    <td><?php echo $user_data['v_vehicle_number']; ?></td>
+                                    <td><?php echo $user_data['v_t_vehicle_name'].' '.$user_data['v_vehicle_number']; ?></td>
                                     <td><?php echo $user_data['v_vehicle_model_no']; ?></td>
                                     <td><?php echo $user_data['v_vehicle_Color']; ?></td>
                                     <td><?php echo $user_data['Name']; ?></td>
                                     <td><?php echo $memberObj['admin_name']; ?></td>
-                                    
                                     <td>
                                         <?php
                                         $status = $user_data['v_status'];
@@ -65,8 +64,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             echo "<a href='" . base_url('admin/vehicle/published_vehicle/' . $user_data['v_Id'] . '') . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
                                         }
                                         ?>
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
                                         <a href="<?php echo base_url('admin/vehicle/edit_vehicle/' . $user_data['v_Id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
                                         <a href="<?php echo base_url('admin/vehicle/view_vehicle/' . $user_data['v_Id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="View"><i class="fa fa-eye"></i></a>
                                         <a href="<?php echo base_url('admin/vehicle/remove_vehicle/' . $user_data['v_Id'] . '') ?>" class="btn btn-danger btn-xs check_delete" data-toggle="tooltip" title="Delete"><i class="fa fa-remove"></i></a>

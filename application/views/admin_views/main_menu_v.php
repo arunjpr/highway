@@ -34,6 +34,7 @@ if ($active_menu == 'milluser') {
 }
 ?>"><a href="<?php echo base_url('admin/milluser'); ?>"><i class="fa fa-file-text-o "></i> <span> Mill User</span></a></li>
 
+
 <li class="<?php
 if ($active_menu == 'vehicle') {
     echo 'active';
@@ -49,6 +50,12 @@ if ($active_menu == 'vehicle Type') {
 ?>"><a href="<?php echo base_url('admin/vehicleType'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle Type</span></a>
 
 </li>
+<li class="<?php
+if ($active_menu == 'trip') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/trip'); ?>"><i class="fa fa-file-text-o "></i> <span>Trip</span></a></li>
+
 
 <li class="<?php
 if ($active_menu == 'content') {

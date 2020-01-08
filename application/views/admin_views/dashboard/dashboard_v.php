@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-1"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                     <a href="<?php echo base_url('admin/trip/trip_by_status/1'); ?>"><p> View All<i style="    margin-left: 135px; font-weight: bold;" class="fa fa-angle-right"></i></p></a>
                                 </div>
                                
                             </div>
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-2"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                     <a href="<?php echo base_url("admin/trip/trip_by_status/2")?>"><p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p></a>
                                 </div>
                                
                             </div>
@@ -106,7 +106,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-3"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                   <a href="<?php echo base_url('admin/trip/trip_by_status/3')?>"><p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p></a>
                                 </div>
                                
                             </div>
@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <div class="card gradient-4"> 
                             <div style="height:20px; color:white; padding: 6px 17px 27px;" class="card-body">
                                  <div class="d-inline-block">
-                                   <p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p>
+                                     <a href="<?php echo base_url("admin/trip/trip_by_status/4")?>"><p> View All<i style="    margin-left: 135px; font-weight: bold;"  class="fa fa-angle-right"></i></p></a>
                                 </div>
                                
                             </div>

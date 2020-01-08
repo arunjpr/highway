@@ -35,6 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <th>SL#</th>
                                 <th>Name</th>
                                 <th>Added By</th> 
+                                <th>Status</th> 
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -46,7 +47,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td><?php echo $sl++; ?></td>
                                     <td><?php echo $user_data['v_t_vehicle_name']; ?></td>
                                     <td><?php echo $memberObj['admin_name']; ?></td>
-                                    
                                     <td>
                                         <?php
                                         $status = $user_data['v_t_status'];
@@ -56,8 +56,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             echo "<a href='" . base_url('admin/vehicleType/active_vehicle_type/' . $user_data['v_t_id'] . '') . "' class='btn btn-block btn-warning btn-xs' data-toggle='tooltip' title='Click to active'><i class='fa fa-arrow-up'></i> Inactive</a>";
                                         }
                                         ?>
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
                                         <a href="<?php echo base_url('admin/vehicleType/edit_vehicle_type/' . $user_data['v_t_id'] . ''); ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
                                         <a href="<?php echo base_url('admin/vehicleType/remove_vehicle_type/' . $user_data['v_t_id'] . '') ?>" class="btn btn-danger btn-xs check_delete" data-toggle="tooltip" title="Delete"><i class="fa fa-remove"></i></a>
                                     </td>
