@@ -44,60 +44,7 @@ class Login extends REST_Controller {
         }
     }
     
-//    function signup_post() {
-//        $error = "";
-//        $user_id = $this->post('User_Id');
-//        $role_id = $this->post('Role_Id');
-//        $email = $this->post('Email');
-//        $name = $this->post('Name');
-//        $address = $this->post('Address');
-//        if (empty($user_id)) {
-//            $error = "please provide user id";
-//        }
-//        if (empty($role_id)) {
-//            $error = "please provide role id";
-//        }
-//        if (empty($email)) {
-//            $error = "please provide email id";
-//        }
-//        if (empty($name)) {
-//            $error = "please provide name";
-//        }
-//        if (isset($error) && !empty($error)) {
-//            $this->set_response([
-//                'status' => false,
-//                'message' => $error,
-//                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-//            return;
-//        } else {
-//             $this->load->model("user_model");
-//             
-////             /echo 'hi';die;
-//            $saveData = $this->user_model->update_users(array(
-//                "Role_Id" => $role_id,
-//                "Email" => $email,
-//                "Address" => $address,
-//                "Name" => $name
-//
-//            ),$user_id);
-//            
-//            $selectDataAfterUpdate = $this->user_model->getUserDataApi($user_id);
-//            
-//            echo '<pre>' ;print_r($selectDataAfterUpdate);die;
-//            if ($selectDataAfterUpdate) {
-//                $this->set_response([
-//                    'status' => true,
-//                    'message' => 'success',
-//                    'id'=>$selectDataAfterUpdate
-//                        ], REST_Controller::HTTP_OK);
-//            } else {
-//                $this->set_response([
-//                    'status' => false,
-//                    'message' => "unable to save the reply. please try again",
-//                        ], REST_Controller::HTTP_BAD_REQUEST);
-//            }
-//        }
-//    }
+
     
     function otp_verify_post() {
     
@@ -213,6 +160,155 @@ class Login extends REST_Controller {
            
         }
     }
-  
+    function updateReceiver_post() { //when user add book trip after user add receiver details
+        $error = "";
+        $user_id = $this->post('user_id');
+        $receiverName = $this->post('receiverName');
+        $receiverMobile = $this->post('receiverMobile');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } else if (empty($receiverName)) {
+            $error = "please receiver name";
+        }  else if (empty($receiverMobile)) {
+            $error = "please provide receiver mobile number";
+        } 
+        $this->load->model("user_model");
+        $this->load->model("receiver_user_model");
+        $data = $this->user_model->getUserDetailsById($user_id);
+        $allRole = array(4,5);
+        $roleId = $data->Role_Id;
+        
+        $allmobileData = $this->user_model->getUserDetailsByMobile($receiverMobile);
+        //echo '<pre>' ;print_r($data);die;
+        if($data){
+            if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+           if(in_array($roleId, $allRole)){
+            
+        if($receiverMobile==$data->Mobile){
+            $saveUser = $user_id;
+        } else {
+            if(!$allmobileData){
+            $saveUser = $this->user_model->insertUserApi(array(
+                "Name" => $receiverName,
+                "Mobile" => $receiverMobile,
+                "Status" => 1,
+                "Role_id"=>$data->Role_Id,
+                "add_by"=>$user_id,
+                ));
+            } else {
+              $saveUser = $allmobileData->Id;  
+            }
+        }
+        $receiveUser = $this->receiver_user_model->insertReceiverApi(array(
+                "r_u_user_id" => $user_id,
+                "r_u_trip_receiver_user_id" => $saveUser,
+                "r_u_status" => 1,
+                "r_u_delete" => 0,
+                "r_u_add_by" => $user_id,
+                "r_u_date" => date("Y-m-d"),
+                ));
+        
+        
+        
+        if(($saveUser) && ($receiveUser)) {
+            $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$receiveUser
+                    ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+             }
+        }
+        } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "you are not customer",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    function confirmReceiver_post() { //when user add book trip after user add receiver details
+        $error = "";
+        $user_id = $this->post('user_id');
+        $receive_user_primary_id = $this->post('receive_user_id');
+        $receiverName = $this->post('receiverName');
+        $receiverMobile = $this->post('receiverMobile');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } else if (empty($receiverName)) {
+            $error = "please receiver name";
+        }  else if (empty($receiverMobile)) {
+            $error = "please provide receiver mobile number";
+        
+        }  else if (empty($receive_user_primary_id)) {
+            $error = "please provide receive user id";
+        }
+        
+        $this->load->model("user_model");
+        $data = $this->user_model->getUserAddBy($user_id,$receiverMobile);
+        $allRole = array(4,5);
+        $roleId = $data->Role_Id;
 
+    
+
+          
+        $this->load->model("receiver_user_model");
+        $receiverData = $this->receiver_user_model->getReceiverById($receive_user_primary_id);
+        $receiverUserId = $receiverData->r_u_trip_receiver_user_id;
+  
+        
+        if($data){
+            if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            
+        if(in_array($roleId, $allRole)){
+            $saveUser = $this->user_model->update_users(array(
+                "Name" => $receiverName,
+                "Mobile" => $receiverMobile,
+                "edit_by"=>$user_id,
+            ),$receiverUserId);
+            $receiveUser = $this->receiver_user_model->update_receiver_user(array(
+                "r_u_user_id" => $user_id,
+                "r_u_trip_receiver_user_id" => $receiverUserId,
+                "r_u_edit_by" => $user_id,
+                ),$receive_user_primary_id);
+             //echo '<pre>' ;print_r($receiverUserId) ;die;
+        if(($receiveUser) && ($saveUser)) {
+            $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$receiveUser
+                    ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to Update the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+             }
+             
+        }
+        } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "you are not customer",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+  
 }

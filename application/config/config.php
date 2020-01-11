@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
     //$config['base_url'] = 'http://highway.vrok.in/';
-$config['base_url'] = 'http://codeigniter.local/';
+$config['base_url'] = 'http://highway.vrok.local/';
 
 /*
 |--------------------------------------------------------------------------

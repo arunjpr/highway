@@ -59,5 +59,25 @@ class Goodtype_model extends CI_Model {
             return $cat;
         }
     }
+     public function getGoodTypeListApi() {
+        $this->db->where(array('g_t_delete'=>0,'g_t_status'=>1));
+        $query =$this->db->get('tbl_good_type');
+            if($query->num_rows() > 0){
+                $data= $query->result();
+                $counter=0;
+                $cat=array();
+                foreach($data as $row){
+                    $cat[$counter]['GoodsTypeId']=$row->g_t_id;
+                    $cat[$counter]['GoodsTypeTitle']=$row->g_t_title;
+                    $counter++;
+                }
+                return $cat;
+            }
+            else {
+            return array();
+        }
+         
+        
+    }
     
 }

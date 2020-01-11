@@ -51,12 +51,12 @@ class Vehicle_model extends CI_Model {
         }
     }
     
-      public  function getVehicleDetailsApi($ownerId) {
+      public  function getVehicleDetailsApi() {
         $this->db->select(array("*"))
                 ->from("vehicle")
                 ->join('drive_license', 'vehicle.v_Id=drive_license.vehicle_id')
                 ->join('users', 'users.Id=drive_license.User_Id')
-                ->where(array("vehicle.v_owner_id" => $ownerId, "users.Status" => 1,"users.deletion_status" => 0));
+                ->where(array("users.Status" => 1,"users.deletion_status" => 0));
         $query = $this->db->get();
 //        echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
@@ -268,5 +268,84 @@ class Vehicle_model extends CI_Model {
             return array();
         }
     }
-    
+    public  function getAllVehicleListApi() {
+        $this->db->select(array("*"))
+                ->from("vehicle")
+                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0));
+        $query = $this->db->get();
+//        echo  $this->db->last_query();die;
+         if($query->num_rows() > 0){
+                $data= $query->result();
+                $counter=0;
+                $cat=array();
+                foreach($data as $row){
+                    $vehicleImage = base_url()."assets/backend/img/vehicle/vehicleImage/$row->v_vehicle_Image";
+                    $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
+                    $cat[$counter]['VehicleImage']=$vehicleImage ;
+                    
+                    
+                    $counter++;
+                }
+                return $cat;
+            } else {
+            return array();
+        }
+    }
+    public  function getVehicleinfoApi($vehicle_id) {
+        $this->db->select(array("*"))
+                ->from("vehicle")
+                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0,"vehicle.v_Id" => $vehicle_id));
+        $query = $this->db->get();
+       /// echo  $this->db->last_query();die;
+         if($query->num_rows() > 0){
+                $data= $query->result();
+                $counter=0;
+                $cat=array();
+                
+                $this->db->select(array('v_i_information'))
+                ->from("tbl_vehicle_info")
+                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
+                $query_result = $this->db->get();
+                $vinfo= $query_result->result();
+                foreach($data as $row){
+                    //$vehicleImage = base_url()."assets/backend/img/vehicle/vehicleImage/$row->v_vehicle_Image";
+                    $cat[$counter]['VehicleId']=$row->v_Id ;
+                    $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
+                  //  $cat[$counter]['VehicleImage']=$vehicleImage ;
+                    $cat[$counter]['VehicleCapacity']=$row->v_vehicle_capacity ;
+                    $cat[$counter]['VehicleSize']=$row->v_vehicle_size;
+                    $cat[$counter]['v_info1']=$vinfo[0]->v_i_information;
+                    $cat[$counter]['v_info2']=$vinfo[1]->v_i_information;
+                    $cat[$counter]['v_info3']=$vinfo[2]->v_i_information;
+                    $cat[$counter]['v_info4']=$vinfo[3]->v_i_information;
+                    $cat[$counter]['v_info5']=$vinfo[4]->v_i_information;
+                    $counter++;
+                }
+                return $cat;
+            } else {
+            return array();
+        }
+    }
+    public  function vehicleInfoApi() {
+        $this->db->select(array("*"))
+                ->from("tbl_vehicle_info")
+                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
+        $query = $this->db->get();
+        $data= $query->result();
+      //  echo '<pre>' ;print_r($data[0]->v_i_information);die;
+       //echo  $this->db->last_query();die;
+        $cat = array();
+         if($query->num_rows() > 0){
+                    $cat['v_info1']=$vinfo[0]->v_i_information;
+                    $cat['v_info2']=$vinfo[1]->v_i_information;
+                    $cat['v_info3']=$vinfo[2]->v_i_information;
+                    $cat['v_info4']=$vinfo[3]->v_i_information;
+                    $cat['v_info5']=$vinfo[4]->v_i_information;
+                    return $cat;
+            } else {
+            return array();
+        }
+    }
 }

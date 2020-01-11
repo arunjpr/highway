@@ -199,4 +199,56 @@ class Vehicle extends REST_Controller {
             }
         }
     }
+    
+    function getAllVehicleListForAll_post() {
+        $error = "";
+        $user_id = $this->post('user_id');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        $this->load->model("vehicle_model");
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "data" => array("vehicle_list" => $this->vehicle_model->getAllVehicleListApi()),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
+    
+    function getVehicleinfo_post() {
+        $error = "";
+        $user_id = $this->post('user_id');
+        $vehicle_id = $this->post('vehicle_id');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        if (empty($vehicle_id)) {
+            $error = "please provide vehicle id";
+        } 
+        $this->load->model("vehicle_model");
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "data" => array("vehicle_info" => $this->vehicle_model->getVehicleinfoApi($vehicle_id)),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
 }

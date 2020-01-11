@@ -39,8 +39,14 @@ class User_model extends CI_Model {
     }
     
     public function update_users($data,$id){
+       // echo '<pre>' ; print_r($id);die;
         $this->db->where(['Id'=>$id]);
         $this->db->update('users',$data);
+        if ($id> 0) {
+            return $id;
+        } else {
+            return false;
+        }
     }
     public function delete_user($id){
         $this->db->where(['Id'=>$id]);
@@ -67,5 +73,50 @@ class User_model extends CI_Model {
         } else {
             return array();
         }
+    }
+    
+    function getUserDetailsById($user_id) {
+        $this->db->select(array("*"))
+                ->from("users")
+                ->where(array("users.Id" => $user_id, "users.Status" => 1));
+        
+        $query = $this->db->get();
+        $resultData = $query->result();
+        if (count($resultData) > 0) {
+            $result = $resultData[0];
+             return $result;
+        } else {
+            return array();
+        }
+       
+    }
+    function getUserAddBy($add_by,$receiverMobile) {
+        $this->db->select(array("*"))
+                ->from("users")
+                ->where(array("users.add_by" => $add_by,"users.Mobile" => $receiverMobile, "users.Status" => 1));
+        
+        $query = $this->db->get();
+        $resultData = $query->result();
+        if (count($resultData) > 0) {
+            $result = $resultData[0];
+             return $result;
+        } else {
+            return array();
+        }
+       
+    }
+    function getUserDetailsByMobile($mobile_id) {
+        $this->db->select(array("*"))
+                ->from("users")
+                ->where(array("users.Mobile" => $mobile_id, "users.Status" => 1));
+        $query = $this->db->get();
+        $resultData = $query->result();
+        if (count($resultData) > 0) {
+            $result = $resultData[0];
+             return $result;
+        } else {
+            return array();
+        }
+       
     }
 }

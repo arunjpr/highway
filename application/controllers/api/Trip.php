@@ -165,6 +165,26 @@ function getAllTripByUserId_post() {
             }
         }
     }
+function selectYourGoodType_post() {
+        $error = "";
+        $user_id = $this->post('user_id');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        }
+        $this->load->model("Goodtype_model");
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "typeData" => array("good_type_data" => $this->Goodtype_model->getGoodTypeListApi()),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
   
 
 }
