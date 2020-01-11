@@ -11,12 +11,13 @@ public function insertDriverApi($data) {
     }
 public function getDriverDetailsApi($ownerId) {
         $this->db->select(array("*"))
-                ->from("drive_license")
-                ->join('vehicle', 'vehicle.v_Id=drive_license.vehicle_id')
-                ->join('users', 'users.Id=drive_license.User_Id')
-                ->where(array("vehicle.v_owner_id" => $ownerId, "users.Status" => 1,"users.deletion_status" => 0));
+                ->from("users")
+                ->join('drive_license', 'users.Id=drive_license.User_Id','left')
+                ->join('vehicle', 'vehicle.v_vehicle_driver_id=drive_license.User_Id','left')
+                ->where(array("users.add_by" => $ownerId, "users.deletion_status" => 0))
+              ;
         $query = $this->db->get();
-//        echo  $this->db->last_query();die;
+       // echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
                 $data= $query->result();
                 $counter=0;
@@ -32,8 +33,12 @@ public function getDriverDetailsApi($ownerId) {
                     $cat[$counter]['Address']=$row->Address;
                     $cat[$counter]['Latitude']=$row->Latitude;
                     $cat[$counter]['Longitude']=$row->Longitude;
-                    $cat[$counter]['VehicleName']=$row->v_vehicle_name ;
-                    $cat[$counter]['VehicleName']=$row->v_vehicle_name ;
+                    if($row->v_Id>0){
+                       $cat[$counter]['VehicleName']=$row->v_vehicle_name ; 
+                    } else {
+                       $cat[$counter]['VehicleName']='Currently vehicle is not assign !';  
+                    }
+                    
                     $cat[$counter]['VehicleNumber']=$row->v_vehicle_number ;
                     $cat[$counter]['VehicleModelNo']=$row->v_vehicle_model_no 	 ;
                     $counter++;

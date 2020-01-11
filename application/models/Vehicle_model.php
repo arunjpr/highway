@@ -54,22 +54,30 @@ class Vehicle_model extends CI_Model {
       public  function getVehicleDetailsApi() {
         $this->db->select(array("*"))
                 ->from("vehicle")
-                ->join('drive_license', 'vehicle.v_Id=drive_license.vehicle_id')
-                ->join('users', 'users.Id=drive_license.User_Id')
-                ->where(array("users.Status" => 1,"users.deletion_status" => 0));
+                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('users', 'users.Id=vehicle.v_vehicle_driver_id','left')
+                ->join('drive_license', 'drive_license.User_Id=vehicle.v_vehicle_driver_id','left')
+                ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0))
+                ;
         $query = $this->db->get();
-//        echo  $this->db->last_query();die;
+        //echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
                 $data= $query->result();
                 $counter=0;
                 $cat=array();
                 foreach($data as $row){
-                    $cat[$counter]['VehicleName']=$row->v_vehicle_name ;
+                    $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
                     $cat[$counter]['VehicleNumber']=$row->v_vehicle_number ;
                     $cat[$counter]['VehicleModelNo']=$row->v_vehicle_model_no;
                     $cat[$counter]['VehicleDescription']=$row->v_vehicle_detail;
+                    $cat[$counter]['VehicleCapacity']=$row->v_vehicle_capacity;
+                    $cat[$counter]['VehicleSize']=$row->v_vehicle_size;
                     $cat[$counter]['DriverId']=$row->Id;
-                    $cat[$counter]['DriverName']=$row->Name;
+                    if($row->v_vehicle_driver_id>0){
+                    $cat[$counter]['DriverName']=$row->Name;   
+                    } else {
+                    $cat[$counter]['DriverName']='Currently vehicle is not assign !';     
+                    }
                     $cat[$counter]['Mobile']=$row->Mobile;
                     $cat[$counter]['Email']=$row->Email;
                     $cat[$counter]['DLNumber']=$row->License_Number;
@@ -77,7 +85,6 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['Address']=$row->Address;
                     $cat[$counter]['Latitude']=$row->Latitude;
                     $cat[$counter]['Longitude']=$row->Longitude;
-                    
                     $counter++;
                 }
                 return $cat;
@@ -324,26 +331,6 @@ class Vehicle_model extends CI_Model {
                     $counter++;
                 }
                 return $cat;
-            } else {
-            return array();
-        }
-    }
-    public  function vehicleInfoApi() {
-        $this->db->select(array("*"))
-                ->from("tbl_vehicle_info")
-                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
-        $query = $this->db->get();
-        $data= $query->result();
-      //  echo '<pre>' ;print_r($data[0]->v_i_information);die;
-       //echo  $this->db->last_query();die;
-        $cat = array();
-         if($query->num_rows() > 0){
-                    $cat['v_info1']=$vinfo[0]->v_i_information;
-                    $cat['v_info2']=$vinfo[1]->v_i_information;
-                    $cat['v_info3']=$vinfo[2]->v_i_information;
-                    $cat['v_info4']=$vinfo[3]->v_i_information;
-                    $cat['v_info5']=$vinfo[4]->v_i_information;
-                    return $cat;
             } else {
             return array();
         }

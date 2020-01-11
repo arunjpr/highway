@@ -22,13 +22,15 @@ class Vehicle extends REST_Controller {
         
         
     }
-   function addVehicle_post() {
+    function addVehicle_post() {
         $error = "";
         $owner_id = $this->post('owner_id');
         $vehicle_type_id = $this->post('vehicle_type_id');
         $vehicleNumber = $this->post('vehicleNumber');
         $vehicleDescription = $this->post('vehicleDescription');
         $vehicleModelNo = $this->post('vehicleModelNo');
+        $vehicleCapacity = $this->post('vehicleCapacity');
+        $vehicleSize = $this->post('vehicleSize');
         if (empty($owner_id)) {
             $error = "please provide owner id";
         }   else if (empty($vehicleNumber)) {
@@ -38,7 +40,11 @@ class Vehicle extends REST_Controller {
         }  else if (empty($vehicleDescription)) {
             $error = "please provide vehicle description";
         } else if (empty($vehicle_type_id)) {
-            $error = "please provide vehicle type";
+            $error = "please provide vehicle type";  
+        }  else if (empty($vehicleCapacity)) {
+            $error = "please provide vehicle capacity";
+        } else if (empty($vehicleSize)) {
+            $error = "please provide vehicle size";
         }   
         if (isset($error) && !empty($error)) {
             $this->set_response([
@@ -47,15 +53,16 @@ class Vehicle extends REST_Controller {
                     ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
             return;
         } else {
-             $this->load->model("vehicle_model");
+            $this->load->model("vehicle_model");
             $saveUserAnswer = $this->vehicle_model->addVehicleApi(array(
                 "v_owner_id" => $owner_id,
                 "v_type_id" => $vehicle_type_id,
                 "v_vehicle_number" => $vehicleNumber,
                 "v_vehicle_model_no" => $vehicleModelNo,
                 "v_vehicle_detail" => $vehicleDescription,
-                
-
+                "v_vehicle_capacity" => $vehicleCapacity,
+                "v_vehicle_size" => $vehicleSize,
+                "v_status" =>1,
             ));
             if ($saveUserAnswer) {
                 $this->set_response([
@@ -71,7 +78,7 @@ class Vehicle extends REST_Controller {
             }
         }
     }
-     function getAllVehicleDetails_post() {
+    function getAllVehicleDetails_post() {
         $error = "";
         $ownerId = $this->post('ownerId');
         if (empty($ownerId)) {

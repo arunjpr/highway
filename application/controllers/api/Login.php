@@ -103,6 +103,7 @@ class Login extends REST_Controller {
                 "Email" => $driverEmail,
                 "Mobile" => $driverMobile,
                 "Address" => $driverAddress,
+                "add_by" => $owner_id,
 
             ));
             $this->load->model("drive_model");
@@ -110,7 +111,6 @@ class Login extends REST_Controller {
                 "User_Id" => $saveUser,
                 "License_Number" => $driverDLNo,
                 "Expiry_Date" => $ExpiryDate,
-                //"vehicle_id"=>$VehicleId
 
             ));
            // echo '' ;print_r($saveUser) ;die;
