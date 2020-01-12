@@ -96,6 +96,7 @@ class Driver extends CI_Controller {
             $data['Image'] ='';
             $data['Role_Id'] = 3; 
             $data['add_by'] = $this->session->userdata('admin_id'); 
+            $data['u_date'] = date('Y-m-d'); 
             $insert_id = $this->driver_mdl->add_driver_data($data);  // Insert in user table
             //=============profile upload===============//
             $valid_extensions = array('jpeg','jpg','png','gif');
@@ -108,7 +109,7 @@ class Driver extends CI_Controller {
                         $name_replace_with_underscore = str_replace(' ', '_', $driverName);
                         $profilePic=$insert_id.'_'.$name_replace_with_underscore.'.'.$ext;
                         if($img){
-                            $path = "./assets/backend/img/driver/profile/" . strtolower($profilePic);
+                            $path = "./assets/backend/img/driver/profile/" .$profilePic;
                         } else {
                             $path ='';
                         }
@@ -144,7 +145,7 @@ class Driver extends CI_Controller {
                         $dlPic=$insert_id.'_dl_'.$dl_driver_with_underscore.'.'.$extdl;
                         
                         if($imgdl){
-                            $pathDl = "./assets/backend/img/driver/dl/" . strtolower($dlPic);
+                            $pathDl = "./assets/backend/img/driver/dl/" . $dlPic;
                         } else {
                             $pathDl ='';
                         }
@@ -264,11 +265,7 @@ class Driver extends CI_Controller {
                 'label' => 'Gender',
                 'rules' => 'trim|required'
             ),
-            array(
-                'field' => 'Dob',
-                'label' => 'Dob',
-                'rules' => 'trim|required|max_length[250]'
-            )
+            
             );
             $this->form_validation->set_rules($config); 
             if ($this->form_validation->run() == FALSE) { 
@@ -281,7 +278,6 @@ class Driver extends CI_Controller {
                 $data['Status'] = $this->input->post('Status', TRUE); 
                 $data['Role_Id'] = 3; 
                 $data['Gender'] = $this->input->post('Gender', TRUE); 
-                $data['Dob'] = $this->input->post('Dob', TRUE); 
                 $data['add_by'] = $this->session->userdata('admin_id');
                 $data['created_on'] = date('Y-m-d H:i:s');  
                 $result = $this->driver_mdl->update_driver($driver_id, $data); 

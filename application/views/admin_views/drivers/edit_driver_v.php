@@ -55,8 +55,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Status'); ?></span>
                         </div>
                     </div>
+                     </div>
                     
-                    
+                    <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Gender">Gender Type</label>
@@ -81,6 +82,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Mobile'); ?></span>
                         </div>
                     </div>
+                        </div>
+                 <div class="row">
 
                     <div class="col-md-6">
                         <div class="form-group">
@@ -93,19 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label for="Dob">Dob</label>
-                        <div class="input-group date" data-provide="datepicker">
-                            <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                        <input class="form-control" type="text" id="Dob" name="Dob"  value="<?php echo $user_data['Dob']; ?>" >
-                        
-                        </div>
-                        <span class="help-block error-message"><?php echo form_error('Dob'); ?></span>
-                      </div>   
-                    </div>
+                   
                     
                     <div class="col-md-6">
                         <div class="form-group">

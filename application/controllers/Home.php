@@ -8,16 +8,8 @@ class Home extends CI_Controller {
     }
     
     public function index() {		 	 
-//    	$data = array();
-//    	$data['title'] = 'Home';  
-//		
-//		$setting_info = $this->common_mdl->get_settings_info();
-//		$data['settings_info'] = $setting_info;  
-// 
-//		 
-//		
-//		$data['nav_content'] = $this->load->view('frontend_views/nav_content_v', $data, TRUE);
-//    	$data['main_content'] = $this->load->view('frontend_views/home_content_v', $data, TRUE); 
-//    	$this->load->view('frontend_views/user_master_v', $data);
+        $data = array();
+        $data['title'] = 'Login';
+        $this->load->view('admin_views/admin_login/admin_login_v', $data);
     }
 }

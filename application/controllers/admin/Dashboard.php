@@ -24,6 +24,7 @@ class Dashboard extends CI_Controller {
             redirect('admin', 'refresh');
         }
       $this->load->model('admin_models/dashboard_model', 'dash_mdl');	
+      $this->load->model('admin_models/customer_model', 'customer_mdl'); 
          
     }
 
@@ -44,10 +45,15 @@ class Dashboard extends CI_Controller {
       $data['all_notifications']= 400;
       $data['main_content']='';
       
+      $data['customer'] = $this->customer_mdl->newCustomerList(); 
+      //echo '<pre>' ;print_r($data['customer']);die;
+      
       $data['upcoming'] = $this->dash_mdl->count_total_upcoming_trip(); 
       $data['ongoing'] = $this->dash_mdl->count_total_ongoing_trip(); 
       $data['completed'] = $this->dash_mdl->count_total_completed_trip(); 
       $data['cancel'] = $this->dash_mdl->count_total_cancel_trip(); 
+      
+      
       
       $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
       $data['main_content'] = $this->load->view('admin_views/dashboard/dashboard_v', '', TRUE);

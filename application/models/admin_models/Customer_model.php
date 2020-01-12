@@ -66,6 +66,42 @@ class Customer_model extends CI_Model {
         $this->db->update($this->_users, array('deletion_status' => 1), array('Id' => $customer_id)); 
         return $this->db->affected_rows(); 
     } 
+    public function newCustomerList(){
+        $this->db->select("Id,Role_id,Name,Image,Mobile,created_on")
+        ->from('users')
+        ->where('Role_id',2) 
+        ->order_by("Id", "desc")
+        ->limit(6)      
+                ;
+        $query=$this->db->get();
+        //echo  $this->db->last_query();die;
+        //$result =$query->result_array();
+         if($query->num_rows() > 0){
+                $data= $query->result();
+                $counter=0;
+                $cat=array();
+                foreach($data as $row){
+                    $cat[$counter]['Id']=$row->Id;
+                    $cat[$counter]['Name']= ucwords($row->Name);
+                    $cat[$counter]['Mobile']= $row->Mobile;
+                    $cat[$counter]['created_on']= $row->created_on;
+                    $customerImage = $row->Image;
+                    $filename ="assets/backend/img/customer/profile/$customerImage";
+                     $defaultImage ="assets/backend/img/customer/profile/customer.png";
+                    if((file_exists($filename)) && $customerImage!=''){                        
+                        $cat[$counter]['customerImage']=$filename; 
+                    } else {
+                        $cat[$counter]['customerImage']=$defaultImage; 
+                    }
+                   
+                    $counter++;
+                }
+                return $cat;
+            } else {
+            return array();
+        } 
+         
+    }
     
 }
 

@@ -165,52 +165,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
                         <div  class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Role</h4>
-                               <a style="float: right;  margin-top: -30px;"  href=""> View All</a>
+                                <h4 class="card-title">New User</h4>
+                               <a style="float: right;  margin-top: -30px;"  href="admin/customer"> View All</a>
                                 <div  class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 390px;overflow: scroll;"><div id="activity" style="overflow: hidden; width: auto; height: 390px;">
+                                   <?php
+                                   foreach ($customer as $cdata) { ?>
                                     <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
+                                        <img width="35" src="<?=$cdata['customerImage']?>" class="mr-3 rounded-circle">
                                         <div class="media-body">
-                                            <h5>Admin</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
+                                            <h5><?=$cdata['Name'];?></h5>
+                                            <p class="mb-0"><?=$cdata['Mobile'];?></p>
+                                        </div><span class="text-muted "><?=$cdata['created_on'];?></span>
                                     </div>
-                                    <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
-                                        <div class="media-body">
-                                            <h5>Mill User</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
-                                    </div>
-                                    <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
-                                        <div class="media-body">
-                                            <h5>Driver</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
-                                    </div>
-                                    <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
-                                        <div class="media-body">
-                                            <h5>Customer</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
-                                    </div>
-                                        
-                                        <div class="media border-bottom-1 pt-3 pb-3">
-                                        <img width="35" src="https://media.gq.com/photos/59f3aaa8820ddf6592b39dcc/master/pass/category-picker-suits.jpg" class="mr-3 rounded-circle">
-                                        <div class="media-body">
-                                            <h5>Owner</h5>
-                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
-                                        </div><span class="text-muted ">Dec 11 ,2019</span>
-                                    </div>
-                                        
-                                      
-                                    
-                                    
-                                   
-                                   <br><br>
-                                </div><div class="slimScrollBar" style="background: transparent; width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 268.728px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                    <?php } ?> 
+                                     <br><br>
+                                </div>
+                                    <div class="slimScrollBar" style="background: transparent; width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 268.728px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
                             </div>
                         </div>
                     </div>

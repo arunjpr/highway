@@ -102,7 +102,7 @@ class Customer extends CI_Controller {
            // $data['Image'] = $this->input->post('Image', TRUE); 
             $data['Role_Id'] = 4; 
             $data['add_by'] = $this->session->userdata('admin_id'); 
-            //$data['date_added'] = date('Y-m-d H:i:s');  
+            $data['u_date'] = date('Y-m-d');  
             
             //echo '<pre>' ;print_r($data) ;die;
             $insert_id = $this->customer_mdl->add_customer_data($data); 

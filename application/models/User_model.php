@@ -52,7 +52,7 @@ class User_model extends CI_Model {
         $this->db->where(['Id'=>$id]);
         $this->db->delete('users');
     }
-    function getUserList($user_id) {
+    public function getUserList($user_id) {
         $this->db->select(array("*"))
                 ->from("users")
                 ->where(array("users.Id" => $user_id, "users.Status" => 1));
@@ -63,7 +63,7 @@ class User_model extends CI_Model {
             return array();
         }
     }
-    function getCheckUserRoleByUserId($user_id) {
+    public function getCheckUserRoleByUserId($user_id) {
         $this->db->select(array("Role_Id"))
                 ->from("users")
                 ->where(array("users.Id" => $user_id, "users.Status" => 1));
@@ -75,7 +75,7 @@ class User_model extends CI_Model {
         }
     }
     
-    function getUserDetailsById($user_id) {
+   public function getUserDetailsById($user_id) {
         $this->db->select(array("*"))
                 ->from("users")
                 ->where(array("users.Id" => $user_id, "users.Status" => 1));
@@ -90,7 +90,7 @@ class User_model extends CI_Model {
         }
        
     }
-    function getUserAddBy($add_by,$receiverMobile) {
+    public function getUserAddBy($add_by,$receiverMobile) {
         $this->db->select(array("*"))
                 ->from("users")
                 ->where(array("users.add_by" => $add_by,"users.Mobile" => $receiverMobile, "users.Status" => 1));
@@ -105,7 +105,7 @@ class User_model extends CI_Model {
         }
        
     }
-    function getUserDetailsByMobile($mobile_id) {
+    public function getUserDetailsByMobile($mobile_id) {
         $this->db->select(array("*"))
                 ->from("users")
                 ->where(array("users.Mobile" => $mobile_id, "users.Status" => 1));
@@ -119,4 +119,5 @@ class User_model extends CI_Model {
         }
        
     }
+    
 }

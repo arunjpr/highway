@@ -258,4 +258,47 @@ class Vehicle extends REST_Controller {
                     ], REST_Controller::HTTP_OK);
         }
     }
+    function vehicleLoadingCapicity_post() {
+        $error = "";
+        $user_id = $this->post('user_id'); //add by owner
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        }
+        $this->load->model("vehicle_load_capacity_model");
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "loadCapicityData" => array("load_cacpacity_data" => $this->vehicle_load_capacity_model->getVehiclLoadCapacityDropdownApi($user_id)),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
+    
+    
+    function vehicleDimensionSize_post() {
+        $error = "";
+        $user_id = $this->post('user_id'); //add by owner
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        }
+        $this->load->model("vehicle_load_capacity_model");
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "dimansionData" => array("dimansion_size_data" => $this->vehicle_load_capacity_model->getVehicleDimensionSizeApi($user_id)),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
+    
 }
