@@ -69,10 +69,16 @@ class Vehicle_model extends CI_Model {
         return $result; 
     } 
 
-    public function get_Vehicle_by_vehicle_id($vehicle_id) { 
-        $result = $this->db->get_where($this->_vehicle, array('v_Id' => $vehicle_id , 'v_status' => 1)); 
-        return $result->row_array(); 
-    } 
+    public function get_Vehicle_by_vehicle_id($vehicle_id) {
+        $this->db->select(array("*")) 
+                ->from('vehicle')
+                ->join('tbl_vehicle_type', 'tbl_vehicle_type.v_t_id=vehicle.v_type_id','left')
+                ->where(array('v_Id' => $vehicle_id , 'v_status' => 1,'v_t_status' => 1,'v_delete'=>0,'v_t_delete'=>0))
+                ;
+        $query_result = $this->db->get(); 
+        $result = $query_result->row_array(); 
+        return $result ;
+        } 
 
     public function published_vehicle_by_id($vehicle_id) { 
         $this->db->update($this->_vehicle, array('v_status' => 1), array('v_Id' => $vehicle_id));  

@@ -33,6 +33,7 @@ class Vehicle extends CI_Controller {
         $data['active_sub_sub_menu'] = '';
         $data['dropdownData'] = $this->vehicle_mdl->get_driver_dropdown();
         $data['vehicleData'] = $this->vehicle_mdl->get_vehicle_dropdown();
+        //echo '<pre>' ;print_r($data['vehicleData']);die;
         $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
         $data['main_content'] = $this->load->view('admin_views/vehicles/add_vehicle_v', $data, TRUE);
         $this->load->view('admin_views/admin_master_v', $data);
@@ -217,12 +218,14 @@ class Vehicle extends CI_Controller {
     public function edit_vehicle($vehicle_id) { 
         $data = array(); 
         $data['user_data'] = $this->vehicle_mdl->get_vehicle_by_vehicle_id($vehicle_id);  
+        //echo '<pre>' ;print_r($data['user_data']);die;
         if (!empty($data['user_data'])) { 
             $data['title'] = 'Edit Vehicle'; 
             $data['active_menu'] = 'vehicle'; 
             $data['active_sub_menu'] = 'vehicle'; 
             $data['active_sub_sub_menu'] = ''; 
-            $data['dropdownData'] = $this->vehicle_mdl->get_dropdown();
+            $data['dropdownData'] = $this->vehicle_mdl->get_driver_dropdown();
+            $data['vehicleData'] = $this->vehicle_mdl->get_vehicle_dropdown();
             $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
             $data['main_content'] = $this->load->view('admin_views/vehicles/edit_vehicle_v', $data, TRUE);
             $this->load->view('admin_views/admin_master_v', $data); 
@@ -238,9 +241,9 @@ class Vehicle extends CI_Controller {
         if (!empty($vehicle_info)) { 
             $config = array( 
                array(
-                'field' => 'v_vehicle_name',
-                'label' => 'v_vehicle_name',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'v_type_id',
+                'label' => 'v_type_id',
+                'rules' => 'trim|required'
             ),
             array(
                 'field' => 'v_vehicle_detail',
@@ -273,7 +276,7 @@ class Vehicle extends CI_Controller {
             if ($this->form_validation->run() == FALSE) { 
                 $this->edit_vehicle($vehicle_id); 
             } else { 
-                $data['v_vehicle_name'] = $this->input->post('v_vehicle_name', TRUE); 
+                $data['v_type_id'] = $this->input->post('v_type_id', TRUE); 
                 $data['v_vehicle_detail'] = $this->input->post('v_vehicle_detail', TRUE); 
                 $data['v_vehicle_number'] = $this->input->post('v_vehicle_number', TRUE); 
                 $data['v_vehicle_model_no'] = $this->input->post('v_vehicle_model_no', TRUE); 
@@ -283,7 +286,9 @@ class Vehicle extends CI_Controller {
                 $data['v_add_by'] = $this->session->userdata('admin_id');
                 $data['v_date'] = date('Y-m-d H:i:s');  
                 
-                
+                $vehicleTypeId= $data['v_type_id'];
+                $this->load->model('admin_models/Vehicle_type_model', 'vehicle_type_mdl');    
+                $vehicleTypeData = $this->vehicle_type_mdl->get_vehicle_type_by_id($vehicleTypeId); 
                 $result = $this->vehicle_mdl->update_vehicle($vehicle_id, $data); 
                 
                 
@@ -294,7 +299,7 @@ class Vehicle extends CI_Controller {
                     $tmp = $_FILES['rcfile']['tmp_name'];
                     $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
                      if (in_array($ext, $valid_extensions)) {
-                        $Name=$data['v_vehicle_name'];
+                        $Name=$vehicleTypeData['v_t_vehicle_name'];
                         $name_replace_with_underscore = str_replace(' ', '_', $Name);
                         $vehicleRcImage=$vehicle_id.'_rc_'.$name_replace_with_underscore.'.'.$ext;
                         if($img){
@@ -316,7 +321,7 @@ class Vehicle extends CI_Controller {
                     $tmpv = $_FILES['vimagefile']['tmp_name'];
                     $extv = strtolower(pathinfo($imgv, PATHINFO_EXTENSION));
                      if (in_array($extv, $valid_extensions)) {
-                        $Name=$data['v_vehicle_name'];
+                        $Name=$vehicleTypeData['v_t_vehicle_name'];
                         $name_replace_with_underscore = str_replace(' ', '_', $Name);
                         $vehicleImage=$vehicle_id.'_vimage_'.$name_replace_with_underscore.'.'.$extv;
                         if($imgv){

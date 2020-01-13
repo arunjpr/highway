@@ -28,7 +28,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="row">
         <div class="col-md-12">
                 <div class="col-lg-2 col-md-3">
-                    <img src="<?php echo base_url() ?>/assets/backend/img/driver/<?php echo $user_data['Image'] ?>" class="img-responsive img-thumbnail">
+                    <img src="<?php echo base_url() ?>/assets/backend/img/driver/profile/<?php echo $user_data['Image'] ?>" class="img-responsive img-thumbnail">
+                </div>
+                <div class="col-lg-2 col-md-3">
+                    <img src="<?php echo base_url() ?>/assets/backend/img/driver/dl/<?php echo $user_data['d_l_image'] ?>" class="img-responsive img-thumbnail">
                 </div>
 <div class="table-responsive panel">
     <table class="table">
@@ -48,10 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <td class="text-success"><i class="fa fa-envelope-o"></i> Email :</td>
             <td><?php echo $user_data['Email']; ?></td>
         </tr>
-        <tr>
+<!--        <tr>
             <td class="text-success"><i class="fa fa-calendar"></i> Birthday :</td>
             <td><?php echo $user_data['Dob']; ?></td>
-        </tr>
+        </tr>-->
         <tr>
             <td class="text-success"><i class="fa fa-home"></i> Address :</td>
             <td><?php echo $user_data['Address']; ?></td>

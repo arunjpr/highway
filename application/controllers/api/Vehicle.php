@@ -29,8 +29,8 @@ class Vehicle extends REST_Controller {
         $vehicleNumber = $this->post('vehicleNumber');
         $vehicleDescription = $this->post('vehicleDescription');
         $vehicleModelNo = $this->post('vehicleModelNo');
-        $vehicleCapacity = $this->post('vehicleCapacity');
-        $vehicleSize = $this->post('vehicleSize');
+        $vehicleCapacity = $this->post('vehicleCapacityId');
+        $vehicleSize = $this->post('vehicleDimensionSizeId');
         if (empty($owner_id)) {
             $error = "please provide owner id";
         }   else if (empty($vehicleNumber)) {
@@ -122,7 +122,7 @@ class Vehicle extends REST_Controller {
         }
     }
     
-    function vehicleDropdown_post() {
+    function vehicleAssignDropdown_post() {
         $error = "";
         $user_id = $this->post('user_id'); //add by owner
         if (empty($user_id)) {
@@ -138,7 +138,7 @@ class Vehicle extends REST_Controller {
         } else {
             $this->set_response([
                 'status' => true,
-                "dataV" => array("vehicle_data"=>$this->drive_model->getVehicleDropdownApi($user_id)),
+                "vehicleData" => array("vehicle_data_name"=>$this->drive_model->getVehicleDropdownApi($user_id)),
                     ], REST_Controller::HTTP_OK);
         }
     }
@@ -274,7 +274,7 @@ class Vehicle extends REST_Controller {
         } else {
             $this->set_response([
                 'status' => true,
-                "loadCapicityData" => array("load_cacpacity_data" => $this->vehicle_load_capacity_model->getVehiclLoadCapacityDropdownApi($user_id)),
+                "loadCapicityData" => array("load_cacpacity_size_data" => $this->vehicle_load_capacity_model->getVehiclLoadCapacityDropdownApi($user_id)),
                     ], REST_Controller::HTTP_OK);
         }
     }

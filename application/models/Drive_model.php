@@ -85,15 +85,17 @@ public function getVehicleDropdownApi($user_id) {
                 ->join('tbl_vehicle_type','vehicle.v_type_id=tbl_vehicle_type.v_t_id')
                 ->where(array("vehicle.v_owner_id" => $user_id, "vehicle.v_status" => 1,"vehicle.v_delete" => 0));
         $query = $this->db->get();
+       // echo $this->db->last_query();die;
+        
+       
+        
         if($query->num_rows() > 0){
             $data= $query->result();
             $counter=0;
             $cat=array();
             foreach($data as $row){
-                $cat[$counter]['VehicleId']='';
-                $cat[$counter]['VehicleName']='';
-                $cat[$counter]['VehicleId']=$row->v_Id;
-                $cat[$counter]['VehicleName']=$row->v_t_vehicle_name;
+                $cat[$counter]['VehicleNameWithNumberId']=$row->v_Id;
+                $cat[$counter]['VehicleNameWithNumber']=$row->v_t_vehicle_name.'-'.$row->v_vehicle_number;
                 $counter++;
             }
             return $cat;

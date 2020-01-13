@@ -45,11 +45,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Name'); ?></span>
                         </div>
                     </div>
+                    
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="License_Number">License Number</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                <input type="text" name="License_Number" value="<?php echo set_value('License_Number'); ?>" class="form-control required" id="License_Number" placeholder="Enter license number">
+                            </div>
+                            <span class="help-block error-message"><?php echo form_error('License_Number'); ?></span>
+                        </div>
+                    </div>
                     <!-- /.col -->
                     
                     
                     
-                    <div class="col-md-6">
+<!--                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="Vehicle">Vehicle</label>
                             <select name="vehicle_id" class="form-control required" id="vehicle_id">
@@ -63,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </select>
                             <span class="help-block error-message"><?php echo form_error('vehicle_id'); ?></span>
                         </div>
-                    </div>
+                    </div>-->
                    </div>
                     
                 <div class="row">
@@ -127,20 +139,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('Email'); ?></span>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="License_Number">License Number</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="License_Number" value="<?php echo set_value('License_Number'); ?>" class="form-control required" id="License_Number" placeholder="Enter license number">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('License_Number'); ?></span>
-                        </div>
-                    </div>
-                  </div>  
-                    <div class="row">
-                     <div class="col-md-6">
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label for="Image">Picture <span class="required">*</span></label>
                             <div class="input-group">
@@ -149,6 +148,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php if(isset($upload_error)) echo $upload_error ?></span>
                         </div>
                     </div>
+                    
+                    
+                  </div>  
+                    <div class="row">
+                     
                     
                     
                     <div class="col-md-6">

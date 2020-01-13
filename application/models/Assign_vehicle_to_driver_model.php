@@ -4,38 +4,26 @@ class Assign_vehicle_to_driver_model extends CI_Model {
    public function __construct() {
         parent::__construct();
     }
-//    public  function get_users($user_id,$username) {
-//        $this->db->where([
-//                'Id'=>$user_id,
-//                'Name'=>$username
-//                ]);
-//        $query =$this->db->get('users');
-//        return $query->result();
-//    }
-//    
-//    public function create_users($data){
-//        $this->db->insert('users',$data);
-//    }
-//    public function update_users($data,$id){
-//        $this->db->where(['Id'=>$id]);
-//        $this->db->update('users',$data);
-//    }
-//    public function delete_user($id){
-//        $this->db->where(['Id'=>$id]);
-//        $this->db->delete('users');
-//    }
-//    function getUserList($user_id) {
+
+//    public function getAssignUniqeDriverAndVehicleData($user_id) {
 //        $this->db->select(array("*"))
-//                ->from("users")
-//                ->where(array("users.Id" => $user_id, "users.Status" => 1));
+//                ->from("tbl_assign_vehicle_to_driver")
+//                ->where(array(
+//                    "a_v_t_d_owner_id" => $user_id,
+////                    "a_v_t_d_vehicle_id" => $vehicle_id,
+////                    "a_v_t_d_driver_id" => $driver_id,
+//                    "a_v_t_d_status" => 1,
+//                    "a_v_t_d_delete" => 0,
+//                    ))
+//                ;
 //        $query = $this->db->get();
-//        if ($query->num_rows() > 0) {
-//            return $query->result();
-//        } else {
-//            return array();
-//        }
-//    }
-    
+//        $result= $query->result_array();
+//         if($query->num_rows() > 0){
+//                    return $result;
+//         } else {
+//             return array();
+//         }
+//}
     
     
     function addAssignDataApi($data) {

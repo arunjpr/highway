@@ -33,32 +33,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="Name">Vehicle Name</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_name" value="<?php echo $user_data['v_vehicle_name'];  ?>" class="form-control required" id="v_vehicle_name" placeholder="Enter vehicle name">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_name'); ?></span>
+                            <label for="Vehicle">Vehicle</label>
+                            <select name="v_type_id" class="form-control required" id="v_type_id">
+                                <option value="" selected="" disabled="">select</option>
+                                <?php
+                                foreach ($vehicleData as $vdata) {
+                                  
+                                 echo '<option value ="'.$vdata['v_t_id'].'">'.$vdata['v_t_vehicle_name'].'</option>';
+                                    
+                                 
+                                }
+                                
+                                ?>
+                            </select>
+                            <span class="help-block error-message"><?php echo form_error('v_type_id'); ?></span>
                         </div>
                     </div>
-                    <!-- /.col -->
-                   
                     
-                    <div class="col-md-6">
+                    
+                    
+                    
+                    
+                    <!-- /.col -->
+                   <div class="col-md-6">
                         <div class="form-group">
                             <label for="Driver">Driver</label>
                             <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
-                                
-                                <option value="" selected="" disabled="">Select driver</option>
+                                <option value="" selected="" disabled="">select</option>
                                 <?php
                                 foreach ($dropdownData as $row) {
-                                 echo '<option value ="'.$row->Id.'">'.$row->Name.'</option>';
-                                 }
+                                 echo '<option value ="'.$row['Id'].'">'.$row['Name'].'</option>';
+                                    
+                                }
                                 ?>
                             </select>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
                         </div>
                     </div>
+                    
+                    
                     </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -151,7 +164,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 </section>
 <script type="text/javascript">
-    document.forms['edit_form'].elements['Status'].value = '<?php echo $user_data['Status']; ?>';
-    document.forms['edit_form'].elements['Gender'].value = '<?php echo $user_data['Gender']; ?>';
+    document.forms['edit_form'].elements['v_type_id'].value = '<?php echo $user_data['v_type_id']; ?>';
     document.forms['edit_form'].elements['v_vehicle_driver_id'].value = '<?php echo $user_data['v_vehicle_driver_id']; ?>';
 </script>

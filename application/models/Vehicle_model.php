@@ -55,6 +55,8 @@ class Vehicle_model extends CI_Model {
         $this->db->select(array("*"))
                 ->from("vehicle")
                 ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('tbl_vehicle_load_capacity', 'vehicle.v_vehicle_capacity_id =tbl_vehicle_load_capacity.v_l_c_id ','left')
+                ->join('tbl_vehicle_dimension_size', 'vehicle.v_vehicle_size_id=tbl_vehicle_dimension_size.v_d_s_id','left')
                 ->join('users', 'users.Id=vehicle.v_vehicle_driver_id','left')
                 ->join('drive_license', 'drive_license.User_Id=vehicle.v_vehicle_driver_id','left')
                 ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0))
@@ -70,8 +72,8 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['VehicleNumber']=$row->v_vehicle_number ;
                     $cat[$counter]['VehicleModelNo']=$row->v_vehicle_model_no;
                     $cat[$counter]['VehicleDescription']=$row->v_vehicle_detail;
-                    $cat[$counter]['VehicleCapacity']=$row->v_vehicle_capacity;
-                    $cat[$counter]['VehicleSize']=$row->v_vehicle_size;
+                    $cat[$counter]['VehicleCapacity']=$row->v_l_c_load_capacity;
+                    $cat[$counter]['VehicleSize']=$row->v_d_s_dimension_size;
                     $cat[$counter]['DriverId']=$row->Id;
                     if($row->v_vehicle_driver_id>0){
                     $cat[$counter]['DriverName']=$row->Name;   
@@ -303,7 +305,13 @@ class Vehicle_model extends CI_Model {
         $this->db->select(array("*"))
                 ->from("vehicle")
                 ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
-                ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0,"vehicle.v_Id" => $vehicle_id));
+                ->join('tbl_vehicle_load_capacity', 'vehicle.v_vehicle_capacity_id =tbl_vehicle_load_capacity.v_l_c_id ','left')
+                ->join('tbl_vehicle_dimension_size', 'vehicle.v_vehicle_size_id=tbl_vehicle_dimension_size.v_d_s_id','left');
+                if(isset($vehicle_id)>0){
+                $this->db->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0,"vehicle.v_Id" => $vehicle_id));
+                    }
+                
+                
         $query = $this->db->get();
        /// echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
@@ -321,13 +329,14 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['VehicleId']=$row->v_Id ;
                     $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
                   //  $cat[$counter]['VehicleImage']=$vehicleImage ;
-                    $cat[$counter]['VehicleCapacity']=$row->v_vehicle_capacity ;
-                    $cat[$counter]['VehicleSize']=$row->v_vehicle_size;
+                    $cat[$counter]['VehicleCapacity']=$row->v_l_c_load_capacity ;
+                    $cat[$counter]['VehicleSize']=$row->v_d_s_dimension_size;
                     $cat[$counter]['v_info1']=$vinfo[0]->v_i_information;
                     $cat[$counter]['v_info2']=$vinfo[1]->v_i_information;
                     $cat[$counter]['v_info3']=$vinfo[2]->v_i_information;
                     $cat[$counter]['v_info4']=$vinfo[3]->v_i_information;
                     $cat[$counter]['v_info5']=$vinfo[4]->v_i_information;
+                    $cat[$counter]['v_info6']=$vinfo[5]->v_i_information;
                     $counter++;
                 }
                 return $cat;
