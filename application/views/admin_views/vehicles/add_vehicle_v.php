@@ -54,8 +54,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('v_type_id'); ?></span>
                         </div>
                     </div>
-                    <!-- /.col -->
                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Color">Vehicle Color </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                <input type="text" name="v_vehicle_Color" value="<?php echo set_value('v_vehicle_Color'); ?>" class="form-control required" id="v_vehicle_Color" placeholder="Enter vehicle color">
+                            </div>
+                            <span class="help-block error-message"><?php echo form_error('v_vehicle_Color'); ?></span>
+                        </div>
+                    </div>
+                    
+                    <!-- /.col -->
+<!--                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="Driver">Driver</label>
                             <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
@@ -69,32 +80,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </select>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
                         </div>
-                    </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Color">Vehicle Color </label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_Color" value="<?php echo set_value('v_vehicle_Color'); ?>" class="form-control required" id="v_vehicle_Color" placeholder="Enter vehicle color">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_Color'); ?></span>
-                        </div>
+                    </div>-->
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Details">Vehicle Detail</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_detail" value="<?php echo set_value('v_vehicle_detail'); ?>" class="form-control required" id="v_vehicle_detail" placeholder="Enter vehicle details">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
-                        </div>
-                    </div>
-                    
-                    </div>
                     <div class="row">
                     
                     <div class="col-md-6">
@@ -117,6 +105,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_model_no'); ?></span>
                         </div>
                     </div>
+                    </div>
+                
+                <div class="row">
+                   
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Details">Vehicle Detail</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                <input type="text" name="v_vehicle_detail" value="<?php echo set_value('v_vehicle_detail'); ?>" class="form-control required" id="v_vehicle_detail" placeholder="Enter vehicle details">
+                            </div>
+                            <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
+                        </div>
+                    </div>
+                    
                     </div>
                 <div class="row">
                     <div class="col-md-6">
