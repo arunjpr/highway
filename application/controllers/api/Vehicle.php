@@ -254,7 +254,7 @@ class Vehicle extends REST_Controller {
         } else {
             $this->set_response([
                 'status' => true,
-                "data" => array("vehicle_info" => $this->vehicle_model->getVehicleinfoApi($vehicle_id)),
+                "dataInfo" => array("vehicle_info" => $this->vehicle_model->getVehicleinfoApi($vehicle_id)),
                     ], REST_Controller::HTTP_OK);
         }
     }
@@ -324,5 +324,7 @@ class Vehicle extends REST_Controller {
                     ], REST_Controller::HTTP_OK);
         }
     }
+    
+   
     
 }

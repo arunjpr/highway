@@ -290,26 +290,14 @@ class Vehicle_model extends CI_Model {
                 $data= $query->result();
                 $counter=0;
                 $cat=$ubniqueUser = array();
-                $this->db->select(array('v_i_information'))
-                ->from("tbl_vehicle_info")
-                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
-                $query_result = $this->db->get();
-                $vinfo= $query_result->result();
                 foreach($data as $row){
                 if(!in_array($row->v_type_id,$ubniqueUser)){
                     $ubniqueUser[] = $row->v_type_id;
                     $cat[$counter]['VehicleId']=$row->a_v_t_d_vehicle_id ;
                     $cat[$counter]['VehicleTypeId']=$row->v_type_id ;
                     $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
-                    $cat[$counter]['VehicleCapacity']=$row->v_l_c_load_capacity ;
-                    $cat[$counter]['VehicleSize']=$row->v_d_s_dimension_size;
                     $cat[$counter]['VehicleFare']=$row->v_t_fare;
-                    $cat[$counter]['v_info1']=$vinfo[0]->v_i_information;
-                    $cat[$counter]['v_info2']=$vinfo[1]->v_i_information;
-                    $cat[$counter]['v_info3']=$vinfo[2]->v_i_information;
-                    $cat[$counter]['v_info4']=$vinfo[3]->v_i_information;
-                    $cat[$counter]['v_info5']=$vinfo[4]->v_i_information;
-                    $cat[$counter]['v_info6']=$vinfo[5]->v_i_information;
+                    $cat[$counter]['VehicleInfo']='info';
                     $counter++;
                     }
                 }
