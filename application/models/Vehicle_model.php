@@ -278,25 +278,43 @@ class Vehicle_model extends CI_Model {
         }
     }
     public  function getAllVehicleListApi() {
-        $this->db->select(array("*"))
-                ->from("vehicle")
-                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
-                ->where(array("vehicle.v_status" => 1,"vehicle.v_delete" => 0));
+        $this->db->select(array('v.v_Id','v.v_type_id','vt.v_t_vehicle_name','a.a_v_t_d_vehicle_id','vc.v_l_c_load_capacity','vd.v_d_s_dimension_size','vt.v_t_fare'))
+                ->from("tbl_assign_vehicle_to_driver a")
+                ->join('vehicle v', 'v.v_Id=a.a_v_t_d_vehicle_id','left')
+                ->join('tbl_vehicle_type vt', 'v.v_type_id=vt.v_t_id','left')
+                ->join('tbl_vehicle_load_capacity vc', 'v.v_vehicle_capacity_id =vc.v_l_c_id ','left')
+                ->join('tbl_vehicle_dimension_size vd', 'v.v_vehicle_size_id=vd.v_d_s_id','left')
+                ->where(array("a.a_v_t_d_status" => 1,"a.a_v_t_d_delete" => 0));
         $query = $this->db->get();
-//        echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
                 $data= $query->result();
                 $counter=0;
-                $cat=array();
+                $cat=$ubniqueUser = array();
+                $this->db->select(array('v_i_information'))
+                ->from("tbl_vehicle_info")
+                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
+                $query_result = $this->db->get();
+                $vinfo= $query_result->result();
                 foreach($data as $row){
-                    $vehicleImage = base_url()."assets/backend/img/vehicle/vehicleImage/$row->v_vehicle_Image";
+                if(!in_array($row->v_type_id,$ubniqueUser)){
+                    $ubniqueUser[] = $row->v_type_id;
+                    $cat[$counter]['VehicleId']=$row->a_v_t_d_vehicle_id ;
+                    $cat[$counter]['VehicleTypeId']=$row->v_type_id ;
                     $cat[$counter]['VehicleName']=$row->v_t_vehicle_name ;
-                    $cat[$counter]['VehicleImage']=$vehicleImage ;
-                    
-                    
+                    $cat[$counter]['VehicleCapacity']=$row->v_l_c_load_capacity ;
+                    $cat[$counter]['VehicleSize']=$row->v_d_s_dimension_size;
+                    $cat[$counter]['VehicleFare']=$row->v_t_fare;
+                    $cat[$counter]['v_info1']=$vinfo[0]->v_i_information;
+                    $cat[$counter]['v_info2']=$vinfo[1]->v_i_information;
+                    $cat[$counter]['v_info3']=$vinfo[2]->v_i_information;
+                    $cat[$counter]['v_info4']=$vinfo[3]->v_i_information;
+                    $cat[$counter]['v_info5']=$vinfo[4]->v_i_information;
+                    $cat[$counter]['v_info6']=$vinfo[5]->v_i_information;
                     $counter++;
+                    }
                 }
                 return $cat;
+                
             } else {
             return array();
         }
@@ -340,6 +358,31 @@ class Vehicle_model extends CI_Model {
                     $counter++;
                 }
                 return $cat;
+            } else {
+            return array();
+        }
+    }
+    public  function getVehiclePointOnMapApi($vehicle_type_id) {
+        $this->db->select(array('v.v_Id','v.v_type_id','vt.v_t_vehicle_name','a.a_v_t_d_vehicle_id'))
+                ->from("tbl_assign_vehicle_to_driver a")
+                ->join('vehicle v', 'v.v_Id=a.a_v_t_d_vehicle_id','left')
+                ->join('tbl_vehicle_type vt', 'v.v_type_id=vt.v_t_id','left');
+                if(isset($vehicle_type_id)>0){
+                 $this->db->where(array("a.a_v_t_d_status" => 1,"a.a_v_t_d_delete" => 0,"v.v_type_id"=>$vehicle_type_id));
+                }
+        $query = $this->db->get();
+         if($query->num_rows() > 0){
+                $data= $query->result();
+                $counter=0;
+                $cat=$ubniqueUser = array();
+                foreach($data as $row){
+                    $cat[$counter]['vehicleId']=$row->a_v_t_d_vehicle_id ;
+                    $cat[$counter]['vehicleTypeId']=$row->v_type_id ;
+                    $cat[$counter]['vehicleName']=$row->v_t_vehicle_name ;
+                    $counter++;
+                }
+                return $cat;
+                
             } else {
             return array();
         }

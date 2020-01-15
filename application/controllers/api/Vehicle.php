@@ -207,7 +207,7 @@ class Vehicle extends REST_Controller {
         }
     }
     
-    function getAllVehicleListForAll_post() {
+    function bookingVehicleList_post() {
         $error = "";
         $user_id = $this->post('user_id');
         if (empty($user_id)) {
@@ -226,7 +226,7 @@ class Vehicle extends REST_Controller {
         } else {
             $this->set_response([
                 'status' => true,
-                "data" => array("vehicle_list" => $this->vehicle_model->getAllVehicleListApi()),
+                "vehicleData" => array("vehicle_list" => $this->vehicle_model->getAllVehicleListApi()),
                     ], REST_Controller::HTTP_OK);
         }
     }
@@ -297,6 +297,30 @@ class Vehicle extends REST_Controller {
             $this->set_response([
                 'status' => true,
                 "dimansionData" => array("dimansion_size_data" => $this->vehicle_load_capacity_model->getVehicleDimensionSizeApi($user_id)),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
+    function vehiclePointOnMap_post() {
+        $error = "";
+        $user_id = $this->post('user_id');
+        $vehicle_type_id = $this->post('vehicle_type_id');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        $this->load->model("vehicle_model");
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "pointData" => array("vehicle_Point" => $this->vehicle_model->getVehiclePointOnMapApi($vehicle_type_id)),
                     ], REST_Controller::HTTP_OK);
         }
     }

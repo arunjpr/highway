@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     
                     
                     <!-- /.col -->
-                   <div class="col-md-6">
+<!--                   <div class="col-md-6">
                         <div class="form-group">
                             <label for="Driver">Driver</label>
                             <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
@@ -69,11 +69,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </select>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
                         </div>
-                    </div>
+                    </div>-->
                     
-                    
-                    </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Color">Vehicle Color </label>
@@ -85,17 +82,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Details">Vehicle Detail</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_detail" value="<?php echo $user_data['v_vehicle_detail'];  ?>" class="form-control required" id="v_vehicle_detail" placeholder="Enter vehicle details">
-                            </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
-                        </div>
+                    
                     </div>
-                </div>
+                
                 <div class="row">
                     
                     
@@ -118,6 +107,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <input type="text" name="v_vehicle_model_no" value="<?php echo $user_data['v_vehicle_model_no']; ?>" class="form-control required" id="v_vehicle_model_no" placeholder="Enter vehicle model number">
                             </div>
                             <span class="help-block error-message"><?php echo form_error('v_vehicle_model_no'); ?></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Details">Vehicle Detail</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                <input type="text" name="v_vehicle_detail" value="<?php echo $user_data['v_vehicle_detail'];  ?>" class="form-control required" id="v_vehicle_detail" placeholder="Enter vehicle details">
+                            </div>
+                            <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
                         </div>
                     </div>
                 </div>

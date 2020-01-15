@@ -86,7 +86,7 @@ class Vehicle extends CI_Controller {
             $data['v_vehicle_detail'] = $this->input->post('v_vehicle_detail', TRUE); 
             $data['v_vehicle_number'] = $this->input->post('v_vehicle_number', TRUE); 
             $data['v_vehicle_model_no'] = $this->input->post('v_vehicle_model_no', TRUE); 
-            $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
+           // $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
             $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
             $data['v_status'] = 1; 
            // $data['Image'] = $this->input->post('Image', TRUE); 
@@ -224,7 +224,7 @@ class Vehicle extends CI_Controller {
             $data['active_menu'] = 'vehicle'; 
             $data['active_sub_menu'] = 'vehicle'; 
             $data['active_sub_sub_menu'] = ''; 
-            $data['dropdownData'] = $this->vehicle_mdl->get_driver_dropdown();
+            //$data['dropdownData'] = $this->vehicle_mdl->get_driver_dropdown();
             $data['vehicleData'] = $this->vehicle_mdl->get_vehicle_dropdown();
             $data['main_menu'] = $this->load->view('admin_views/main_menu_v', $data, TRUE);
             $data['main_content'] = $this->load->view('admin_views/vehicles/edit_vehicle_v', $data, TRUE);
@@ -260,11 +260,11 @@ class Vehicle extends CI_Controller {
                 'label' => 'v_vehicle_model_no',
                 'rules' => 'trim|required|max_length[250]'
             ),
-            array(
-                'field' => 'v_vehicle_driver_id',
-                'label' => 'v_vehicle_driver_id',
-                'rules' => 'trim|required'
-            ),
+//            array(
+//                'field' => 'v_vehicle_driver_id',
+//                'label' => 'v_vehicle_driver_id',
+//                'rules' => 'trim|required'
+//            ),
             array(
                 'field' => 'v_vehicle_Color',
                 'label' => 'v_vehicle_Color',
@@ -280,7 +280,7 @@ class Vehicle extends CI_Controller {
                 $data['v_vehicle_detail'] = $this->input->post('v_vehicle_detail', TRUE); 
                 $data['v_vehicle_number'] = $this->input->post('v_vehicle_number', TRUE); 
                 $data['v_vehicle_model_no'] = $this->input->post('v_vehicle_model_no', TRUE); 
-                $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
+               // $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
                 $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
                 $data['v_status'] = 1; 
                 $data['v_add_by'] = $this->session->userdata('admin_id');
