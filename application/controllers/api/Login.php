@@ -45,10 +45,7 @@ class Login extends REST_Controller {
     }
     
 
-    
-    function otp_verify_post() {
-    
-    }
+   
     
    function addDriver_post() {
         $error = "";
@@ -308,6 +305,229 @@ class Login extends REST_Controller {
                     'status' => false,
                     'message' => "you are not customer",
                         ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    
+     function login_register_post() {
+        $error = "";
+            $Mobile = $this->post('Mobile');
+        if (empty($Mobile)) {
+            $error = "Please Enter your valid Mobile";
+        }
+        
+        $Otp=rand(10000, 99999);
+        $this->load->model("user_model");
+        $data = $this->user_model->getLoginData($Mobile);
+       // $dataBaseMobile = $data[0]->Mobile;
+       
+        
+        
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            if($data){
+                $updateUser = $this->user_model->update_users_mobile(array(
+                "Otp" => $Otp,
+                "Otp_Status" => 0,
+            ),$Mobile);
+                $ch = curl_init();
+
+// set URL and other appropriate options
+curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+curl_exec($ch);
+
+// close cURL resource, and free up system resources
+curl_close($ch);  
+            if ($updateUser) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Otp sent successfully on your mobile number',
+                    'Mobile'=>$updateUser
+                        ], REST_Controller::HTTP_OK);
+                
+                
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            
+            }  
+        } else {
+            $insertMobile = $this->user_model->insertUserApi(array(
+                "Mobile" => $Mobile,
+                "Otp" => $Otp,
+                "u_date" => date("Y-m-d")
+               
+            ));
+            
+            $ch = curl_init();
+
+// set URL and other appropriate options
+curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+curl_exec($ch);
+
+// close cURL resource, and free up system resources
+curl_close($ch);  
+            
+            
+            if($insertMobile) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Otp sent successfully on your mobile number',
+                    'id'=>$insertMobile
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+            
+            
+            
+        }
+           
+           
+        }
+    }
+    
+    
+    function otp_verify_post() {
+        $error = "";
+            $Mobile = $this->post('Mobile');
+            $Otp = $this->post('Otp');
+        if (empty($Mobile)) {
+            $error = "Please Enter your valid Mobile";
+        }
+        if (empty($Otp)) {
+            $error = "Please Enter your valid otp";
+        }
+        $this->load->model("user_model");
+        $data = $this->user_model->getOtpData($Mobile);
+        $otpStatus = $data[0]->Otp_Status;
+        $otpData = $data[0]->Otp;
+       // echo '<pre>' ;print_r($data);die;
+       
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+           
+            if($otpStatus==1){
+             $this->set_response([
+                    'status' => false,
+                    'message' => "Your Otp expired",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            
+            
+            } 
+            
+            else if($otpData==$Otp){
+                $updateUser = $this->user_model->update_otp_status(array(
+                "Otp_Status" => 1,
+                //"Status" => 1,
+            ),$Mobile,$Otp);
+            
+              
+            if ($updateUser) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Otp Verified',
+                    'user'=>$this->user_model->getUserOtpDataApi($Mobile),
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+                } 
+             
+            
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "Your otp is not valid",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            
+            
+            }
+           
+        }
+    }
+    
+    function signup_post() {
+        $error = "";
+        $user_id = $this->post('User_Id');
+        $Role_Id = $this->post('Role_Id');
+        $Email = $this->post('Email');
+        $Name = $this->post('Name');
+        $Address = $this->post('Address');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        if (empty($Role_Id)) {
+            $error = "please provide role id";
+        } 
+        if (empty($Email)) {
+            $error = "please provide email";
+        } 
+        if (empty($Name)) {
+            $error = "please provide name";
+        } 
+        if (empty($Address)) {
+            $error = "please provide address";
+        } 
+        $this->load->model("user_model");
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $updateUser = $this->user_model->update_signup_data(array(
+                "Role_Id" => $Role_Id,
+                "Name" => $Name,
+                "Email" => $Email,
+                "Address" => $Address,
+                "Status" => 1,
+                 "u_date"=>date("Y-m-d")
+            ),$user_id);
+            
+              
+            if ($updateUser) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Successfully Signup',
+                    'user'=>$this->user_model->getSignupDataApi($user_id),
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+                } 
+            
+            
+          
+            
         }
     }
   

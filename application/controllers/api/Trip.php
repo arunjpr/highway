@@ -121,46 +121,41 @@ function getAllTripByUserId_post() {
                 
             $this->set_response([
                 'status' => true,
-                "data" => array(
-                    "upcomingTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,1),
-                    "ongoingTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,2),
-                    "completedTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,3),
-                    "cancelTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,4),
-                    ),
+                "upcomingTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,1,$roleId),
+                "ongoingTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,2,$roleId),
+                "completedTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,3,$roleId),
+                "cancelTrips" => $this->Vehicle_model->getAllTripByMillUserApi($user_id,4,$roleId),
+                    
                     ], REST_Controller::HTTP_OK);
             }
             if($roleId==3){
             $this->set_response([
                 'status' => true,
-                "data" => array(
-                    "upcomingTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,1),
-                    "ongoingTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,2),
-                    "completedTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,3),
-                    "cancelTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,4),
-                    ),
+                "upcomingTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,1),
+                "ongoingTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,2),
+                "completedTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,3),
+                "cancelTrips" => $this->Vehicle_model->getAllTripByDriverApi($user_id,4),
+
                     ], REST_Controller::HTTP_OK);
             }
             if($roleId==4){
             $this->set_response([
-                'status' => true,
-                "data" => array(
-                    "upcomingTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,1),
-                    "ongoingTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,2),
-                    "completedTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,3),
-                    "cancelTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,4),
-                    ),
+                    'status' => true,
+                    "upcomingTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,1,$roleId),
+                    "ongoingTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,2,$roleId),
+                    "completedTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,3,$roleId),
+                    "cancelTrips" => $this->Vehicle_model->getAllTripByCustomerApi($user_id,4,$roleId),
+                    
                     ], REST_Controller::HTTP_OK);
             }
             if($roleId==5){
-                
-            $this->set_response([
-                'status' => true,
-                "data" => array(
+                $this->set_response([
+                    'status' => true,
                     "upcomingTrips" => $this->Vehicle_model->getAllTripByOwnerApi($user_id,1),
                     "ongoingTrips" => $this->Vehicle_model->getAllTripByOwnerApi($user_id,2),
                     "completedTrips" => $this->Vehicle_model->getAllTripByOwnerApi($user_id,3),
                     "cancelTrips" => $this->Vehicle_model->getAllTripByOwnerApi($user_id,4),
-                    ),
+                    
                     ], REST_Controller::HTTP_OK);
             }
         }

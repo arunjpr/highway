@@ -27,5 +27,13 @@ class Cancel_trip_reason_model extends CI_Model {
             return array();
         }
     }
+     public function addCancelTripReasonCommentApi($data) {
+        $this->db->insert("tbl_cancel_trip_reason_comment", $data);
+        if ($this->db->insert_id() > 0) {
+            return $this->db->insert_id();
+        } else {
+            return false;
+        }
+    }
     
 }

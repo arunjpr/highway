@@ -18,8 +18,5 @@ class Privacypolicy extends CI_Controller {
 	{
 		$this->load->view('refund_policy');
         }
-        
-        
-       
-    
+          
 }

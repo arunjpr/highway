@@ -25,6 +25,31 @@ class User_model extends CI_Model {
         }
         
     }
+     public  function getLoginData($mobile) {
+        $this->db->where([
+                'Mobile'=>$mobile,
+                'deletion_status'=>0,
+                ]);
+        $query =$this->db->get('users');
+       //echo  $this->db->last_query();die;
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+        
+    }
+     public  function getOtpData($mobile) {
+       $this->db->select(array('Otp_Status','Otp'))
+                ->from("users")
+                ->where(array("users.Mobile" => $mobile));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
     public function create_users($data){
         $this->db->insert('users',$data);
     }
@@ -48,6 +73,59 @@ class User_model extends CI_Model {
             return false;
         }
     }
+    public function update_users_mobile($data,$mobile){
+       // echo '<pre>' ; print_r($id);die;
+        $this->db->where(['Mobile'=>$mobile]);
+        $this->db->update('users',$data);
+        if ($mobile> 0) {
+            return $mobile;
+        } else {
+            return false;
+        }
+    }
+    public function update_otp_status($data,$mobile,$Otp){
+       // echo '<pre>' ; print_r($id);die;
+        $this->db->where(['Mobile'=>$mobile,'Otp'=>$Otp]);
+        $this->db->update('users',$data);
+        if ($mobile> 0) {
+            return $mobile;
+        } else {
+            return false;
+        }
+    }
+     public  function getUserOtpDataApi($mobile) {
+                $this->db->select(array('*'))
+                ->from("users");
+                if(isset($mobile)>0){
+                $this->db->where(array("users.Mobile" => $mobile));
+                }    
+                        
+                $this->db->limit(1); 
+                $query = $this->db->get();
+               // echo  $this->db->last_query();die;
+                
+         if($query->num_rows() > 0){
+                $row= $query->result();
+                
+                $user=array();
+                $user['User_Id'] = $row[0]->Id;
+                $user['Name'] = $row[0]->Name;
+                $user['Mobile'] = $row[0]->Mobile;
+                //$user['Image'] = URL.'images/'.$row[0]->Image;
+                $user['Email'] = $row[0]->Email;
+                $user['Gender'] = $row[0]->Gender;
+                $user['Role_Id'] = $row[0]->Role_Id;
+                $user['Address'] = $row[0]->Address;
+                $user['User_Status'] = $row[0]->Status;
+                $user['Otp_Status'] = $row[0]->Otp_Status;
+                $user['isBoolean'] = $row[0]->isBoolean;
+                
+                return $user;
+            } else {
+            return array();
+        }
+    }
+
     public function delete_user($id){
         $this->db->where(['Id'=>$id]);
         $this->db->delete('users');
@@ -118,6 +196,48 @@ class User_model extends CI_Model {
             return array();
         }
        
+    }
+    public  function getSignupDataApi($user_id) {
+                $this->db->select(array('*'))
+                ->from("users");
+                if(isset($user_id)>0){
+                $this->db->where(array("users.Id" => $user_id));
+                }    
+                        
+                $this->db->limit(1); 
+                $query = $this->db->get();
+               // echo  $this->db->last_query();die;
+                
+         if($query->num_rows() > 0){
+                $row= $query->result();
+                
+                $user=array();
+                $user['User_Id'] = $row[0]->Id;
+                $user['Name'] = $row[0]->Name;
+                $user['Mobile'] = $row[0]->Mobile;
+                //$user['Image'] = URL.'images/'.$row[0]->Image;
+                $user['Email'] = $row[0]->Email;
+                $user['Gender'] = $row[0]->Gender;
+                $user['Role_Id'] = $row[0]->Role_Id;
+                $user['Address'] = $row[0]->Address;
+                $user['User_Status'] = $row[0]->Status;
+                $user['Otp_Status'] = $row[0]->Otp_Status;
+                $user['isBoolean'] = $row[0]->isBoolean;
+                
+                return $user;
+            } else {
+            return array();
+        }
+    }
+    
+    public function update_signup_data($data,$user_id){
+        $this->db->where(['Id'=>$user_id]);
+        $this->db->update('users',$data);
+        if ($user_id> 0) {
+            return $user_id;
+        } else {
+            return false;
+        }
     }
     
 }

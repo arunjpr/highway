@@ -324,7 +324,32 @@ class Vehicle extends REST_Controller {
                     ], REST_Controller::HTTP_OK);
         }
     }
-    
+    function vehicleinfo_post() {
+        $error = "";
+        $user_id = $this->post('user_id');
+        
+            
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        $this->load->model("vehicle_model");
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "vehicle_data" => array("vehicle_info" => $this->vehicle_model->getVehicleinfoDataApi()),
+                
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
    
     
 }

@@ -64,6 +64,13 @@ if ($active_menu == 'content') {
 ?>"><a href="<?php echo base_url('admin/content'); ?>"><i class="fa fa-file-text-o "></i> <span> Content</span></a></li>
 
 
+<li class="<?php
+if ($active_menu == 'coupan') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/coupan'); ?>"><i class="fa fa-file-text-o "></i> <span>coupan</span></a>
+
+</li>
 
 <!--<li class="treeview <?php if ($active_menu == 'jobtype') {  echo 'active'; } ?>">
 <a href="#"><i class="fa fa-file-text-o"></i> <span> Job Type</span>
