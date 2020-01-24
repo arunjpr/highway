@@ -200,6 +200,97 @@ function cancelTripReason_post(){
                     ], REST_Controller::HTTP_OK);
         }
     }
-  
+   function shareTrip_post() {
+        $error = "";
+        $user_id = $this->post('User_Id');
+        $mobileNo = $this->post('MobileNo');
+        $tripId = $this->post('tripId');
+        $appLink = $this->post('appLink');
+        $userDeviceId = $this->post('userDeviceId');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        if (empty($mobileNo)) {
+            $error = "please provide mobile no";
+        } 
+        if (empty($tripId)) {
+            $error = "please provide trip id";
+        } 
+        if (empty($appLink)) {
+            $error = "please provide app link id";
+        } 
+        if (empty($userDeviceId)) {
+            $error = "please provide user device id";
+        } 
+        $this->load->model("user_model");
+        $this->load->model("share_trip_model");
+        
+        
+        $mobileData = $this->user_model->getUserDetailsByMobile($mobileNo);
+       // echo '<pre>' ;print_r($mobileData);die;
+       
+        
+        
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            if($mobileData){
+               // $shareTripUserExistData = $this->share_trip_model->getShareUserMobile($mobileNo);
+               
+                $shareTripData = $this->share_trip_model->insertShareTripApi(array(
+                "s_t_trip_id" => $tripId,
+                "s_t_customer_id" => $user_id,
+                "s_t_share_user_id" => $mobileData->Id,
+                "s_t_app_link" => $appLink,
+                "s_t_user_device_id" => $userDeviceId,
+                "s_t_status" => 1,
+                "s_t_add_by" => 1,
+                "s_t_date"=>date("Y-m-d")
+                    ));
+                } else {
+            $addUser = $this->user_model->insertUserApi(array(
+                 "Mobile" => $mobileNo,
+                 "Status" => 1,
+                 "Role_Id" => 4,
+                 "u_date"=>date("Y-m-d")
+            ));
+            
+            $shareTripData = $this->share_trip_model->insertShareTripApi(array(
+                "s_t_trip_id" => $tripId,
+                "s_t_customer_id" => $user_id,
+                "s_t_share_user_id" => $addUser,
+                "s_t_app_link" => $appLink,
+                "s_t_user_device_id" => $userDeviceId,
+                "s_t_status" => 1,
+                "s_t_add_by" => 1,
+                "s_t_date"=>date("Y-m-d")
+            ));
+                    
+                }
+            if ($shareTripData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Successfully Share Trip',
+                    'id'=>$shareTripData,
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+                } 
+            
+            
+          
+            
+        }
+    }
 
 }

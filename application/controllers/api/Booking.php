@@ -39,6 +39,7 @@ class Booking extends REST_Controller {
         $end_time = $this->post('ETripTime');
         $tripFare = $this->post('TripFare');
         $tripStatus = $this->post('TripStatus');
+        $couponId = $this->post('CouponId');
         if (empty($customer_id)) {
             $error = "please provide user id";
         } else if (empty($vehicle_id)) {
@@ -75,6 +76,18 @@ class Booking extends REST_Controller {
         $this->load->model("book_trip_fare_model");
         $this->load->model("trip_model");
         $this->load->model("role_model");
+        $this->load->model("coupon_model");
+        
+        $couponData = $this->coupon_model->getCouponByCupanID($couponId);
+        // echo '<pre>' ;print_r($couponData[0]->c_id); die;
+        if($couponData){
+            $cupan_id=$couponData[0]->c_id;
+           
+        } else {
+            $cupan_id =0;
+        }
+        
+        
         
         $userRole = $this->role_model->getroleByUserid($customer_id);
         $roleId=$userRole->Role_Id;
@@ -133,6 +146,7 @@ class Booking extends REST_Controller {
                 "b_l_t_vehicle_id" => $vehicle_id,
                 "b_l_t_goodsType_id" => $goodsType_id,
                 "b_l_t_fare_id" => $saveBookFareId,
+                "b_l_t_coupon_id" => $cupan_id,
                 "b_l_t_status" => 1,
                 "b_l_t_active_status" => 1,
                 "b_l_t_add_by" => $customer_id,
@@ -239,4 +253,42 @@ class Booking extends REST_Controller {
         }
     }
 }
+function applyCoupon_post() {
+        $error = "";
+        $coupon = $this->post('coupon');
+        if (empty($coupon)) {
+            $error = "please provide coupon";
+        } 
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->load->model("coupon_model");
+             $couponData = $this->coupon_model->getCouponData($coupon);
+             if($couponData){
+             $couponId= $couponData[0]->c_id;
+             //echo '<pre>' ;print_r($couponData[0]->c_id);die;
+            
+            
+            $updateData = $this->coupon_model->updateCouponApi(array(
+                "c_coupan_status" => 2
+                ),$couponId);
+            if ($updateData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$updateData
+                        ], REST_Controller::HTTP_OK);
+            }
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "invalid coupon code",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+    }
 }
