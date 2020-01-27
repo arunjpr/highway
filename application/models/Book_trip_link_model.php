@@ -42,26 +42,41 @@ class Book_trip_link_model extends CI_Model {
     }
     
     
-    public  function getBookTripDetailsByTripIdApi($bookTripId,$driverName,$driverMobile) {
+    public  function getBookTripDetailsByTripIdApi($bookTripId,$driverId) {
         $this->db->select(array("*"))
                 ->from("tbl_book_trip_link b")
-                ->join('vehicle v', 'v.v_Id=b.b_l_t_vehicle_id','left')
-                ->join('tbl_vehicle_type vt', 'v.v_type_id=vt.v_t_id','left');
+                ->join('tbl_vehicle_type vt','b.b_l_t_vehicle_type=vt.v_t_id','left')
+                ->join('vehicle v', 'v.v_type_id=vt.v_t_id','left')
+                ->join('tbl_accept_booking_trip ab', 'ab.a_b_t_booking_trip_id=b.b_l_t_id','left')
+                ->join('tbl_assign_vehicle_to_driver a', 'a.a_v_t_d_vehicle_id=v.v_Id','left')
+                ->join('users u', 'u.Id=a.a_v_t_d_driver_id','left');
                 if(isset($bookTripId)>0){
-                $this->db->where(array("b.b_l_t_id"=>$bookTripId,"b.b_l_t_active_status" =>1));
+                $this->db->where(array(
+                    "b.b_l_t_id"=>$bookTripId,
+                    "b.b_l_t_active_status" =>1,
+                    "a.a_v_t_d_driver_id" =>$driverId,
+                    "a.a_v_t_d_status" =>1,
+                    "ab.a_b_t_status" =>1,
+                    ));
                 }
         $query = $this->db->get();
+        //echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
                 $data= $query->result();
-                
-                $cat=$ubniqueUser = array();
+                $cat = array();
                 foreach($data as $row){
-                    $cat['driverName']=$driverName ;
-                    $cat['driverMobile']=$driverMobile ;
+                    $cat['customerId']=$row->b_l_t_customer_id;
+                    $cat['driverId']=$row->a_v_t_d_driver_id;
+                    $cat['driverName']=$row->Name;
+                    $cat['driverName']=$row->Name;
+                    $cat['DrivrRating']=3;
+                    $cat['DrivrTripCount']=1;
+                    $cat['driverMobile']=$row->Mobile;
                     $cat['vehicleId']=$row->v_Id ;
-                    $cat['vehicleName']=$row->v_t_vehicle_name ;
-                   // $cat['vehicleNumber']=$row->v_vehicle_number ;
-                   // $cat['vehicleModelNo']=$row->v_vehicle_model_no ;
+                    $cat['vehicleTypeId']=$row->v_t_id ;
+                    $cat['vehicleType']=$row->v_t_vehicle_name ;
+                    $cat['vehicleName']= ucwords($row->v_vehicle_name).' '.$row->v_vehicle_number;
+                    $cat['tripAcceptStatus']=$row->a_b_t_accept_status;
                     }
                 return $cat;
                 

@@ -107,7 +107,8 @@ class Notification extends REST_Controller {
             if($tokenData){
             $saveData = $this->fb_token_model->updateFbTokenApi(array(
                 "fb_u_id" => $userId,
-                "fb_token_id" => $tokenId
+                "fb_token_id" => $tokenId,
+                "fb_edit_date" => date('Y-m-d'),
             ),$userId);
             } else { 
             $saveData = $this->fb_token_model->addFbTokenApi(array(

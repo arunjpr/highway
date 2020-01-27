@@ -26,7 +26,7 @@ class Booking extends REST_Controller {
     function confirmBookingApi_post() {
         $error = "";
         $customer_id = $this->post('User_id');
-        $vehicle_id = $this->post('VehicleId');
+        $vehicleType = $this->post('VehicleId'); // vehicle type ID
         $trip_reciver_id = $this->post('TripRecevirId');
         $goodsType_id = $this->post('GoodsTypeId');
         $start_latitude = $this->post('SourceLat');
@@ -39,8 +39,8 @@ class Booking extends REST_Controller {
         $destAddress = $this->post('destAddress');
         if (empty($customer_id)) {
             $error = "please provide user id";
-        } else if (empty($vehicle_id)) {
-            $error = "please provide vehicle id";
+        } else if (empty($vehicleType)) {
+            $error = "please provide vehicle type";
         } else if (empty($trip_reciver_id)) {
             $error = "please provide trip recvier id";
         }  else if (empty($trip_reciver_id)) {
@@ -136,7 +136,7 @@ class Booking extends REST_Controller {
                 "b_l_t_trip_id" => $trip_id,
                 "b_l_t_customer_id" => $customer_id,
                 "b_l_t_reciver_id" => 1,
-                "b_l_t_vehicle_id" => $vehicle_id,
+                "b_l_t_vehicle_type" => $vehicleType,
                 "b_l_t_goodsType_id" => $goodsType_id,
                 "b_l_t_fare_id" => $saveBookFareId,
                 "b_l_t_coupon_id" => $cupan_id,
@@ -150,10 +150,8 @@ class Booking extends REST_Controller {
     //==================push notification start====================// 
         if($userDetails){        
         $this->load->model("mobile_token_model");
-        $vehicleType = $this->mobile_token_model->getVehicleTypeData(1);
-        $vtypeId = $vehicleType[0]->v_type_id;
-        $mobileTokenData = $this->mobile_token_model->getMobileTokenData($vtypeId);
-       // echo '<pre>' ;print_r($mobileTokenData);
+        $mobileTokenData = $this->mobile_token_model->getMobileTokenData($vehicleType);
+       // echo '<pre>' ;print_r($vehicleType);
     define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
    $msg = array
 (
@@ -173,7 +171,12 @@ $fields = array
     'priority' => 'high',
     'notification' => array(
         'title' => 'Trip Added',
-        'body' => 'Trip Add By Customer: '.$userDetails->Name.' Mobile: '.$userDetails->Mobile.' Trip Id: '.$t_trip_id,
+        'body' => array(
+                'message' => 'Trip Add By Customer: ',
+                'customer' => $userDetails->Name,
+                'mobile' => $userDetails->Mobile, 
+                'type' => 'TRIP_NEW', 
+            )
     )
 );
 $headers = array
@@ -338,7 +341,7 @@ function applyCoupon_post() {
         $error = "";
         $bookTripId = $this->post('tripId');
         $userId = $this->post('userId');
-        $accepTReject = $this->post('acceptReject');
+        $accepTReject = $this->post('acceptReject'); //acceptReject
         if (empty($bookTripId)) {
             $error = "please provide trip id";
         } else if (empty($userId)) {
@@ -346,17 +349,6 @@ function applyCoupon_post() {
         }  else if (empty($accepTReject)) {
             $error = "please provide accept or reject";
         } 
-        
-        if($accepTReject==1){
-            $accept =1;
-        } else {
-            $accept = 0;
-        }
-        if($accepTReject==2){
-            $reject =1;
-        } else {
-            $reject=0;
-        }
         if (isset($error) && !empty($error)) {
             $this->set_response([
                 'status' => false,
@@ -367,36 +359,26 @@ function applyCoupon_post() {
               $this->load->model("book_trip_link_model");
               $this->load->model("accept_booking_trip_model");
               $this->load->model("user_model");
+              $this->load->model("assign_vehicle_to_driver_model");
               
               $checkRole =$this->user_model->getCheckUserRoleByUserId($userId);
               if($checkRole[0]->Role_Id==3){
-              //echo '<pre>' ;print_r($checkRole[0]->Role_Id);die;
-              $driverData = $this->user_model->getUserDetailsById($userId);
+              $driverData = $this->assign_vehicle_to_driver_model->geDriverDetailsById($userId); 
               if($driverData){
-              $driverName =$driverData->Name; 
-              $driverMobile =$driverData->Mobile; 
-           //   echo '<pre>' ;print_r($driverName);die;
-             $tripData = $this->book_trip_link_model->getBookTripDetailsByTripIdApi($bookTripId,$driverName,$driverMobile);
-              }
-             //echo '<pre>' ;print_r($tripData);die;
-             if($tripData){
-                 
-            $atripData = $this->accept_booking_trip_model->getAcceptTripData($bookTripId,$userId);
-            //echo '<pre>' ;print_r($tripData);die;
+                $atripData = $this->accept_booking_trip_model->getAcceptTripData($bookTripId,$userId);
+           // echo '<pre>' ;print_r($tripData);die;
             if($atripData){
                 $acceptTripData = $this->accept_booking_trip_model->updateAcceptBooking(array(
                 "a_b_t_booking_trip_id" => $bookTripId,
                 "a_b_t_driver_id" => $userId,
-                "a_b_t_accept" => $accept,
-                "a_b_t_reject" => $reject,
+                "a_b_t_accept_status" => $accepTReject,
                 "a_b_t_status" => 1,
                 ),$bookTripId,$userId);
             }else {
                 $acceptTripData = $this->accept_booking_trip_model->getAcceptBookingTripApi(array(
                 "a_b_t_booking_trip_id" => $bookTripId,
                 "a_b_t_driver_id" => $userId,
-                "a_b_t_accept" => $accept,
-                "a_b_t_reject" => $reject,
+                "a_b_t_accept_status" => $accepTReject,    
                 "a_b_t_status" => 1,
                 "a_b_t_add_by" => $userId,
                 "a_b_t_date" => date("Y-m-d")
@@ -404,6 +386,62 @@ function applyCoupon_post() {
             }
                  
             if ($acceptTripData) {
+                //==================push notification start====================//
+            $tripData = $this->book_trip_link_model->getBookTripDetailsByTripIdApi($bookTripId,$userId);
+             if($tripData){    
+        $this->load->model("mobile_token_model");
+        $customerMobileToken = $this->mobile_token_model->getCustomerTokenById($tripData['customerId']);
+       // echo '<pre>' ;print_r($customerMobileToken); die;
+       // $mobileTokenData = $this->mobile_token_model->getMobileTokenData($tripData['vehicleTypeId']);
+         if($customerMobileToken){  
+        
+        
+    define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
+   $msg = array
+(
+	'message' 	=> 'here is a message. message',
+	'title'		=> 'This is a title. title',
+	'subtitle'	=> 'This is a subtitle. subtitle',
+	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
+	'vibrate'	=> 1,
+	'sound'		=> 1,
+	'largeIcon'	=> 'large_icon',
+	'smallIcon'	=> 'small_icon'
+);
+$fields = array
+(
+    'registration_ids' => $customerMobileToken,
+    'data' => $msg,
+    'priority' => 'high',
+    'notification' => array(
+        'title' => $accepTReject,
+        'body' => $accepTReject.' By Driver: '.$tripData['driverName'].' Mobile '.$tripData['driverMobile'],
+    )
+);
+$headers = array
+(
+	'Authorization: key=' . API_ACCESS_KEY,
+	'Content-Type: application/json'
+);
+ 
+$ch = curl_init();
+curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+curl_setopt( $ch,CURLOPT_POST, true );
+curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+curl_exec($ch );
+curl_close( $ch );
+}
+//echo $result;
+ //==================push notification End====================//   
+                
+                
+                
+                
+                
+                
                 $this->set_response([
                     'status' => true,
                     'message' => 'success',
@@ -416,6 +454,7 @@ function applyCoupon_post() {
                     'message' => "unable to save the reply. please try again",
                         ], REST_Controller::HTTP_BAD_REQUEST);
             }
+              }
            }else {
                 $this->set_response([
                     'status' => false,
