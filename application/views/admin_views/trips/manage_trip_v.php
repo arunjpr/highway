@@ -33,6 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <thead>
                             <tr>
                                 <th>SL#</th>
+                                <th>Trip<br>Id</th>
                                 <th>Trip<br>Type</th>
                                 <th>Trip<br>By</th>
                                 <th>Trip<br>User</th>
@@ -53,6 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php $memberObj = $this->session->userdata; ?>
                             <tr>
                                     <td><?php echo $sl++; ?></td>
+                                    <td><?php echo $t_data['t_trip_id']; ?></td>
                                     <td><?php echo $t_data['tripType']; ?></td>
                                     <td><?php echo $t_data['userRole']; ?></td>
                                     <td><?php echo $t_data['userName']; ?></td>

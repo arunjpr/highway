@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-1">
                             <div class="card-body">
                                  <div class="d-inline-block">
-                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">22<?php echo $upcoming; ?></h2>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white"><?php echo $upcoming; ?></h2>
                                     <p style="font-weight: bold;" class="text-white mb-0">Upcoming Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <div class="d-inline-block">
-                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">45<?php echo $ongoing; ?></h2>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white"><?php echo $ongoing; ?></h2>
                                     <p style="font-weight: bold;" class="text-white mb-0">Ongoing Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
@@ -97,7 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-3">
                             <div class="card-body">
                                 <div class="d-inline-block">
-                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">23<?php echo $completed; ?></h2>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white"><?php echo $completed; ?></h2>
                                     <p style="font-weight: bold;" class="text-white mb-0">Completed Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
@@ -118,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card gradient-4">
                             <div class="card-body">
                                  <div class="d-inline-block">
-                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white">8520</h2>
+                                    <h2 style="font-weight: bold;font-size: 30px;" class="text-white"><?php echo $cancel; ?></h2>
                                     <p style="font-weight: bold;" class="text-white mb-0">Cancel Trip</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>

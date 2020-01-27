@@ -24,7 +24,7 @@ class Trip_model extends CI_Model {
 
     }
     public function get_trip_info() { 
-            $this->db->select('t.t_id,t.t_type,t.t_user_Id,t.t_vehicle_id,t.t_id,t.t_vehicle_id,t.t_add_date,t.t_fare,t.t_status,t.t_active_status,t.t_add_date,t.t_start_date,t.t_end_date,c.Name as customerName,c.Role_Id as customer_role_id,d.Name as driverName,vt.v_t_vehicle_name,o.Name as ownerName') 
+            $this->db->select('t.t_id,t.t_trip_id,t.t_type,t.t_user_Id,t.t_vehicle_id,t.t_id,t.t_vehicle_id,t.t_add_date,t.t_fare,t.t_status,t.t_active_status,t.t_add_date,t.t_start_date,t.t_end_date,c.Name as customerName,c.Role_Id as customer_role_id,d.Name as driverName,vt.v_t_vehicle_name,o.Name as ownerName') 
                 ->from('tbl_trip t')
                 ->join('vehicle v','v.v_Id=t.t_vehicle_id','left')
                 ->join('tbl_vehicle_type vt','vt.v_t_id=v.v_Id','left')
@@ -41,6 +41,7 @@ class Trip_model extends CI_Model {
                 $tripData=array();
                 foreach($data as $row){
                     $tripData[$counter]['t_id']=$row->t_id;
+                    $tripData[$counter]['t_trip_id']=$row->t_trip_id;
                     $tripData[$counter]['t_user_Id']=$row->t_user_Id;
                     $tripData[$counter]['t_fare']=$row->t_fare;
                     $tripData[$counter]['t_active_status']=$row->t_active_status;
@@ -206,7 +207,7 @@ class Trip_model extends CI_Model {
         }
     }
     public function get_trip_data_by_status($tstatus) { 
-            $this->db->select('t.t_id,t.t_type,t.t_user_Id,t.t_vehicle_id,t.t_id,t.t_vehicle_id,t.t_add_date,t.t_fare,t.t_status,t.t_active_status,t.t_add_date,t.t_start_date,t.t_end_date,t.t_start_time,t.t_end_time,c.Name as customerName,c.Role_Id as customer_role_id,d.Name as driverName,vt.v_t_vehicle_name,v.v_vehicle_number,o.Name as ownerName') 
+            $this->db->select('t.t_id,t.t_trip_id,t.t_type,t.t_user_Id,t.t_vehicle_id,t.t_id,t.t_vehicle_id,t.t_add_date,t.t_fare,t.t_status,t.t_active_status,t.t_add_date,t.t_start_date,t.t_end_date,t.t_start_time,t.t_end_time,c.Name as customerName,c.Role_Id as customer_role_id,d.Name as driverName,vt.v_t_vehicle_name,v.v_vehicle_number,o.Name as ownerName') 
                 ->from('tbl_trip t')
                 ->join('vehicle v','v.v_Id=t.t_vehicle_id','left')
                 ->join('tbl_vehicle_type vt','vt.v_t_id=v.v_Id','left')
@@ -225,6 +226,7 @@ class Trip_model extends CI_Model {
                 $tripData=array();
                 foreach($data as $row){
                     $tripData[$counter]['t_id']=$row->t_id;
+                    $tripData[$counter]['t_trip_id']=$row->t_trip_id;
                     $tripData[$counter]['t_user_Id']=$row->t_user_Id;
                     $tripData[$counter]['t_fare']=$row->t_fare;
                     $tripData[$counter]['t_active_status']=$row->t_active_status;

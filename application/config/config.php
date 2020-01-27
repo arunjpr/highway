@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 //    $config['base_url'] = 'http://thehighways.in/';
     //$config['base_url'] = 'http://dev.thehighways.in/';
-$config['base_url'] = 'http://highway.vrok.local/';
+$config['base_url'] = 'http://dev.thehighways.local/';
 
 /*
 |--------------------------------------------------------------------------

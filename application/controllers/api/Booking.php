@@ -22,10 +22,10 @@ class Booking extends REST_Controller {
         
         
     }
+     
     function confirmBookingApi_post() {
         $error = "";
-       $customer_id = $this->post('User_id');
-//        $trip_id = $this->post('trip_id');
+        $customer_id = $this->post('User_id');
         $vehicle_id = $this->post('VehicleId');
         $trip_reciver_id = $this->post('TripRecevirId');
         $goodsType_id = $this->post('GoodsTypeId');
@@ -33,13 +33,10 @@ class Booking extends REST_Controller {
         $start_longitude = $this->post('SourceLong');
         $end_latitude = $this->post('DestLat');
         $end_longitude = $this->post('DestLong');
-        $start_date = $this->post('STripDate');
-        $end_date = $this->post('ETripDate');
-        $start_time = $this->post('STripTime');
-        $end_time = $this->post('ETripTime');
         $tripFare = $this->post('TripFare');
-        $tripStatus = $this->post('TripStatus');
         $couponId = $this->post('CouponId');
+        $sourceAddress = $this->post('sourceAddress');
+        $destAddress = $this->post('destAddress');
         if (empty($customer_id)) {
             $error = "please provide user id";
         } else if (empty($vehicle_id)) {
@@ -58,18 +55,12 @@ class Booking extends REST_Controller {
             $error = "please provide drop location";
         } else if (empty($end_longitude)) {
             $error = "please provide drop locatoion";
-        } else if (empty($start_date)) {
-            $error = "please provide start date";
-        } else if (empty($end_date)) {
-            $error = "please provide end date";
-        } else if (empty($start_time)) {
-            $error = "please provide start time";
-        } else if (empty($end_time)) {
-            $error = "please provide end time";
-        } else if (empty($tripFare)) {
+        }  else if (empty($tripFare)) {
             $error = "please provide fare";
-        } else if (empty($tripStatus)) {
-            $error = "please provide status";
+        } else if (empty($sourceAddress)) {
+            $error = "please provide source Address";
+        } else if (empty($destAddress)) {
+            $error = "please provide destination Address";
         }
         
         $this->load->model("book_trip_link_model");
@@ -77,6 +68,7 @@ class Booking extends REST_Controller {
         $this->load->model("trip_model");
         $this->load->model("role_model");
         $this->load->model("coupon_model");
+        $this->load->model("mobile_token_model");
         
         $couponData = $this->coupon_model->getCouponByCupanID($couponId);
         // echo '<pre>' ;print_r($couponData[0]->c_id); die;
@@ -89,18 +81,20 @@ class Booking extends REST_Controller {
         
         
         
+        $userDetails = $this->role_model->geUserDetailsById($customer_id);
+       // echo '<pre>' ;print_r($userDetails->Name);die;
         $userRole = $this->role_model->getroleByUserid($customer_id);
         $roleId=$userRole->Role_Id;
-        if($roleId==2){
-        $tripType = $this->post('TripType');
-            if (empty($tripType)) {
-                $error = "please provide trip type";
-            }
-        }
-        if($roleId==4){
-          $tripType = 1;
-            
-        }
+//        if($roleId==2){
+//        $tripType = $this->post('TripType');
+//            if (empty($tripType)) {
+//                $error = "please provide trip type";
+//            }
+//        }
+//        if($roleId==4){
+//          $tripType = 1;
+//            
+//        }
         //$roleName=$userRole->Title;
         
        // echo '<pre>' ;print_r($userRole->Title);die;
@@ -111,23 +105,22 @@ class Booking extends REST_Controller {
                     ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
             return;
         } else {
-            
+            $t_trip_id='#HIG'.rand(1000, 9999);
+         
             if(($roleId==2) or ($roleId==4)){
                 $trip_id = $this->trip_model->addTripApi(array(
                 "t_user_Id" => $customer_id,
-                "t_type" => $tripType,
-                //"t_vehicle_id" => $vehicle_id,
+                "t_type" => 1,
+                "t_trip_id" => $t_trip_id,
                 "t_start_latitude"=>$start_latitude,
                 "t_start_longitude"=>$start_longitude,
                 "t_end_latitude"=>$end_latitude,
                 "t_end_longitude"=>$end_longitude,
                 "t_status"=>1,
                 "t_active_status"=>1,
-                "t_start_date"=>$start_date,
-                "t_end_date"=>$end_date,
-                "t_start_time"=>$start_time,
-                "t_end_time"=>$end_time,
                 "t_add_by" => $customer_id,
+                "t_source_address"=>$sourceAddress,
+                "t_destination_address" => $destAddress,    
                 "t_add_date" =>date("Y-m-d"),
             ));
             $saveBookFareId = $this->book_trip_fare_model->addBookingFareApi(array(
@@ -153,10 +146,59 @@ class Booking extends REST_Controller {
                 "b_l_t_date" =>date("Y-m-d"),
             ));
             if (($saveData) && ($saveBookFareId) && ($trip_id)) {
+                
+    //==================push notification start====================// 
+        if($userDetails){        
+        $this->load->model("mobile_token_model");
+        $vehicleType = $this->mobile_token_model->getVehicleTypeData(1);
+        $vtypeId = $vehicleType[0]->v_type_id;
+        $mobileTokenData = $this->mobile_token_model->getMobileTokenData($vtypeId);
+       // echo '<pre>' ;print_r($mobileTokenData);
+    define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
+   $msg = array
+(
+	'message' 	=> 'here is a message. message',
+	'title'		=> 'This is a title. title',
+	'subtitle'	=> 'This is a subtitle. subtitle',
+	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
+	'vibrate'	=> 1,
+	'sound'		=> 1,
+	'largeIcon'	=> 'large_icon',
+	'smallIcon'	=> 'small_icon'
+);
+$fields = array
+(
+    'registration_ids' => $mobileTokenData,
+    'data' => $msg,
+    'priority' => 'high',
+    'notification' => array(
+        'title' => 'Trip Added',
+        'body' => 'Trip Add By Customer: '.$userDetails->Name.' Mobile: '.$userDetails->Mobile.' Trip Id: '.$t_trip_id,
+    )
+);
+$headers = array
+(
+	'Authorization: key=' . API_ACCESS_KEY,
+	'Content-Type: application/json'
+);
+ 
+$ch = curl_init();
+curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+curl_setopt( $ch,CURLOPT_POST, true );
+curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+curl_exec($ch );
+curl_close( $ch );
+}
+//echo $result;
+ //==================push notification End====================//               
+                
                 $this->set_response([
                     'status' => true,
                     'message' => 'success',
-                    'id'=>$saveData
+                    'id'=>$t_trip_id
                         ], REST_Controller::HTTP_OK);
             }
             else {
@@ -291,4 +333,143 @@ function applyCoupon_post() {
             }
         }
     }
+    
+    function acceptBookTrip_post() {
+        $error = "";
+        $bookTripId = $this->post('tripId');
+        $userId = $this->post('userId');
+        $accepTReject = $this->post('acceptReject');
+        if (empty($bookTripId)) {
+            $error = "please provide trip id";
+        } else if (empty($userId)) {
+            $error = "please provide user id";
+        }  else if (empty($accepTReject)) {
+            $error = "please provide accept or reject";
+        } 
+        
+        if($accepTReject==1){
+            $accept =1;
+        } else {
+            $accept = 0;
+        }
+        if($accepTReject==2){
+            $reject =1;
+        } else {
+            $reject=0;
+        }
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+              $this->load->model("book_trip_link_model");
+              $this->load->model("accept_booking_trip_model");
+              $this->load->model("user_model");
+              
+              $checkRole =$this->user_model->getCheckUserRoleByUserId($userId);
+              if($checkRole[0]->Role_Id==3){
+              //echo '<pre>' ;print_r($checkRole[0]->Role_Id);die;
+              $driverData = $this->user_model->getUserDetailsById($userId);
+              if($driverData){
+              $driverName =$driverData->Name; 
+              $driverMobile =$driverData->Mobile; 
+           //   echo '<pre>' ;print_r($driverName);die;
+             $tripData = $this->book_trip_link_model->getBookTripDetailsByTripIdApi($bookTripId,$driverName,$driverMobile);
+              }
+             //echo '<pre>' ;print_r($tripData);die;
+             if($tripData){
+                 
+            $atripData = $this->accept_booking_trip_model->getAcceptTripData($bookTripId,$userId);
+            //echo '<pre>' ;print_r($tripData);die;
+            if($atripData){
+                $acceptTripData = $this->accept_booking_trip_model->updateAcceptBooking(array(
+                "a_b_t_booking_trip_id" => $bookTripId,
+                "a_b_t_driver_id" => $userId,
+                "a_b_t_accept" => $accept,
+                "a_b_t_reject" => $reject,
+                "a_b_t_status" => 1,
+                ),$bookTripId,$userId);
+            }else {
+                $acceptTripData = $this->accept_booking_trip_model->getAcceptBookingTripApi(array(
+                "a_b_t_booking_trip_id" => $bookTripId,
+                "a_b_t_driver_id" => $userId,
+                "a_b_t_accept" => $accept,
+                "a_b_t_reject" => $reject,
+                "a_b_t_status" => 1,
+                "a_b_t_add_by" => $userId,
+                "a_b_t_date" => date("Y-m-d")
+                )); 
+            }
+                 
+            if ($acceptTripData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'driverVehicleDetails'=>$tripData
+                        ], REST_Controller::HTTP_OK);
+            }
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+           }else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "You are not a driver",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+    }
+//    function startTripDriver_post() {
+//        $error = "";
+//        $bookTripId = $this->post('bookTripId');
+//        $startTime = $this->post('startTime');
+//        $startLat = $this->post('startLat');
+//        $startLong = $this->post('startLong');
+//        if (empty($bookTripId)) {
+//            $error = "please provide book trip id";
+//        } else if (empty($startTime)) {
+//            $error = "please provide start time";
+//        } else if (empty($startLat)) {
+//            $error = "please provide start lat";
+//        } else if (empty($startLong)) {
+//            $error = "please provide start long";
+//        } 
+//        if (isset($error) && !empty($error)) {
+//            $this->set_response([
+//                'status' => false,
+//                'message' => $error,
+//                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+//            return;
+//        } else {
+//            $this->load->model("book_trip_link_model");
+//            $this->load->model("driver_trip_model");
+//             $bookTripData = $this->book_trip_link_model->getBookTripDataById($bookTripId);
+//             if($bookTripData){
+//             $booktrip_id= $bookTripData[0]->b_l_t_id;
+//             //echo '<pre>' ;print_r($couponData[0]->c_id);die;
+//            
+//            
+//            $addData = $this->driver_trip_model->addDriverTripDataApi(array(
+//                "c_coupan_status" => 2
+//                ));
+//            if ($addData) {
+//                $this->set_response([
+//                    'status' => true,
+//                    'message' => 'success',
+//                    'id'=>$addData
+//                        ], REST_Controller::HTTP_OK);
+//            }
+//            } else {
+//                $this->set_response([
+//                    'status' => false,
+//                    'message' => "invalid coupon code",
+//                        ], REST_Controller::HTTP_BAD_REQUEST);
+//            }
+//        }
+//    }
 }

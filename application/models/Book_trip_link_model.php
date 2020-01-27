@@ -41,7 +41,46 @@ class Book_trip_link_model extends CI_Model {
         }
     }
     
-   
+    
+    public  function getBookTripDetailsByTripIdApi($bookTripId,$driverName,$driverMobile) {
+        $this->db->select(array("*"))
+                ->from("tbl_book_trip_link b")
+                ->join('vehicle v', 'v.v_Id=b.b_l_t_vehicle_id','left')
+                ->join('tbl_vehicle_type vt', 'v.v_type_id=vt.v_t_id','left');
+                if(isset($bookTripId)>0){
+                $this->db->where(array("b.b_l_t_id"=>$bookTripId,"b.b_l_t_active_status" =>1));
+                }
+        $query = $this->db->get();
+         if($query->num_rows() > 0){
+                $data= $query->result();
+                
+                $cat=$ubniqueUser = array();
+                foreach($data as $row){
+                    $cat['driverName']=$driverName ;
+                    $cat['driverMobile']=$driverMobile ;
+                    $cat['vehicleId']=$row->v_Id ;
+                    $cat['vehicleName']=$row->v_t_vehicle_name ;
+                   // $cat['vehicleNumber']=$row->v_vehicle_number ;
+                   // $cat['vehicleModelNo']=$row->v_vehicle_model_no ;
+                    }
+                return $cat;
+                
+            } else {
+            return array();
+        }
+    }
+    
+    public function getBookTripDataById($bookTripId) {
+        $this->db->select(array("*"))
+                ->from("tbl_book_trip_link")
+                ->where(array("tbl_book_trip_link.b_l_t_id" => $bookTripId, "tbl_book_trip_link.b_l_t_active_status"=> 1));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
    
     
 }

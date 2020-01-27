@@ -51,6 +51,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
+function UserRoleType($id){
+        $role="";
+        switch($id){
+            case '2';
+                $role = "Student";
+            break;
+            case '12':
+                $role = "Primary Academic Assessor";
+            break;
+        }
+        return $role;
+    }
+
+
 if ( ! function_exists('is_php'))
 {
 	/**
@@ -846,4 +860,5 @@ if ( ! function_exists('function_usable'))
 
 		return FALSE;
 	}
+        
 }
