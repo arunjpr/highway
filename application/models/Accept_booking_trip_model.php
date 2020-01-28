@@ -35,4 +35,15 @@ class Accept_booking_trip_model extends CI_Model {
             return false;
         }
     }
+    public function addStartTripByDriverApi($data,$tripId,$userId){
+        if(isset($tripId)>0 && ($userId)>0){
+        $this->db->where(['a_b_t_booking_trip_id'=>$tripId,'a_b_t_driver_id'=>$userId,'a_b_t_status'=>1]);
+        }
+        $this->db->update('tbl_accept_booking_trip',$data);
+        if ($tripId> 0) {
+            return $tripId;
+        } else {
+            return false;
+        }
+    }
 }

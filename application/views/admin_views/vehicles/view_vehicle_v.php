@@ -38,15 +38,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <tbody>
         <tr>
 
-        <td class="text-success"><i class="fa fa-user"></i> Name :</td>
+        <td class="text-success"><i class="fa fa-user"></i> Vehicle Type :</td>
 
         <td class="text-left"><?php echo $vehicle_data['v_vehicle_name']; ?></td>
     </tr>
-    <tr>
-        <td class="text-success"><i class="fa fa-mobile"></i> Vehicle Color :</td>
-        <td><?php echo $vehicle_data['v_vehicle_Color']; ?></td>
-    </tr>
 
+        <tr>
+            <td class="text-success"><i class="fa fa-envelope-o"></i>Vehicle Name :</td>
+            <td><?php echo $vehicle_data['v_vehicle_name']; ?></td>
+        </tr>
         <tr>
             <td class="text-success"><i class="fa fa-envelope-o"></i>Vehicle Number :</td>
             <td><?php echo $vehicle_data['v_vehicle_number']; ?></td>

@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Vehicle">Vehicle</label>
-                            <select name="v_type_id" class="form-control required" id="v_type_id">
+                            <select name="vehicle_type" class="form-control required" id="vehicle_type">
                                 <option value="" selected="" disabled="">select</option>
                                 <?php
                                 foreach ($vehicleData as $vdata) {
@@ -46,39 +46,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 
                                 ?>
                             </select>
-                            <span class="help-block error-message"><?php echo form_error('v_type_id'); ?></span>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_type'); ?></span>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
-                    
-                    <!-- /.col -->
-<!--                   <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Driver">Driver</label>
-                            <select name="v_vehicle_driver_id" class="form-control required" id="v_vehicle_driver_id">
-                                <option value="" selected="" disabled="">select</option>
-                                <?php
-                                foreach ($dropdownData as $row) {
-                                 echo '<option value ="'.$row['Id'].'">'.$row['Name'].'</option>';
-                                    
-                                }
-                                ?>
-                            </select>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_driver_id'); ?></span>
-                        </div>
-                    </div>-->
-                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="Color">Vehicle Color </label>
+                            <label for="Vehicle Name">Vehicle Name </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_Color" value="<?php echo $user_data['v_vehicle_Color'];  ?>" class="form-control required" id="v_vehicle_Color" placeholder="Enter vehicle color">
+                                <input type="text" name="vehicle_name" value="<?php echo $user_data['v_vehicle_name'];  ?>" class="form-control required" id="vehicle_name" placeholder="Enter vehicle name">
                             </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_Color'); ?></span>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_name'); ?></span>
                         </div>
                     </div>
                     
@@ -93,9 +71,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <label for="Number">Vehicle Number</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_number" value="<?php echo $user_data['v_vehicle_number'];  ?>" class="form-control required" id="v_vehicle_number" placeholder="Enter vehicle number">
+                                <input type="text" name="vehicle_number" value="<?php echo $user_data['v_vehicle_number'];  ?>" class="form-control required" id="vehicle_number" placeholder="Enter vehicle number">
                             </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_number'); ?></span>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_number'); ?></span>
                         </div>
                     </div>
                     
@@ -104,9 +82,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <label for="Model Number">Vehicle Model Number</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_model_no" value="<?php echo $user_data['v_vehicle_model_no']; ?>" class="form-control required" id="v_vehicle_model_no" placeholder="Enter vehicle model number">
+                                <input type="text" name="vehicle_model_no" value="<?php echo $user_data['v_vehicle_model_no']; ?>" class="form-control required" id="vehicle_model_no" placeholder="Enter vehicle model number">
                             </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_model_no'); ?></span>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_model_no'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -119,9 +97,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <label for="Details">Vehicle Detail</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="v_vehicle_detail" value="<?php echo $user_data['v_vehicle_detail'];  ?>" class="form-control required" id="v_vehicle_detail" placeholder="Enter vehicle details">
+                                <input type="text" name="vehicle_detail" value="<?php echo $user_data['v_vehicle_detail'];  ?>" class="form-control required" id="vehicle_detail" placeholder="Enter vehicle details">
                             </div>
-                            <span class="help-block error-message"><?php echo form_error('v_vehicle_detail'); ?></span>
+                            <span class="help-block error-message"><?php echo form_error('vehicle_detail'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -168,6 +146,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 </section>
 <script type="text/javascript">
-    document.forms['edit_form'].elements['v_type_id'].value = '<?php echo $user_data['v_type_id']; ?>';
-    document.forms['edit_form'].elements['v_vehicle_driver_id'].value = '<?php echo $user_data['v_vehicle_driver_id']; ?>';
+    document.forms['edit_form'].elements['vehicle_type'].value = '<?php echo $user_data['v_type_id']; ?>';
+//    document.forms['edit_form'].elements['v_vehicle_driver_id'].value = '<?php echo $user_data['v_vehicle_driver_id']; ?>';
 </script>

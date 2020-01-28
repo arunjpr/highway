@@ -42,35 +42,35 @@ class Vehicle extends CI_Controller {
         // $imgPath = base_url(). '/assets/backend/img/vehicle/';
         $config = array(
             array(
-                'field' => 'v_type_id',
-                'label' => 'v_type_id',
+                'field' => 'vehicle_type',
+                'label' => 'vehicle_type',
                 'rules' => 'trim|required'
             ),
             array(
-                'field' => 'v_vehicle_detail',
-                'label' => 'v_vehicle_detail',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_detail',
+                'label' => 'vehicle_detail',
+                'rules' => 'trim|required|max_length[250]|min_length[3]'
             ),
             array(
-                'field' => 'v_vehicle_number',
-                'label' => 'v_vehicle_number',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_number',
+                'label' => 'vehicle_number',
+                'rules' => 'trim|required|max_length[20]|min_length[3]'
             ),
             array(
-                'field' => 'v_vehicle_model_no',
-                'label' => 'v_vehicle_model_no',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_model_no',
+                'label' => 'vehicle_model_no',
+                'rules' => 'trim|required|max_length[25]|min_length[3]'
             ),
             array(
-                'field' => 'v_vehicle_driver_id',
-                'label' => 'v_vehicle_driver_id',
-                'rules' => 'trim|required'
+                'field' => 'vehicle_name',
+                'label' => 'vehicle_name',
+                'rules' => 'trim|required|max_length[30]|min_length[3]'
             ),
-            array(
-                'field' => 'v_vehicle_Color',
-                'label' => 'v_vehicle_Color',
-                'rules' => 'trim|required|max_length[250]'
-            )
+//            array(
+//                'field' => 'v_vehicle_Color',
+//                'label' => 'v_vehicle_Color',
+//                'rules' => 'trim|max_length[250]'
+//            )
 
         );
        
@@ -82,12 +82,13 @@ class Vehicle extends CI_Controller {
             $this->add_vehicle();
             
         } else {
-            $data['v_type_id'] = $this->input->post('v_type_id', TRUE); 
-            $data['v_vehicle_detail'] = $this->input->post('v_vehicle_detail', TRUE); 
-            $data['v_vehicle_number'] = $this->input->post('v_vehicle_number', TRUE); 
-            $data['v_vehicle_model_no'] = $this->input->post('v_vehicle_model_no', TRUE); 
+            $data['v_type_id'] = $this->input->post('vehicle_type', TRUE); 
+            $data['v_vehicle_detail'] = $this->input->post('vehicle_detail', TRUE); 
+            $data['v_vehicle_number'] = $this->input->post('vehicle_number', TRUE); 
+            $data['v_vehicle_name'] = $this->input->post('vehicle_name', TRUE); 
+            $data['v_vehicle_model_no'] = $this->input->post('vehicle_model_no', TRUE); 
            // $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
-            $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
+//            $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
             $data['v_status'] = 1; 
            // $data['Image'] = $this->input->post('Image', TRUE); 
            
@@ -240,35 +241,30 @@ class Vehicle extends CI_Controller {
         $vehicle_info = $this->vehicle_mdl->get_vehicle_by_vehicle_id($vehicle_id); 
         if (!empty($vehicle_info)) { 
             $config = array( 
-               array(
-                'field' => 'v_type_id',
-                'label' => 'v_type_id',
+              array(
+                'field' => 'vehicle_type',
+                'label' => 'vehicle_type',
                 'rules' => 'trim|required'
             ),
             array(
-                'field' => 'v_vehicle_detail',
-                'label' => 'v_vehicle_detail',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_detail',
+                'label' => 'vehicle_detail',
+                'rules' => 'trim|required|max_length[250]|min_length[3]'
             ),
             array(
-                'field' => 'v_vehicle_number',
-                'label' => 'v_vehicle_number',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_number',
+                'label' => 'vehicle_number',
+                'rules' => 'trim|required|max_length[20]|min_length[3]'
             ),
             array(
-                'field' => 'v_vehicle_model_no',
-                'label' => 'v_vehicle_model_no',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_model_no',
+                'label' => 'vehicle_model_no',
+                'rules' => 'trim|required|max_length[25]|min_length[3]'
             ),
-//            array(
-//                'field' => 'v_vehicle_driver_id',
-//                'label' => 'v_vehicle_driver_id',
-//                'rules' => 'trim|required'
-//            ),
             array(
-                'field' => 'v_vehicle_Color',
-                'label' => 'v_vehicle_Color',
-                'rules' => 'trim|required|max_length[250]'
+                'field' => 'vehicle_name',
+                'label' => 'vehicle_name',
+                'rules' => 'trim|required|max_length[30]|min_length[3]'
             )
 
         );
@@ -276,12 +272,13 @@ class Vehicle extends CI_Controller {
             if ($this->form_validation->run() == FALSE) { 
                 $this->edit_vehicle($vehicle_id); 
             } else { 
-                $data['v_type_id'] = $this->input->post('v_type_id', TRUE); 
-                $data['v_vehicle_detail'] = $this->input->post('v_vehicle_detail', TRUE); 
-                $data['v_vehicle_number'] = $this->input->post('v_vehicle_number', TRUE); 
-                $data['v_vehicle_model_no'] = $this->input->post('v_vehicle_model_no', TRUE); 
+                $data['v_type_id'] = $this->input->post('vehicle_type', TRUE); 
+                $data['v_vehicle_detail'] = $this->input->post('vehicle_detail', TRUE); 
+                $data['v_vehicle_number'] = $this->input->post('vehicle_number', TRUE); 
+                $data['v_vehicle_model_no'] = $this->input->post('vehicle_model_no', TRUE); 
+                $data['v_vehicle_name'] = $this->input->post('vehicle_name', TRUE); 
                // $data['v_vehicle_driver_id'] = $this->input->post('v_vehicle_driver_id', TRUE); 
-                $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
+//                $data['v_vehicle_Color'] = $this->input->post('v_vehicle_Color', TRUE); 
                 $data['v_status'] = 1; 
                 $data['v_add_by'] = $this->session->userdata('admin_id');
                 $data['v_date'] = date('Y-m-d H:i:s');  

@@ -239,5 +239,19 @@ class User_model extends CI_Model {
             return false;
         }
     }
-    
+     public  function getDataByMobile($mobile) {
+        $this->db->where([
+                'Mobile'=>$mobile,
+                'deletion_status'=>0,
+                'Status'=>1,
+                ]);
+        $query =$this->db->get('users');
+       //echo  $this->db->last_query();die;
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+        
+    }
 }

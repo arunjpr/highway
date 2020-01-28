@@ -9,6 +9,15 @@ class Book_trip_link_model extends CI_Model {
             return false;
         }
     }
+    public function updateBookingStatusApi($data,$bookTripId) {
+        $this->db->where(['b_l_t_id'=>$bookTripId,'b_l_t_active_status'=>1]);
+        $this->db->update("tbl_book_trip_link", $data);
+        if ($bookTripId> 0) {
+            return $bookTripId;
+        } else {
+            return false;
+        }
+    }
     
     public  function getBookTripDetailsApi() {
         $this->db->select(array("*"))
@@ -87,8 +96,10 @@ class Book_trip_link_model extends CI_Model {
     
     public function getBookTripDataById($bookTripId) {
         $this->db->select(array("*"))
-                ->from("tbl_book_trip_link")
-                ->where(array("tbl_book_trip_link.b_l_t_id" => $bookTripId, "tbl_book_trip_link.b_l_t_active_status"=> 1));
+                ->from("tbl_book_trip_link");
+                if(isset($bookTripId)>0){
+                $this->db->where(array("tbl_book_trip_link.b_l_t_id" => $bookTripId, "tbl_book_trip_link.b_l_t_active_status"=> 1));
+                }
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

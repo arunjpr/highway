@@ -27,22 +27,6 @@ if ($active_menu == 'driver') {
     echo 'active';
 }
 ?>"><a href="<?php echo base_url('admin/driver'); ?>"><i class="fa fa-file-text-o "></i> <span> Driver</span></a></li>
-
-<li class="<?php
-if ($active_menu == 'milluser') {
-    echo 'active';
-}
-?>"><a href="<?php echo base_url('admin/milluser'); ?>"><i class="fa fa-file-text-o "></i> <span> Mill User</span></a></li>
-
-
-<li class="<?php
-if ($active_menu == 'vehicle') {
-    echo 'active';
-}
-?>"><a href="<?php echo base_url('admin/vehicle'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle</span></a>
-
-</li>
-
 <li class="<?php
 if ($active_menu == 'vehicle Type') {
     echo 'active';
@@ -50,6 +34,29 @@ if ($active_menu == 'vehicle Type') {
 ?>"><a href="<?php echo base_url('admin/vehicleType'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle Type</span></a>
 
 </li>
+<li class="<?php
+if ($active_menu == 'vehicle') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/vehicle'); ?>"><i class="fa fa-file-text-o "></i> <span> Vehicle</span></a>
+
+</li>
+<li class="<?php
+if ($active_menu == 'assign driver to vehicle') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/assignVehicle'); ?>"><i class="fa fa-file-text-o "></i> <span> Assign Vehicle</span></a>
+
+</li>
+<li class="<?php
+if ($active_menu == 'milluser') {
+    echo 'active';
+}
+?>"><a href="<?php echo base_url('admin/milluser'); ?>"><i class="fa fa-file-text-o "></i> <span> Mill User</span></a></li>
+
+
+
+
 <li class="<?php
 if ($active_menu == 'trip') {
     echo 'active';

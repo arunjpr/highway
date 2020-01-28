@@ -34,9 +34,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <tr>
                                 <th>SL#</th>
                                 <th>Picture</th>
-                                <th>Name</th>
+                                <th>Vehicle Type</th>
+                                <th>Vehicle Name</th>
                                 <th>Model Number</th>
-                                <th>Color</th>
                                 <th>Driver</th> 
                                 <th>Added By</th> 
                                 <th>Status</th>
@@ -50,9 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <tr>
                                     <td><?php echo $sl++; ?></td>
                                     <td><img src="<?php echo base_url() ?>/assets/backend/img/vehicle/vehicleImage/<?php echo $user_data['v_vehicle_Image'] ?>" style="width: 20px;height: 20px;"></td>
-                                    <td><?php echo $user_data['v_t_vehicle_name'].' '.$user_data['v_vehicle_number']; ?></td>
+                                    <td><?php echo $user_data['v_t_vehicle_name']; ?></td>
+                                    <td><?php echo $user_data['v_vehicle_name'].' '.$user_data['v_vehicle_number']; ?></td>
                                     <td><?php echo $user_data['v_vehicle_model_no']; ?></td>
-                                    <td><?php echo $user_data['v_vehicle_Color']; ?></td>
                                     <td><?php echo $user_data['Name']; ?></td>
                                     <td><?php echo $memberObj['admin_name']; ?></td>
                                     <td>
