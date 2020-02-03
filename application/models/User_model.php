@@ -40,7 +40,7 @@ class User_model extends CI_Model {
         
     }
      public  function getOtpData($mobile) {
-       $this->db->select(array('Otp_Status','Otp'))
+       $this->db->select(array('Otp_Status','Otp','Role_Id'))
                 ->from("users")
                 ->where(array("users.Mobile" => $mobile));
         $query = $this->db->get();

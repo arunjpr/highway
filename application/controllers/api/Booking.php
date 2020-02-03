@@ -366,7 +366,7 @@ function applyCoupon_post() {
               $driverData = $this->assign_vehicle_to_driver_model->geDriverDetailsById($userId); 
               if($driverData){
                 $atripData = $this->accept_booking_trip_model->getAcceptTripData($bookTripId,$userId);
-           // echo '<pre>' ;print_r($tripData);die;
+            //echo '<pre>' ;print_r($driverData->a_v_t_d_driver_id);die;
             if($atripData){
                 $acceptTripData = $this->accept_booking_trip_model->updateAcceptBooking(array(
                 "a_b_t_booking_trip_id" => $bookTripId,
@@ -385,70 +385,88 @@ function applyCoupon_post() {
                 )); 
             }
                  
-            if ($acceptTripData) {
+            
+if($accepTReject=='TRIP_ACCEPTED'){
+            $bookStatusUpdate= $this->book_trip_link_model->updateBookingStatusApi(array(
+                "b_l_t_status"=>1,
+                "b_l_t_vehicle_id"=>$driverData->a_v_t_d_vehicle_id,
+                "b_l_t_driver_id"=>$driverData->a_v_t_d_driver_id,
+            ),$bookTripId);
+                  
+                
                 //==================push notification start====================//
-            $tripData = $this->book_trip_link_model->getBookTripDetailsByTripIdApi($bookTripId,$userId);
-             if($tripData){    
+$tripData = $this->book_trip_link_model->getBookTripDetailsByTripIdApi($bookTripId,$userId);
+    if($tripData){    
         $this->load->model("mobile_token_model");
         $customerMobileToken = $this->mobile_token_model->getCustomerTokenById($tripData['customerId']);
         //echo '<pre>' ;print_r($customerMobileToken); die;
-       // $mobileTokenData = $this->mobile_token_model->getMobileTokenData($tripData['vehicleTypeId']);
-         if($customerMobileToken){  
-        
-        
-    define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
-   $msg = array
-(
-	'message' 	=> 'here is a message. message',
-	'title'		=> 'This is a title. title',
-	'subtitle'	=> 'This is a subtitle. subtitle',
-	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
-	'vibrate'	=> 1,
-	'sound'		=> 1,
-	'largeIcon'	=> 'large_icon',
-	'smallIcon'	=> 'small_icon'
-);
-$fields = array
-(
-    'registration_ids' => $customerMobileToken,
-    'data' => $msg,
-    'priority' => 'high',
+        $mobileTokenData = $this->mobile_token_model->getMobileTokenData($tripData['vehicleTypeId'],$userId);
+ //echo '<pre>' ;print_r($mobileTokenData); die;
+//echo $result;
+if($customerMobileToken){  
+   define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
+    $msg = array('message'=> 'here is a message. message','title'=>'This is a title. title','subtitle'=>'This is a subtitle. subtitle','tickerText'=>'Ticker text here...Ticker text here...Ticker text here','vibrate'=>1,'sound'=>1,'largeIcon'=>'large_icon','smallIcon'=>'small_icon');
+    
+
+  switch ($accepTReject) {
+    case "TRIP_ACCEPTED":
+     $fields = array('registration_ids' => $customerMobileToken,'data' => $msg,'priority' => 'high',
     'notification' => array(
         'title' => $accepTReject,
-        'body' => array(
-                'message' => $accepTReject,
-                'driver' => $tripData['driverName'],
-                'mobile' => $tripData['driverMobile'], 
-                'type' => $accepTReject, 
-            )
-        
-    )
-);
-$headers = array
-(
-	'Authorization: key=' . API_ACCESS_KEY,
-	'Content-Type: application/json'
-);
- 
-$ch = curl_init();
-curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
-curl_setopt( $ch,CURLOPT_POST, true );
-curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
-curl_exec($ch );
-curl_close( $ch );
+        'body' => array('message' => $accepTReject,'driver'=>$tripData['driverName'],'mobile'=>$tripData['driverMobile'],'type'=>$accepTReject))
+        );
+    break;
+    case "TRIP_ACCEPTED":
+    $fields = array('registration_ids' => $mobileTokenData,'data' => $msg,'priority' => 'high',
+    'notification' => array(
+        'title' => $accepTReject,
+        'body' => array('message' => $accepTReject,'driver'=>$tripData['driverName'],'mobile'=>$tripData['driverMobile'],'type'=>$accepTReject))
+        );
+    break;
+    case "TRIP_CANCEL":
+        $fields = array('registration_ids' => $mobileTokenData,'data' => $msg,'priority' => 'high',
+    'notification' => array(
+        'title' => $accepTReject,
+        'body' => array('message' => $accepTReject,'driver'=>$tripData['driverName'],'mobile'=>$tripData['driverMobile'],'type'=>$accepTReject))
+        );
+    case "TRIP_CANCEL":
+        $fields = array('registration_ids' => $customerMobileToken,'data' => $msg,'priority' => 'high',
+    'notification' => array(
+        'title' => $accepTReject,
+        'body' => array('message' => $accepTReject,'driver'=>$tripData['driverName'],'mobile'=>$tripData['driverMobile'],'type'=>$accepTReject))
+        );
+        break;
+   }
+   
+   
+    $headers = array('Authorization: key=' . API_ACCESS_KEY,'Content-Type: application/json');
+    $ch = curl_init();
+    curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+    curl_setopt( $ch,CURLOPT_POST, true );
+    curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+    curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+    curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+    curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+    curl_exec($ch );
+    curl_close( $ch );
 }
-//echo $result;
+}
+}
+
+
+
+
+
  //==================push notification End====================// 
+
+        if ($acceptTripData) {
             $this->set_response([
                     'status' => true,
                     'message' => 'success',
                     'driverVehicleDetails'=>$tripData
                         ], REST_Controller::HTTP_OK);
             }
-            } else {
+             else {
                 $this->set_response([
                     'status' => false,
                     'message' => "unable to save the reply. please try again",
@@ -507,10 +525,12 @@ curl_close( $ch );
              $driverData = $this->assign_vehicle_to_driver_model->geDriverTripStartData($userId,$bookTripId); 
               if($driverData){
                   $vehicleId=$driverData['vehicleId'];
+                  if($tripStatus=='TRIP_START'){
             $bookStatusUpdate= $this->book_trip_link_model->updateBookingStatusApi(array(
-                "b_l_t_status"=>$tripStatus,
+                "b_l_t_status"=>2,
                 "b_l_t_vehicle_id"=>$vehicleId,
             ),$bookTripId);
+                  }
             if (($updateData) && ($bookStatusUpdate)) {
                 $this->load->model("mobile_token_model");
         $customerMobileToken = $this->mobile_token_model->getCustomerTokenById($driverData['customerId']);
@@ -697,7 +717,7 @@ curl_close( $ch );
                 $this->set_response([
                     'status' => true,
                     'message' => 'success',
-                    'startTripDetails'=>$driverData
+                    'endTripDetails'=>$driverData
                         ], REST_Controller::HTTP_OK);
             }
             } else {
