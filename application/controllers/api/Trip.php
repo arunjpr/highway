@@ -180,27 +180,7 @@ function selectYourGoodType_post() {
                     ], REST_Controller::HTTP_OK);
         }
     }
-function cancelTripReason_post(){
-        $error = "";
-        $user_id = $this->post('user_id');
-        if (empty($user_id)) {
-            $error = "please provide user id";
-        }
-        $this->load->model("cancel_trip_reason_model");
-        if (isset($error) && !empty($error)) {
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->set_response([
-                'status' => true,
-                "data" => array("cancelTripReson" => $this->cancel_trip_reason_model->getCancelTripReasonApi()),
-                    ], REST_Controller::HTTP_OK);
-        }
-    }
-   function shareTrip_post() {
+function shareTrip_post() {
         $error = "";
         $user_id = $this->post('User_Id');
         $mobileNo = $this->post('MobileNo');

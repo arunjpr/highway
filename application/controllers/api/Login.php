@@ -417,7 +417,15 @@ curl_close($ch);
         $data = $this->user_model->getOtpData($Mobile);
         $otpStatus = $data[0]->Otp_Status;
         $otpData = $data[0]->Otp;
-       // echo '<pre>' ;print_r($data);die;
+        
+//    if(($data[0]->Role_Id)>0){
+//        $Role_data = $this->user_model->getRoleByMobile($Mobile);
+//        $userRole=$Role_data[0]->Title;
+//        $userId=$Role_data[0]->Id;
+//        
+//    }
+        
+//       echo '<pre>' ;print_r($userId);die;
        
         if (isset($error) && !empty($error)) {
             $this->set_response([

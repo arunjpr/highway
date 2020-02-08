@@ -50,6 +50,20 @@ class User_model extends CI_Model {
             return array();
         }
     }
+    
+    public  function getRoleByMobile($mobile) {
+       $this->db->select(array('Title','u.Id'))
+                ->from("users u")
+                ->join('roles r', 'r.Id=u. Role_Id','left')
+                ->where(array("u.Mobile" => $mobile));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+    
     public function create_users($data){
         $this->db->insert('users',$data);
     }
