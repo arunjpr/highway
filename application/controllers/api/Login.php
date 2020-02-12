@@ -202,7 +202,17 @@ class Login extends REST_Controller {
               $saveUser = $allmobileData->Id;  
             }
         }
-        $receiveUser = $this->receiver_user_model->insertReceiverApi(array(
+        $checkReciverData=$this->receiver_user_model->getCheckReciverData($user_id,$saveUser);
+        if($checkReciverData){
+             $ruid=$checkReciverData->r_u_id;
+             $receiveUser = $this->receiver_user_model->update_receiver_user(array(
+                "r_u_user_id" => $user_id,
+                "r_u_trip_receiver_user_id" => $saveUser,
+                "r_u_delete" => 0,
+                "r_u_edit_by" => $user_id,
+                ),$ruid);
+        } else {
+             $receiveUser = $this->receiver_user_model->insertReceiverApi(array(
                 "r_u_user_id" => $user_id,
                 "r_u_trip_receiver_user_id" => $saveUser,
                 "r_u_status" => 1,
@@ -210,6 +220,8 @@ class Login extends REST_Controller {
                 "r_u_add_by" => $user_id,
                 "r_u_date" => date("Y-m-d"),
                 ));
+        }
+       
         
         
         

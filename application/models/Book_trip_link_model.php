@@ -20,18 +20,18 @@ class Book_trip_link_model extends CI_Model {
     }
     
     public  function getBookTripDetailsApi($booking_trip_id,$user_id) {
-        //echo '<pre>' ;print_r($booking_trip_id);die;
+       
         $this->db->select(array("*"))
                 ->from("tbl_book_trip_link b")
                 ->join('tbl_trip t', 't.t_id=b.b_l_t_trip_id','left')
                 ->join('users u', 'u.Id=b.b_l_t_customer_id','left')
                 ->join('tbl_vehicle_type vt', 'vt.v_t_id=b.b_l_t_vehicle_type','left');
-          
+         //echo '<pre>' ;print_r($user_id);die;
+         
         if(isset($booking_trip_id)>0){
              $this->db->where(array(
                     "b.b_l_t_id" => $booking_trip_id,
                     "b.b_l_t_customer_id" => $user_id,
-                    "b.b_l_t_active_status" => 1,
                     "b.b_l_t_active_status" => 1,
                     "b.b_l_t_delete" => 0,
                    
@@ -39,25 +39,26 @@ class Book_trip_link_model extends CI_Model {
         }
               
          $query = $this->db->get();
-         //$this->db->last_query();die;   
+        // echo  $this->db->last_query();die;
+          
         
          if($query->num_rows() > 0){
                 $data= $query->result();
-                $counter=0;
+                
                 $cat = array();
                // echo '<pre>' ;print_r($data);die;
                 foreach($data as $row){
-                    $cat[$counter]['bookingId']=$row->b_l_t_id ;
-                    $cat[$counter]['bookingTripId']=$row->t_trip_id ;
-                    $cat[$counter]['customerName']=$row->Name ;
-                    $cat[$counter]['customerMobile']=$row->Mobile;
-                    $cat[$counter]['tripPickupLocation']=$row->t_source_address;
-                    $cat[$counter]['tripDropLocation']=$row->t_destination_address;
-                    $cat[$counter]['tripAddDate']=$row->t_add_date;
-                    $cat[$counter]['vehicleTypeId']=$row->v_t_id ;
-                    $cat[$counter]['vehicleName']=$row->v_t_vehicle_name ;
-                    $cat[$counter]['vehicleFare']=$row->v_t_fare;
-                    $counter++;
+                    $cat['bookingId']=$row->b_l_t_id ;
+                    $cat['bookingTripId']=$row->t_trip_id ;
+                    $cat['customerName']=$row->Name ;
+                    $cat['customerMobile']=$row->Mobile;
+                    $cat['tripPickupLocation']=$row->t_source_address;
+                    $cat['tripDropLocation']=$row->t_destination_address;
+                    $cat['tripAddDate']=$row->t_add_date;
+                    $cat['vehicleTypeId']=$row->v_t_id ;
+                    $cat['vehicleName']=$row->v_t_vehicle_name ;
+                    $cat['vehicleFare']=$row->v_t_fare;
+                    
                     
                 }
                 return $cat;

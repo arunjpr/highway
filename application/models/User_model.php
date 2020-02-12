@@ -168,10 +168,12 @@ class User_model extends CI_Model {
     }
     
    public function getUserDetailsById($user_id) {
-        $this->db->select(array("*"))
-                ->from("users")
-                ->where(array("users.Id" => $user_id, "users.Status" => 1));
-        
+       
+       if(isset($user_id)>0){
+       $this->db->select(array("*"))
+                ->from("users");
+       $this->db->where(array("users.Id" => $user_id, "users.Status" => 1));
+        }
         $query = $this->db->get();
         $resultData = $query->result();
         if (count($resultData) > 0) {

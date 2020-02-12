@@ -31,6 +31,23 @@ class Receiver_user_model extends CI_Model {
         }
        
     }
+    
+    function getCheckReciverData($userId,$reciverUserId) {
+        if((isset($userId)>0) && (isset($reciverUserId)>0)){
+            $this->db->select(array("*"))
+                ->from("tbl_receiver_user")
+                ->where(array("tbl_receiver_user.r_u_trip_receiver_user_id " => $reciverUserId, "tbl_receiver_user.r_u_user_id" => $userId, "tbl_receiver_user.r_u_status" => 1,"tbl_receiver_user.r_u_delete" =>0));
+        }
+        $query = $this->db->get();
+        $resultData = $query->result();
+        if (count($resultData) > 0) {
+            $result = $resultData[0];
+             return $result;
+        } else {
+            return array();
+        }
+       
+    }
    
     
 }

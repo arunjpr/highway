@@ -98,11 +98,11 @@ class Vehicle_model extends CI_Model {
         $this->db->select(array("*"))
                 ->from("tbl_book_trip_link")
                 ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id')
-                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id')
-                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('tbl_vehicle_type', 'tbl_book_trip_link.b_l_t_vehicle_type=tbl_vehicle_type.v_t_id','left')
+                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id','left')
                 ->join('tbl_book_trip_fare', 'tbl_book_trip_fare.b_t_f_id=tbl_book_trip_link.b_l_t_fare_id','left')
-                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id')
-                ->join('roles', 'users.Role_Id=roles.Id');
+                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id','left')
+                ->join('roles', 'users.Role_Id=roles.Id','left');
         
         
         if(isset($userId)>0 && $status>0){
@@ -115,7 +115,7 @@ class Vehicle_model extends CI_Model {
                     "users.deletion_status" => 0)
         );}
         $query = $this->db->get();
-      //  echo  $this->db->last_query();die;
+//        echo  $this->db->last_query();die;
          if($query->num_rows() > 0){
                 $data= $query->result();
                 $counter=0;
@@ -128,7 +128,12 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['name']=$row->Name;
                     $cat[$counter]['role']=$row->Title;
                     $cat[$counter]['vehicleName']=$row->v_t_vehicle_name;
-                    $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;
+                    if(($row->v_vehicle_number)>0){
+                       $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;  
+                    } else {
+                        $cat[$counter]['vehicleNumber']=''; 
+                    }
+                    
                     $cat[$counter]['fare']=$row->b_t_f_fare;
                     if($status==1){
                     $cat[$counter]['status']='Upcoming';
@@ -148,10 +153,27 @@ class Vehicle_model extends CI_Model {
                     if($row->t_type==2){
                     $cat[$counter]['tripType']='Busniss Trip';
                     }
-                    $cat[$counter]['startDate']=$row->t_start_date;
-                    $cat[$counter]['endDate']=$row->t_end_date;
-                    $cat[$counter]['pickupTime']=$row->t_start_time;
-                    $cat[$counter]['dropTime']=$row->t_end_time;
+                    if(($row->t_start_date)>0){
+                       $cat[$counter]['startDate']=$row->t_start_date; 
+                    } else {
+                        $cat[$counter]['startDate']='';
+                    }
+                    if(($row->t_end_date)>0){
+                       $cat[$counter]['endDate']=$row->t_end_date; 
+                    } else {
+                        $cat[$counter]['endDate']='';
+                    }
+                    
+                    if(($row->t_start_time)>0){
+                      $cat[$counter]['pickupTime']=$row->t_start_time;
+                    } else {
+                       $cat[$counter]['pickupTime']='';
+                    }
+                    if(($row->t_end_time)>0){
+                       $cat[$counter]['dropTime']=$row->t_end_time;
+                    } else {
+                        $cat[$counter]['dropTime']='';
+                    }
                     $counter++;
                 }
                 return $cat;
@@ -162,12 +184,12 @@ class Vehicle_model extends CI_Model {
     public  function getAllTripByMillUserApi($userId,$status,$roleId) {
         $this->db->select(array("*"))
                 ->from("tbl_book_trip_link")
-                ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id')
-                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id')
-                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id','left')
+                ->join('tbl_vehicle_type', 'tbl_book_trip_link.b_l_t_vehicle_type=tbl_vehicle_type.v_t_id','left')
+                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id','left')
                 ->join('tbl_book_trip_fare', 'tbl_book_trip_fare.b_t_f_id=tbl_book_trip_link.b_l_t_fare_id','left')
-                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id')
-                ->join('roles', 'users.Role_Id=roles.Id');
+                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id','left')
+                ->join('roles', 'users.Role_Id=roles.Id','left');
         
         
         if(isset($userId)>0 && $status>0){
@@ -193,7 +215,11 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['name']=$row->Name;
                     $cat[$counter]['role']=$row->Title;
                     $cat[$counter]['vehicleName']=$row->v_t_vehicle_name;
-                    $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;
+                    if(($row->v_vehicle_number)>0){
+                       $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;  
+                    } else {
+                        $cat[$counter]['vehicleNumber']=''; 
+                    }
                     $cat[$counter]['fare']=$row->b_t_f_fare;
                     if($status==1){
                     $cat[$counter]['status']='Upcoming';
@@ -214,10 +240,27 @@ class Vehicle_model extends CI_Model {
                     if($row->t_type==2){
                     $cat[$counter]['tripType']='Busniss Trip';
                     } 
-                    $cat[$counter]['startDate']=$row->t_start_date;
-                    $cat[$counter]['endDate']=$row->t_end_date;
-                    $cat[$counter]['pickupTime']=$row->t_start_time;
-                    $cat[$counter]['dropTime']=$row->t_end_time;
+                    if(($row->t_start_date)>0){
+                       $cat[$counter]['startDate']=$row->t_start_date; 
+                    } else {
+                        $cat[$counter]['startDate']='';
+                    }
+                    if(($row->t_end_date)>0){
+                       $cat[$counter]['endDate']=$row->t_end_date; 
+                    } else {
+                        $cat[$counter]['endDate']='';
+                    }
+                    
+                    if(($row->t_start_time)>0){
+                      $cat[$counter]['pickupTime']=$row->t_start_time;
+                    } else {
+                       $cat[$counter]['pickupTime']='';
+                    }
+                    if(($row->t_end_time)>0){
+                       $cat[$counter]['dropTime']=$row->t_end_time;
+                    } else {
+                        $cat[$counter]['dropTime']='';
+                    }
                     $counter++;
                 }
                 return $cat;
@@ -228,12 +271,12 @@ class Vehicle_model extends CI_Model {
     public  function getAllTripByDriverApi($userId,$status) {
         $this->db->select(array("*"))
                 ->from("tbl_book_trip_link")
-                ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id')
-                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id')
-                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id','left')
+                ->join('tbl_vehicle_type', 'tbl_book_trip_link.b_l_t_vehicle_type=tbl_vehicle_type.v_t_id','left')
+                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id','left')
                 ->join('tbl_book_trip_fare', 'tbl_book_trip_fare.b_t_f_id=tbl_book_trip_link.b_l_t_fare_id','left')
-                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id')
-                ->join('roles', 'users.Role_Id=roles.Id');
+                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id','left')
+                ->join('roles', 'users.Role_Id=roles.Id','left');
                 
                 
             if(isset($userId)>0 && $status>0){
@@ -260,7 +303,11 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['name']=$row->Name;
                     $cat[$counter]['role']=$row->Title;
                     $cat[$counter]['vehicleName']=$row->v_t_vehicle_name;   
-                    $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;
+                    if(($row->v_vehicle_number)>0){
+                       $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;  
+                    } else {
+                        $cat[$counter]['vehicleNumber']=''; 
+                    }
                     $cat[$counter]['fare']=$row->t_fare;
                     if($status==1){
                     $cat[$counter]['status']='Upcoming';
@@ -280,10 +327,32 @@ class Vehicle_model extends CI_Model {
                     if($row->t_type==2){
                     $cat[$counter]['tripType']='Busniss Trip';
                     }
-                    $cat[$counter]['startDate']=$row->t_start_date;
-                    $cat[$counter]['endDate']=$row->t_end_date;
-                    $cat[$counter]['pickupTime']=$row->t_start_time;
-                    $cat[$counter]['dropTime']=$row->t_end_time;
+                    if($row->t_start_date!='NULL'){
+                       $cat[$counter]['startDate']=$row->t_start_date; 
+                    } else {
+                        $cat[$counter]['startDate']='';
+                    }
+                    if(($row->t_start_date)>0){
+                       $cat[$counter]['startDate']=$row->t_start_date; 
+                    } else {
+                        $cat[$counter]['startDate']='';
+                    }
+                    if(($row->t_end_date)>0){
+                       $cat[$counter]['endDate']=$row->t_end_date; 
+                    } else {
+                        $cat[$counter]['endDate']='';
+                    }
+                    
+                    if(($row->t_start_time)>0){
+                      $cat[$counter]['pickupTime']=$row->t_start_time;
+                    } else {
+                       $cat[$counter]['pickupTime']='';
+                    }
+                    if(($row->t_end_time)>0){
+                       $cat[$counter]['dropTime']=$row->t_end_time;
+                    } else {
+                        $cat[$counter]['dropTime']='';
+                    }
                     $counter++;
                 }
                 return $cat;
@@ -295,11 +364,11 @@ class Vehicle_model extends CI_Model {
        $this->db->select(array("*"))
                 ->from("tbl_book_trip_link")
                 ->join('tbl_trip', 'tbl_book_trip_link.b_l_t_trip_id =tbl_trip.t_id')
-                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id')
-                ->join('tbl_vehicle_type', 'vehicle.v_type_id=tbl_vehicle_type.v_t_id','left')
+                ->join('tbl_vehicle_type', 'tbl_book_trip_link.b_l_t_vehicle_type=tbl_vehicle_type.v_t_id','left')
+                ->join('vehicle', 'vehicle.v_Id=tbl_book_trip_link.b_l_t_vehicle_id','left')
                 ->join('tbl_book_trip_fare', 'tbl_book_trip_fare.b_t_f_id=tbl_book_trip_link.b_l_t_fare_id','left')
-                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id')
-                ->join('roles', 'users.Role_Id=roles.Id');
+                ->join('users', 'users.Id=tbl_book_trip_link.b_l_t_customer_id','left')
+                ->join('roles', 'users.Role_Id=roles.Id','left');
                 
                 
             if(isset($userId)>0 && $status>0){
@@ -325,7 +394,11 @@ class Vehicle_model extends CI_Model {
                     $cat[$counter]['name']=$row->Name;
                     $cat[$counter]['role']=$row->Title;
                     $cat[$counter]['vehicleName']=$row->v_t_vehicle_name;   
-                    $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;
+                    if(($row->v_vehicle_number)>0){
+                       $cat[$counter]['vehicleNumber']=$row->v_vehicle_number;  
+                    } else {
+                        $cat[$counter]['vehicleNumber']=''; 
+                    }
                     $cat[$counter]['fare']=$row->t_fare;
                     if($status==1){
                     $cat[$counter]['status']='Upcoming';
@@ -345,10 +418,28 @@ class Vehicle_model extends CI_Model {
                     if($row->t_type==2){
                     $cat[$counter]['tripType']='Busniss Trip';
                     }
-                    $cat[$counter]['startDate']=$row->t_start_date;
-                    $cat[$counter]['endDate']=$row->t_end_date;
-                    $cat[$counter]['pickupTime']=$row->t_start_time;
-                    $cat[$counter]['dropTime']=$row->t_end_time;
+                    if(($row->t_start_date)>0){
+                       $cat[$counter]['startDate']=$row->t_start_date; 
+                    } else {
+                        $cat[$counter]['startDate']='';
+                    }
+                    if(($row->t_end_date)>0){
+                       $cat[$counter]['endDate']=$row->t_end_date; 
+                    } else {
+                        $cat[$counter]['endDate']='';
+                    }
+                    
+                    if(($row->t_start_time)>0){
+                      $cat[$counter]['pickupTime']=$row->t_start_time;
+                    } else {
+                       $cat[$counter]['pickupTime']='';
+                    }
+                    if(($row->t_end_time)>0){
+                       $cat[$counter]['dropTime']=$row->t_end_time;
+                    } else {
+                        $cat[$counter]['dropTime']='';
+                    }
+                   
                     $counter++;
                 }
                 return $cat;
@@ -515,6 +606,48 @@ class Vehicle_model extends CI_Model {
                     $cat['v_info5']=$vinfo[4]->v_i_information;
                     $cat['v_info6']=$vinfo[5]->v_i_information;
                 
+                return $cat;
+            } else {
+            return array();
+        }
+    }
+    
+     public  function getBookingInfoDetailsApi($vehicle_id) {
+        $this->db->select(array("*"))
+                ->from("tbl_vehicle_type vt")
+                ->join('tbl_vehicle_load_capacity vc', 'vt.v_t_vehicle_load_capacity_id =vc.v_l_c_id ','left')
+                ->join('tbl_vehicle_dimension_size cd', 'vt.v_t_vehicle_size_id=cd.v_d_s_id','left');
+                if(isset($vehicle_id)>0){
+                $this->db->where(array("vt.v_t_status" => 1,"vt.v_t_delete" => 0,"vt.v_t_id" => $vehicle_id));
+                    }
+                
+                
+        $query = $this->db->get();
+       /// echo  $this->db->last_query();die;
+         if($query->num_rows() > 0){
+                $data= $query->result();
+            
+                $cat=array();
+                
+                $this->db->select(array('v_i_information'))
+                ->from("tbl_vehicle_info")
+                ->where(array("tbl_vehicle_info.v_i_status" => 1,"tbl_vehicle_info.v_i_delete" => 0,));
+                $query_result = $this->db->get();
+                $vinfo= $query_result->result();
+                foreach($data as $row){
+                    $cat['VehicleTypeId']=$row->v_t_id ;
+                    $cat['VehicleTypeName']=$row->v_t_vehicle_name ;
+                    $cat['VehicleCapacity']=$row->v_l_c_load_capacity ;
+                    $cat['VehicleSize']=$row->v_d_s_dimension_size;
+                    $cat['v_info1']=$vinfo[0]->v_i_information;
+                    $cat['v_info2']=$vinfo[1]->v_i_information;
+                    $cat['v_info3']=$vinfo[2]->v_i_information;
+                    $cat['v_info4']=$vinfo[3]->v_i_information;
+                    $cat['v_info5']=$vinfo[4]->v_i_information;
+                    $cat['v_info6']=$vinfo[5]->v_i_information;
+                    $cat['v_info7']=$vinfo[6]->v_i_information;
+                   
+                }
                 return $cat;
             } else {
             return array();

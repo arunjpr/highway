@@ -22,7 +22,174 @@ class Booking extends REST_Controller {
         
         
     }
-     
+    
+    function bookTripDetailsForCustomer_post() {
+        $error = "";
+        $customer_id = $this->post('userId');
+        $booking_trip_id = $this->post('bookingTripId');
+        
+        if (empty($customer_id)) {
+            $error = "please provide user id";
+        } else if (empty($booking_trip_id)) {
+            $error = "please provide booking id";
+        }
+        $this->load->model("book_trip_link_model");
+        $this->load->model("role_model");
+        
+//         //==================push notification start====================// 
+//         $userDetails = $this->role_model->geUserDetailsById($customer_id);
+//         if($userDetails){        
+//         $this->load->model("mobile_token_model");
+        
+//          $bookTripData = $this->book_trip_link_model->getBookTripDataByTripId($booking_trip_id);
+//       //echo '<pre>' ;print_r($bookTripData->b_l_t_vehicle_type); die;
+      
+//       $vehicleType=$bookTripData->b_l_t_vehicle_type;
+        
+//         $mobileTokenData = $this->mobile_token_model->getMobileTokenData($vehicleType,$customer_id);
+//       // echo '<pre>' ;print_r($vehicleType);
+//     define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
+//   $msg = array
+// (
+// 	'message' 	=> 'here is a message. message',
+// 	'title'		=> 'This is a title. title',
+// 	'subtitle'	=> 'This is a subtitle. subtitle',
+// 	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
+// 	'vibrate'	=> 1,
+// 	'sound'		=> 1,
+// 	'largeIcon'	=> 'large_icon',
+// 	'smallIcon'	=> 'small_icon'
+// );
+// $fields = array
+// (
+//     'registration_ids' => $mobileTokenData,
+//     'data' => $msg,
+//     'priority' => 'high',
+//     'notification' => array(
+//         'title' => 'Trip Added',
+//         'body' => array(
+//                 'message' => 'Trip Add By Customer: ',
+//                 'customer' => $userDetails->Name,
+//                 'mobile' => $userDetails->Mobile, 
+//                 'tripId' => $bookTripData->b_l_t_trip_id, 
+//                 'source' => $bookTripData->t_source_address, 
+//                 'destination' => $bookTripData->t_destination_address,
+//                 'type' => 'TRIP_NEW', 
+//             )
+//     )
+// );
+// $headers = array
+// (
+// 	'Authorization: key=' . API_ACCESS_KEY,
+// 	'Content-Type: application/json'
+// );
+ 
+// $ch = curl_init();
+// curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+// curl_setopt( $ch,CURLOPT_POST, true );
+// curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+// curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+// curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+// curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+// $result=curl_exec($ch );
+// curl_close( $ch );
+// echo $result;
+// }
+
+//  //==================push notification End====================//    
+        
+        
+        
+        
+        
+        
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                
+                "booking_trip_details" => $this->book_trip_link_model->getBookTripDetailsApi($booking_trip_id,$customer_id),
+                    ], REST_Controller::HTTP_OK);
+        }
+    
+}
+    function applyCoupon_post() {
+        $error = "";
+        $coupon = $this->post('coupon');
+        if (empty($coupon)) {
+            $error = "please provide coupon";
+        } 
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->load->model("coupon_model");
+             $couponData = $this->coupon_model->getCouponData($coupon);
+             if($couponData){
+             $couponId= $couponData[0]->c_id;
+             //echo '<pre>' ;print_r($couponData[0]->c_id);die;
+            
+            
+            $updateData = $this->coupon_model->updateCouponApi(array(
+                "c_coupan_status" => 2
+                ),$couponId);
+            if ($updateData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$updateData
+                        ], REST_Controller::HTTP_OK);
+            }
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "invalid coupon code",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+    }
+    function bookingInfoForCustomer_post() {
+        $error = "";
+        $user_id = $this->post('userId');
+        $vehicleTypeId = $this->post('vehicleTypeId');
+        if (empty($user_id)) {
+            $error = "please provide user id";
+        } 
+        if (empty($vehicleTypeId)) {
+            $error = "please provide vehicle id";
+        } 
+        $this->load->model("vehicle_model");
+        $this->load->model("user_model");
+        
+  
+        if (isset($error) && !empty($error)) {
+            
+            echo json_encode($error);
+            
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "vehicle_type_info" =>array($this->vehicle_model->getBookingInfoDetailsApi($vehicleTypeId)),
+                    ], REST_Controller::HTTP_OK);
+        }
+    }
+    
     function confirmBookingApi_post() {
         $error = "";
         $customer_id = $this->post('User_id');
@@ -150,16 +317,18 @@ class Booking extends REST_Controller {
     //==================push notification start====================// 
         if($userDetails){        
         $this->load->model("mobile_token_model");
-        
+       
          $bookTripData = $this->book_trip_link_model->getBookTripDataByTripId($trip_id);
       //  echo '<pre>' ;print_r($bookTripData->t_end_latitude); die;
         
         $mobileTokenData = $this->mobile_token_model->getMobileTokenData($vehicleType,$customer_id);
+         $payload_info = 'here is a message. message';
        // echo '<pre>' ;print_r($vehicleType);
     define( 'API_ACCESS_KEY', 'AAAAC-LH2JY:APA91bHF18YDdTSldhyjKAQO368TLVhHi2Re4kR6tVLWye5_lQirRCxghOMs99qhtZ19NqLIeunrUSrC5SIGDsp1h3W4NIlt6JFWXnwX80LjI13wdz8XM1ZMD-3DbQfg4NSA143KJT9q' );
    $msg = array
 (
 	'message' 	=> 'here is a message. message',
+//	'message' => json_decode($payload_info)->aps->alert,
 	'title'		=> 'This is a title. title',
 	'subtitle'	=> 'This is a subtitle. subtitle',
 	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
@@ -203,6 +372,15 @@ curl_exec($ch );
 curl_close( $ch );
 }
 //echo $result;
+
+$message ='Trip Add By Customer: ';
+
+ $badge = "0";
+    $sound = 'default';
+    $payload = array();
+    $payload['aps'] = array('alert' => $message, 'badge' => intval($badge),'sound' => $sound);
+ /// echo '<pre>' ;print_r($payload);
+
  //==================push notification End====================//               
                 
                 $this->set_response([
@@ -230,226 +408,6 @@ curl_close( $ch );
                     'message' => 'You are not Customer',
                         ], REST_Controller::HTTP_BAD_REQUEST);
                 }
-            }
-        }
-    }
-    function cancelTripReason_post(){
-        $error = "";
-        $customer_id = $this->post('userId');
-        if (empty($customer_id)) {
-            $error = "please provide user id";
-        }
-        $this->load->model("cancel_trip_reason_model");
-        $this->load->model("user_model");
-         $roleData = $this->user_model->getUserDetailsById($customer_id);
-         $roleId = $roleData->Role_Id;
-        // echo '<pre>' ;print_r($roleId);
-        if($roleId==4){
-        if (isset($error) && !empty($error)) {
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->set_response([
-                'status' => true,
-                "cancelTripReson" =>  $this->cancel_trip_reason_model->getCancelTripReasonApi(),
-                    ], REST_Controller::HTTP_OK);
-        }
-         } else {
-            $this->set_response([
-                    'status' => false,
-                    'message' => "You are not customer",
-                        ], REST_Controller::HTTP_BAD_REQUEST); 
-         }
-        
-    }
-    function cancelTripByCustomer_post() {
-        $error = "";
-        $customer_id = $this->post('userId');
-        $cancel_book_trip_id = $this->post('cancelBookId');
-        $cancel_reason_id = $this->post('cancelReasonId');
-        $cancel_reason_comment = $this->post('cancelReasonComment');
-        if (empty($customer_id)) {
-            $error = "please provide user id";
-        } else if (empty($cancel_book_trip_id)) {
-            $error = "please provide trip id";
-        } else if (empty($cancel_reason_id)) {
-            $error = "please provide cancel reson id";
-        } else if (empty($cancel_reason_comment)) {
-            $error = "please provide cancel reason comment";
-        }  
-        $this->load->model("user_model");
-         $roleData = $this->user_model->getUserDetailsById($customer_id);
-         $roleId = $roleData->Role_Id;
-        if($roleId==4){
-        if (isset($error) && !empty($error)) {
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->load->model("cancel_trip_reason_model");
-            $saveData = $this->cancel_trip_reason_model->addCancelTripReasonCommentApi(array(
-                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
-                "c_t_r_c_user_id" => $customer_id,
-                "c_t_r_c_reason_id" => $cancel_reason_id,
-                "c_t_r_c_reason_comment" => $cancel_reason_comment,
-                "c_t_r_c_status" => 1,
-                "c_t_r_c_add_by" => $customer_id,
-                "c_t_r_c_date" =>date("Y-m-d"),
-            ));
-            if ($saveData) {
-                $this->set_response([
-                    'status' => true,
-                    'message' => 'success',
-                    'id'=>$saveData
-                        ], REST_Controller::HTTP_OK);
-            } else {
-                $this->set_response([
-                    'status' => false,
-                    'message' => "unable to save the reply. please try again",
-                        ], REST_Controller::HTTP_BAD_REQUEST);
-            }
-        }
-        } else {
-            $this->set_response([
-                    'status' => false,
-                    'message' => "You are not customer",
-                        ], REST_Controller::HTTP_BAD_REQUEST); 
-         }
-    }
-    function cancelTripByDriverApi_post() {
-        $error = "";
-        $driver_id = $this->post('userId');
-        $cancel_book_trip_id = $this->post('cancelBookId');
-        $cancel_reason_id = $this->post('cancelReasonId');
-        $cancel_reason_comment = $this->post('cancelReasonComment');
-        $start_latitude = $this->post('sourceLat');
-        $start_longitude = $this->post('sourceLong');
-        if (empty($driver_id)) {
-            $error = "please provide user id";
-        } else if (empty($cancel_book_trip_id)) {
-            $error = "please provide trip id";
-        } else if (empty($cancel_reason_id)) {
-            $error = "please provide cancel reson id";
-        } else if (empty($cancel_reason_comment)) {
-            $error = "please provide cancel reason comment";
-        }  else if (empty($start_latitude)) {
-            $error = "please provide pickup location";
-        } else if (empty($start_longitude)) {
-            $error = "please provide pickup location";
-        } 
-        
-         $this->load->model("user_model");
-         $roleData = $this->user_model->getUserDetailsById($driver_id);
-         $roleId = $roleData->Role_Id;
-        if($roleId==3){
-        if (isset($error) && !empty($error)) {
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->load->model("cancel_trip_reason_model");
-            $saveData = $this->cancel_trip_reason_model->addCancelTripReasonCommentApi(array(
-                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
-                "c_t_r_c_user_id" => $driver_id,
-                "c_t_r_c_reason_id" => $cancel_reason_id,
-                "c_t_r_c_reason_comment" => $cancel_reason_comment,
-                "c_t_r_c_source_lat" => $start_latitude,
-                "c_t_r_c_source_long" => $start_longitude,
-                "c_t_r_c_status" => 1,
-                "c_t_r_c_add_by" => $driver_id,
-                "c_t_r_c_date" =>date("Y-m-d"),
-            ));
-            if ($saveData) {
-                $this->set_response([
-                    'status' => true,
-                    'message' => 'success',
-                    'id'=>$saveData
-                        ], REST_Controller::HTTP_OK);
-            } else {
-                $this->set_response([
-                    'status' => false,
-                    'message' => "unable to save the reply. please try again",
-                        ], REST_Controller::HTTP_BAD_REQUEST);
-            }
-        }
-         } else {
-            $this->set_response([
-                    'status' => false,
-                    'message' => "You are not driver",
-                        ], REST_Controller::HTTP_BAD_REQUEST); 
-         }
-        
-    }
-    function bookTripDetails_post() {
-        $error = "";
-        $user_id = $this->post('user_id');
-        $booking_trip_id = $this->post('booking_trip_id');
-        
-        if (empty($user_id)) {
-            $error = "please provide user id";
-        } else if (empty($booking_trip_id)) {
-            $error = "please provide booking id";
-        }
-        $this->load->model("book_trip_link_model");
-        if (isset($error) && !empty($error)) {
-            
-            echo json_encode($error);
-            
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->set_response([
-                'status' => true,
-                "booking_trip_details" => $this->book_trip_link_model->getBookTripDetailsApi($booking_trip_id,$user_id),
-                    ], REST_Controller::HTTP_OK);
-        }
-    
-}
-    function applyCoupon_post() {
-        $error = "";
-        $coupon = $this->post('coupon');
-        if (empty($coupon)) {
-            $error = "please provide coupon";
-        } 
-        if (isset($error) && !empty($error)) {
-            $this->set_response([
-                'status' => false,
-                'message' => $error,
-                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
-            return;
-        } else {
-            $this->load->model("coupon_model");
-             $couponData = $this->coupon_model->getCouponData($coupon);
-             if($couponData){
-             $couponId= $couponData[0]->c_id;
-             //echo '<pre>' ;print_r($couponData[0]->c_id);die;
-            
-            
-            $updateData = $this->coupon_model->updateCouponApi(array(
-                "c_coupan_status" => 2
-                ),$couponId);
-            if ($updateData) {
-                $this->set_response([
-                    'status' => true,
-                    'message' => 'success',
-                    'id'=>$updateData
-                        ], REST_Controller::HTTP_OK);
-            }
-            } else {
-                $this->set_response([
-                    'status' => false,
-                    'message' => "invalid coupon code",
-                        ], REST_Controller::HTTP_BAD_REQUEST);
             }
         }
     }
@@ -852,4 +810,202 @@ curl_close( $ch );
             }
         }
     }
+    
+    function cancelTripReason_post(){
+        $error = "";
+        $customer_id = $this->post('userId');
+        if (empty($customer_id)) {
+            $error = "please provide user id";
+        }
+        $this->load->model("cancel_trip_reason_model");
+        $this->load->model("user_model");
+         $roleData = $this->user_model->getUserDetailsById($customer_id);
+         $roleId = $roleData->Role_Id;
+        // echo '<pre>' ;print_r($roleId);
+        if($roleId==4){
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->set_response([
+                'status' => true,
+                "cancelTripReson" =>  $this->cancel_trip_reason_model->getCancelTripReasonApi(),
+                    ], REST_Controller::HTTP_OK);
+        }
+         } else {
+            $this->set_response([
+                    'status' => false,
+                    'message' => "You are not customer",
+                        ], REST_Controller::HTTP_BAD_REQUEST); 
+         }
+        
+    }
+    function cancelTripByCustomer_post() {
+        $error = "";
+        $customer_id = $this->post('userId');
+        $cancel_book_trip_id = $this->post('cancelBookId');
+        $cancel_reason_id = $this->post('cancelReasonId');
+        $cancel_reason_comment = $this->post('cancelReasonComment');
+        if (empty($customer_id)) {
+            $error = "please provide user id";
+        } else if (empty($cancel_book_trip_id)) {
+            $error = "please provide trip id";
+        } else if (empty($cancel_reason_id)) {
+            $error = "please provide cancel reson id";
+        } else if (empty($cancel_reason_comment)) {
+            $error = "please provide cancel reason comment";
+        }  
+        $this->load->model("user_model");
+        $this->load->model("book_trip_link_model");
+         $roleData = $this->user_model->getUserDetailsById($customer_id);
+         $roleId = $roleData->Role_Id;
+        if($roleId==4){
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->load->model("cancel_trip_reason_model");
+            $checkCancelData = $this->cancel_trip_reason_model->getCancelTripDataByUser($cancel_book_trip_id,$customer_id);
+           
+            if($checkCancelData){
+                $c_t_r_c_id = $checkCancelData->c_t_r_c_id;
+                $saveData = $this->cancel_trip_reason_model->updateCancelTripReasonCommentApi(array(
+                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
+                "c_t_r_c_user_id" => $customer_id,
+                "c_t_r_c_reason_id" => $cancel_reason_id,
+                "c_t_r_c_reason_comment" => $cancel_reason_comment,
+            ),$c_t_r_c_id);
+            } else {
+              $saveData = $this->cancel_trip_reason_model->addCancelTripReasonCommentApi(array(
+                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
+                "c_t_r_c_user_id" => $customer_id,
+                "c_t_r_c_reason_id" => $cancel_reason_id,
+                "c_t_r_c_reason_comment" => $cancel_reason_comment,
+                "c_t_r_c_status" => 1,
+                "c_t_r_c_add_by" => $customer_id,
+                "c_t_r_c_date" =>date("Y-m-d"),
+            ));  
+            }
+            
+            
+             $cancelTripStatus = $this->book_trip_link_model->updateBookingStatusApi(array(
+                 "b_l_t_status" => 4,
+                 "b_l_t_edit_by" => $customer_id,
+            ),$cancel_book_trip_id);
+            if ($saveData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$saveData
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+        } else {
+            $this->set_response([
+                    'status' => false,
+                    'message' => "You are not customer",
+                        ], REST_Controller::HTTP_BAD_REQUEST); 
+         }
+    }
+    function cancelTripByDriverApi_post() {
+        $error = "";
+        $driver_id = $this->post('userId');
+        $cancel_book_trip_id = $this->post('cancelBookId');
+        $cancel_reason_id = $this->post('cancelReasonId');
+        $cancel_reason_comment = $this->post('cancelReasonComment');
+        $start_latitude = $this->post('sourceLat');
+        $start_longitude = $this->post('sourceLong');
+        if (empty($driver_id)) {
+            $error = "please provide user id";
+        } else if (empty($cancel_book_trip_id)) {
+            $error = "please provide trip id";
+        } else if (empty($cancel_reason_id)) {
+            $error = "please provide cancel reson id";
+        } else if (empty($cancel_reason_comment)) {
+            $error = "please provide cancel reason comment";
+        }  else if (empty($start_latitude)) {
+            $error = "please provide pickup location";
+        } else if (empty($start_longitude)) {
+            $error = "please provide pickup location";
+        } 
+        
+         $this->load->model("user_model");
+         $roleData = $this->user_model->getUserDetailsById($driver_id);
+         $roleId = $roleData->Role_Id;
+        if($roleId==3){
+        if (isset($error) && !empty($error)) {
+            $this->set_response([
+                'status' => false,
+                'message' => $error,
+                    ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
+            return;
+        } else {
+            $this->load->model("cancel_trip_reason_model");
+          
+            $checkCancelData = $this->cancel_trip_reason_model->getCancelTripDataByUser($cancel_book_trip_id,$driver_id);
+           
+            if($checkCancelData){
+                $c_t_r_c_id = $checkCancelData->c_t_r_c_id;
+                $saveData = $this->cancel_trip_reason_model->updateCancelTripReasonCommentApi(array(
+                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
+                "c_t_r_c_user_id" => $driver_id,
+                "c_t_r_c_reason_id" => $cancel_reason_id,
+                "c_t_r_c_reason_comment" => $cancel_reason_comment,
+                "c_t_r_c_source_lat" => $start_latitude,
+                "c_t_r_c_source_long" => $start_longitude,
+            ),$c_t_r_c_id);
+            } else {
+              $saveData = $this->cancel_trip_reason_model->addCancelTripReasonCommentApi(array(
+                "c_t_r_c_booking_trip_id" => $cancel_book_trip_id,
+                "c_t_r_c_user_id" => $driver_id,
+                "c_t_r_c_reason_id" => $cancel_reason_id,
+                "c_t_r_c_reason_comment" => $cancel_reason_comment,
+                "c_t_r_c_source_lat" => $start_latitude,
+                "c_t_r_c_source_long" => $start_longitude,
+                "c_t_r_c_status" => 1,
+                "c_t_r_c_add_by" => $driver_id,
+                "c_t_r_c_date" =>date("Y-m-d"),
+            ));  
+            }
+            $cancelTripStatus = $this->book_trip_link_model->updateBookingStatusApi(array(
+                 "b_l_t_status" => 4,
+                 "b_l_t_edit_by" => $driver_id,
+            ),$cancel_book_trip_id);
+            
+            
+            if ($saveData) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'success',
+                    'id'=>$saveData
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => false,
+                    'message' => "unable to save the reply. please try again",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+         } else {
+            $this->set_response([
+                    'status' => false,
+                    'message' => "You are not driver",
+                        ], REST_Controller::HTTP_BAD_REQUEST); 
+         }
+        
+    }
+    
+    
+    
 }
