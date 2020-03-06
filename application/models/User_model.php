@@ -39,6 +39,46 @@ class User_model extends CI_Model {
         }
         
     }
+    
+     
+    
+    public  function getLoginWithRoleData($mobile,$RoleId) {
+        if((isset($mobile)>0) && isset($RoleId)>0){
+        $this->db->where([
+                'Mobile'=>$mobile,
+                'Role_Id'=>$RoleId,
+                'deletion_status'=>0,
+                ]);
+        $query =$this->db->get('users');
+       }
+       //echo  $this->db->last_query();die;
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+        
+    }
+    
+    
+     public  function getCheckUserRole($mobile) {
+      if(isset($mobile)>0){
+         $this->db->select(array('u.Mobile','u.Role_Id','r.Title'))
+                ->from("users u")
+               ->join("roles r" ,"r.Id=u.Role_Id",'left')
+                ->where(array("u.Mobile" => $mobile,"u.deletion_status"=>0));
+      }
+        $query = $this->db->get();
+        $resultData = $query->result();
+        if (count($resultData) > 0) {
+            $result = $resultData[0];
+             return $result;
+        } else {
+            return array();
+        }
+    }
+    
+    
      public  function getOtpData($mobile) {
        $this->db->select(array('Otp_Status','Otp','Role_Id'))
                 ->from("users")
@@ -81,17 +121,18 @@ class User_model extends CI_Model {
        // echo '<pre>' ; print_r($id);die;
         $this->db->where(['Id'=>$id]);
         $this->db->update('users',$data);
-        if ($id> 0) {
+        if ($id > 0) {
             return $id;
         } else {
             return false;
         }
     }
-    public function update_users_mobile($data,$mobile){
+    
+    public function update_users_mobile($data,$mobile,$role){
        // echo '<pre>' ; print_r($id);die;
-        $this->db->where(['Mobile'=>$mobile]);
+        $this->db->where(['Mobile'=>$mobile,'Role_Id'=>$role]);
         $this->db->update('users',$data);
-        if ($mobile> 0) {
+        if ($mobile > 0) {
             return $mobile;
         } else {
             return false;
@@ -101,7 +142,7 @@ class User_model extends CI_Model {
        // echo '<pre>' ; print_r($id);die;
         $this->db->where(['Mobile'=>$mobile,'Otp'=>$Otp]);
         $this->db->update('users',$data);
-        if ($mobile> 0) {
+        if ($mobile > 0) {
             return $mobile;
         } else {
             return false;
@@ -155,6 +196,7 @@ class User_model extends CI_Model {
             return array();
         }
     }
+    
     public function getCheckUserRoleByUserId($user_id) {
         $this->db->select(array("Role_Id"))
                 ->from("users")
@@ -169,10 +211,10 @@ class User_model extends CI_Model {
     
    public function getUserDetailsById($user_id) {
        
-       if(isset($user_id)>0){
-       $this->db->select(array("*"))
-                ->from("users");
-       $this->db->where(array("users.Id" => $user_id, "users.Status" => 1));
+        if(isset($user_id)>0){
+             $this->db->select(array("*"))
+                ->from("users")
+                ->where(array("users.Id" => $user_id, "users.Status" => 1));
         }
         $query = $this->db->get();
         $resultData = $query->result();
@@ -184,6 +226,7 @@ class User_model extends CI_Model {
         }
        
     }
+    
     public function getUserAddBy($add_by,$receiverMobile) {
         $this->db->select(array("*"))
                 ->from("users")
@@ -233,9 +276,9 @@ class User_model extends CI_Model {
                 $user['Mobile'] = $row[0]->Mobile;
                 //$user['Image'] = URL.'images/'.$row[0]->Image;
                 $user['Email'] = $row[0]->Email;
-                $user['Gender'] = $row[0]->Gender;
+               // $user['Gender'] = $row[0]->Gender;
                 $user['Role_Id'] = $row[0]->Role_Id;
-                $user['Address'] = $row[0]->Address;
+               // $user['Address'] = $row[0]->Address;
                 $user['User_Status'] = $row[0]->Status;
                 $user['Otp_Status'] = $row[0]->Otp_Status;
                 $user['isBoolean'] = $row[0]->isBoolean;

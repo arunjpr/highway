@@ -157,6 +157,7 @@ class Login extends REST_Controller {
            
         }
     }
+    
     function updateReceiver_post() { //when user add book trip after user add receiver details
         $error = "";
         $user_id = $this->post('user_id');
@@ -202,17 +203,7 @@ class Login extends REST_Controller {
               $saveUser = $allmobileData->Id;  
             }
         }
-        $checkReciverData=$this->receiver_user_model->getCheckReciverData($user_id,$saveUser);
-        if($checkReciverData){
-             $ruid=$checkReciverData->r_u_id;
-             $receiveUser = $this->receiver_user_model->update_receiver_user(array(
-                "r_u_user_id" => $user_id,
-                "r_u_trip_receiver_user_id" => $saveUser,
-                "r_u_delete" => 0,
-                "r_u_edit_by" => $user_id,
-                ),$ruid);
-        } else {
-             $receiveUser = $this->receiver_user_model->insertReceiverApi(array(
+        $receiveUser = $this->receiver_user_model->insertReceiverApi(array(
                 "r_u_user_id" => $user_id,
                 "r_u_trip_receiver_user_id" => $saveUser,
                 "r_u_status" => 1,
@@ -220,8 +211,6 @@ class Login extends REST_Controller {
                 "r_u_add_by" => $user_id,
                 "r_u_date" => date("Y-m-d"),
                 ));
-        }
-       
         
         
         
@@ -246,6 +235,7 @@ class Login extends REST_Controller {
                         ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    
     function confirmReceiver_post() { //when user add book trip after user add receiver details
         $error = "";
         $user_id = $this->post('user_id');
@@ -323,40 +313,35 @@ class Login extends REST_Controller {
      function login_register_post() {
         $error = "";
             $Mobile = $this->post('Mobile');
+            $RoleId = $this->post('RoleId');
         if (empty($Mobile)) {
             $error = "Please Enter your valid Mobile";
         }
-        
+         if (empty($RoleId)) {
+            $error = "plese provided user roleId";
+        }
         $Otp=rand(10000, 99999);
         $this->load->model("user_model");
-        $data = $this->user_model->getLoginData($Mobile);
-       // $dataBaseMobile = $data[0]->Mobile;
-       
-        
-        
         if (isset($error) && !empty($error)) {
             $this->set_response([
                 'status' => false,
                 'message' => $error,
                     ], REST_Controller::HTTP_BAD_REQUEST); // NOT_FOUND (404) being the HTTP response code
             return;
+        
         } else {
-            if($data){
+            $checkUserRole = $this->user_model->getCheckUserRole($Mobile);
+        if($checkUserRole){
+            if(($Mobile==$checkUserRole->Mobile) && ($RoleId==$checkUserRole->Role_Id)){
                 $updateUser = $this->user_model->update_users_mobile(array(
                 "Otp" => $Otp,
                 "Otp_Status" => 0,
-            ),$Mobile);
-                $ch = curl_init();
-
-// set URL and other appropriate options
-curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
-curl_setopt($ch, CURLOPT_HEADER, 0);
-
-// grab URL and pass it to the browser
-curl_exec($ch);
-
-// close cURL resource, and free up system resources
-curl_close($ch);  
+            ),$Mobile,$RoleId);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);  
             if ($updateUser) {
                 $this->set_response([
                     'status' => true,
@@ -371,28 +356,30 @@ curl_close($ch);
                     'message' => "unable to save the reply. please try again",
                         ], REST_Controller::HTTP_BAD_REQUEST);
             
-            }  
-        } else {
+            } 
+                
+                    
+        } 
+            if(($Mobile==$checkUserRole->Mobile) && ($RoleId!=$checkUserRole->Role_Id)){
+                $this->set_response([
+                    'status' => false,
+                    'message' => "You Are allready register with $checkUserRole->Title",
+                        ], REST_Controller::HTTP_BAD_REQUEST);
+                }
+        }
+        else{
             $insertMobile = $this->user_model->insertUserApi(array(
                 "Mobile" => $Mobile,
+                "Role_Id" => $RoleId,
                 "Otp" => $Otp,
                 "u_date" => date("Y-m-d")
                
             ));
-            
             $ch = curl_init();
-
-// set URL and other appropriate options
-curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
-curl_setopt($ch, CURLOPT_HEADER, 0);
-
-// grab URL and pass it to the browser
-curl_exec($ch);
-
-// close cURL resource, and free up system resources
-curl_close($ch);  
-            
-            
+            curl_setopt($ch, CURLOPT_URL, "http://sms24.infonetservices.in/API/WebSMS/Http/v1.0a/index.php?username=medeg&password=631616&sender=DNAAPP&to=$Mobile&message=Please+enter+your+otp:+$Otp+for+verify+your+mobile+number.&reqid=1&format={json|text}&route_id=197");
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
             if($insertMobile) {
                 $this->set_response([
                     'status' => true,
@@ -406,11 +393,9 @@ curl_close($ch);
                         ], REST_Controller::HTTP_BAD_REQUEST);
             }
             
+        } 
             
-            
-        }
-           
-           
+        
         }
     }
     
@@ -418,6 +403,8 @@ curl_close($ch);
     function otp_verify_post() {
         $error = "";
             $Mobile = $this->post('Mobile');
+           // $Mobile = $this->post('Mobile');
+            
             $Otp = $this->post('Otp');
         if (empty($Mobile)) {
             $error = "Please Enter your valid Mobile";
@@ -429,15 +416,7 @@ curl_close($ch);
         $data = $this->user_model->getOtpData($Mobile);
         $otpStatus = $data[0]->Otp_Status;
         $otpData = $data[0]->Otp;
-        
-//    if(($data[0]->Role_Id)>0){
-//        $Role_data = $this->user_model->getRoleByMobile($Mobile);
-//        $userRole=$Role_data[0]->Title;
-//        $userId=$Role_data[0]->Id;
-//        
-//    }
-        
-//       echo '<pre>' ;print_r($userId);die;
+       // echo '<pre>' ;print_r($data);die;
        
         if (isset($error) && !empty($error)) {
             $this->set_response([
@@ -492,25 +471,25 @@ curl_close($ch);
     function signup_post() {
         $error = "";
         $user_id = $this->post('User_Id');
-        $Role_Id = $this->post('Role_Id');
+      //  $Role_Id = $this->post('Role_Id');
         $Email = $this->post('Email');
         $Name = $this->post('Name');
-        $Address = $this->post('Address');
+       // $Address = $this->post('Address');
         if (empty($user_id)) {
             $error = "please provide user id";
         } 
-        if (empty($Role_Id)) {
-            $error = "please provide role id";
-        } 
+        // if (empty($Role_Id)) {
+        //     $error = "please provide role id";
+        // } 
         if (empty($Email)) {
             $error = "please provide email";
         } 
         if (empty($Name)) {
             $error = "please provide name";
         } 
-        if (empty($Address)) {
-            $error = "please provide address";
-        } 
+        // if (empty($Address)) {
+        //     $error = "please provide address";
+        // } 
         $this->load->model("user_model");
         if (isset($error) && !empty($error)) {
             
@@ -523,10 +502,10 @@ curl_close($ch);
             return;
         } else {
             $updateUser = $this->user_model->update_signup_data(array(
-                "Role_Id" => $Role_Id,
+               // "Role_Id" => $Role_Id,
                 "Name" => $Name,
                 "Email" => $Email,
-                "Address" => $Address,
+                //"Address" => $Address,
                 "Status" => 1,
                  "u_date"=>date("Y-m-d")
             ),$user_id);
